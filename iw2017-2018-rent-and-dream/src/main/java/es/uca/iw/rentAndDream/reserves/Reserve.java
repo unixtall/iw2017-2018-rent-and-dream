@@ -24,9 +24,9 @@ public class Reserve {
 	
 	private LocalDate departure_date;
 	
-	private float price;
+	private Float price;
 	
-	private boolean confirmed;
+	private Boolean confirmed;
 	
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
@@ -39,8 +39,8 @@ public class Reserve {
 		
 	}
 	
-	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, float price,
-			boolean confirmed) {
+	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, Float price,
+			Boolean confirmed) {
 		this.number_guests = number_guests;
 		this.entry_date = entry_date;
 		this.departure_date = departure_date;
@@ -72,19 +72,19 @@ public class Reserve {
 		this.departure_date = departure_date;
 	}
 
-	public float getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
-	public boolean isConfirmed() {
+	public Boolean isConfirmed() {
 		return confirmed;
 	}
  
-	public void setConfirmed(boolean confirmed) {
+	public void setConfirmed(Boolean confirmed) {
 		this.confirmed = confirmed;
 	}
 }
