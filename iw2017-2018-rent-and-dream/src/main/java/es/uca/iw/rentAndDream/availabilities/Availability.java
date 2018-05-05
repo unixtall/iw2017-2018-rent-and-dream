@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+
 @Entity
 public class Availability {
 
