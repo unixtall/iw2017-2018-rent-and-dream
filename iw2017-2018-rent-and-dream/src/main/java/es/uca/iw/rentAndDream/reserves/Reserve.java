@@ -31,11 +31,12 @@ public class Reserve {
 	
 	private boolean confirmed;
 	
+	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public User user;
 	
-	/*@ManyToOne(fetch=FetchType.LAZY) 
-    public Housing housing;*/
+	@ManyToOne(fetch=FetchType.LAZY) 
+    public Housing housing;
 	
 	protected Reserve() {
 		
