@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import es.uca.iw.rentAndDream.cities.City;
 import es.uca.iw.rentAndDream.users.User;
 
 @Entity
@@ -17,6 +18,7 @@ public class Housing {
 	
     @ManyToOne(fetch=FetchType.LAZY)
 	private User user;
+	private City city;
 	
 	private String name;
 	
