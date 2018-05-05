@@ -18,7 +18,8 @@ public class Housing {
 	
     @ManyToOne(fetch=FetchType.LAZY)
 	private User user;
-	private City city;
+    @ManyToOne(fetch=FetchType.LAZY)
+    private City city;
 	
 	private String name;
 	
