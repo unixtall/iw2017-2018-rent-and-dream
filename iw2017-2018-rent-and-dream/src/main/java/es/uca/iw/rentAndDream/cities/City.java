@@ -20,6 +20,9 @@ public class City {
 	
 	private Integer postalCode;
 	
+	@ManyToOne(fetch=FetchType.LAZY) 
+    public Country country;
+	
 	protected City() {
 	}
 
@@ -56,7 +59,4 @@ public class City {
 	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
-	
-	@ManyToOne(fetch=FetchType.LAZY) 
-    public Country country;
 }

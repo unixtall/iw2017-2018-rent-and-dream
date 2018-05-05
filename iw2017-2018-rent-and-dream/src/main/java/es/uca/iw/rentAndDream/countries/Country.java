@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import es.uca.iw.rentAndDream.cities.City;
+
 @Entity
 public class Country {
 
