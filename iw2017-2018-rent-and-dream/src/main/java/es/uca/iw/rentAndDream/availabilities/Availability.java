@@ -1,4 +1,4 @@
-package es.uca.iw.rentAndDream.Availabilities;
+package es.uca.iw.rentAndDream.availabilities;
 
 import java.time.LocalDate;
 
