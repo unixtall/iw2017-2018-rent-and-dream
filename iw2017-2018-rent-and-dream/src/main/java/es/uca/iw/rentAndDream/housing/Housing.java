@@ -60,7 +60,15 @@ public class Housing {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public City getCity() {
+		return city;
+	}
 
+	public void setCity(City city) {
+		this.city = city;
+	}
+	
 	public Float getAssessment() {
 		return assessment;
 	}
