@@ -17,15 +17,12 @@ public class Availability {
 	private Housing housing;
 	@Id
 	@GeneratedValue
-	private Long id;
-
-	
+	private Long id;	
 	private LocalDate start_date;
-
-	private double end_date;
-	private double price;
+	private LocalDate end_date;
+	private Double price;
 	
-	public Availability(Housing housing, Long id, LocalDate start_date, double end_date, double price) {
+	public Availability(Housing housing, Long id, LocalDate start_date, LocalDate end_date, Double price) {
 		this.housing = housing;
 		this.id = id;
 		this.start_date = start_date;
@@ -57,19 +54,19 @@ public class Availability {
 		this.start_date = start_date;
 	}
 
-	public double getEnd_date() {
+	public LocalDate getEnd_date() {
 		return end_date;
 	}
 
-	public void setEnd_date(double end_date) {
+	public void setEnd_date(LocalDate end_date) {
 		this.end_date = end_date;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 	
