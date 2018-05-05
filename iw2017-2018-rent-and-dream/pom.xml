@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>es.uca.iw</groupId>
-	<artifactId>proyectoCompleto</artifactId>
+	<artifactId>rent-and-dream</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>proyectoCompleto</name>
-	<description>Proyecto completo Vaadin Spring JPA + Security</description>
+	<name>rent-and-dream</name>
+	<description>Proyecto en Vaadin Spring para la asignatura de IW, en la universidad de Cádiz</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
