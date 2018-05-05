@@ -26,7 +26,6 @@ public class Country {
     public List<City> cities;
 
 	public Country(Long id, String name, double iVA) {
-		super();
 		this.id = id;
 		this.name = name;
 		IVA = iVA;
