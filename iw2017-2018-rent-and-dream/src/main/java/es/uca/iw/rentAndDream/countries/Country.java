@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import es.uca.iw.rentAndDream.cities.City;
+
 @Entity
 public class Country {
 
@@ -24,7 +26,6 @@ public class Country {
     public List<City> cities;
 
 	public Country(Long id, String name, double iVA) {
-		super();
 		this.id = id;
 		this.name = name;
 		IVA = iVA;
