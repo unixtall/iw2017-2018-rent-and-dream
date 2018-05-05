@@ -11,8 +11,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Availability {
 
-	@ManyToOne(fetch=FetchType.LAZY) 
-	private Housing housing;
+	/*@ManyToOne(fetch=FetchType.LAZY) 
+	private Housing housing;*/
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -22,20 +22,11 @@ public class Availability {
 	private double end_date;
 	private double price;
 	
-	public Availability(Housing housing, Long id, LocalDate start_date, double end_date, double price) {
-		this.housing = housing;
+	public Availability(Long id, LocalDate start_date, double end_date, double price) {
 		this.id = id;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.price = price;
-	}
-
-	public Housing getHousing() {
-		return housing;
-	}
-
-	public void setHousing(Housing housing) {
-		this.housing = housing;
 	}
 
 	public Long getId() {
@@ -69,10 +60,6 @@ public class Availability {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
-	
-	
-	
 	
 	
 }
