@@ -16,7 +16,7 @@ import es.uca.iw.rentAndDream.countries.Country;
 
 @Entity
 public class Reserve {
-
+	//HOLA K ASE
 	@Id
 	@GeneratedValue
 	private Long id;
