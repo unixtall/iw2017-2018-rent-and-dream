@@ -17,6 +17,7 @@ public class Availability {
 	@GeneratedValue
 	private Long id;
 
+	
 	private LocalDate start_date;
 
 	private double end_date;
