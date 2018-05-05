@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+
 @Entity
 public class Availability {
 
@@ -17,6 +19,7 @@ public class Availability {
 	@GeneratedValue
 	private Long id;
 
+	
 	private LocalDate start_date;
 
 	private double end_date;
