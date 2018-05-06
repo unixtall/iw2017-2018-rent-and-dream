@@ -17,21 +17,18 @@ public class Availability {
 	@GeneratedValue
 	private Long id;
 	
-	private LocalDate start_date;
+	private LocalDate startDate;
 	
-	private LocalDate end_date;
+	private LocalDate endDate;
 	
-	private Double price;
+	private Float price;
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
 	private Housing housing;
 	
-	
-	public Availability(Housing housing, Long id, LocalDate start_date, LocalDate end_date, Double price) {
-		this.housing = housing;
-		this.id = id;
-		this.start_date = start_date;
-		this.end_date = end_date;
+	public Availability(LocalDate startDate, LocalDate endDate, Float price) {
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.price = price;
 	}
 
@@ -47,27 +44,27 @@ public class Availability {
 		return id;
 	}
 
-	public LocalDate getStart_date() {
-		return start_date;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 
-	public void setStart_date(LocalDate start_date) {
-		this.start_date = start_date;
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
-	public LocalDate getEnd_date() {
-		return end_date;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 
-	public void setEnd_date(LocalDate end_date) {
-		this.end_date = end_date;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 
-	public Double getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 	
