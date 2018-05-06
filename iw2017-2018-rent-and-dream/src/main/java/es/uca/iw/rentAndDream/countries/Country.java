@@ -27,7 +27,7 @@ public class Country {
 
 	public Country(String name, float vat) {
 		this.name = name;
-		vat = vat;
+		this.vat = vat;
 	}
 
 	public Country() {}
@@ -50,7 +50,7 @@ public class Country {
 	}
 
 	public void setVat(float vat) {
-		vat = vat;
+		this.vat = vat;
 	}
 
 	public List<City> getCities() {
