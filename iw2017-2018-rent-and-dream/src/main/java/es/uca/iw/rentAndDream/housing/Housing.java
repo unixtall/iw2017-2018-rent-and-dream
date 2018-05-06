@@ -1,11 +1,16 @@
 package es.uca.iw.rentAndDream.housing;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.cities.City;
 import es.uca.iw.rentAndDream.users.User;
 
@@ -14,23 +19,18 @@ public class Housing {
 
 	@Id
 	@GeneratedValue
-	private Long id;
-	
-	private String name;
-	
-	private Float assessment;
-	
-	private String description;
-	
-	private Integer bedrooms;
-	
-	private Integer beds;
-	
+	private Long id;	
+	private String name;	
+	private Float assessment;	
+	private String description;	
+	private Integer bedrooms;	
+	private Integer beds;	
 	private Boolean airConditioner;
 	
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="housing")
+    private List<Availability> availabilities;
     @ManyToOne(fetch=FetchType.LAZY)
-	private User user;
-    
+	private User user;    
     @ManyToOne(fetch=FetchType.LAZY)
     private City city;
 	
