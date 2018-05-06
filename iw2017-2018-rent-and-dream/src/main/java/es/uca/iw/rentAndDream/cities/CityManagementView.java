@@ -38,7 +38,6 @@ public class CityManagementView extends VerticalLayout implements View {
 		this.grid = new Grid<>(City.class);
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New City", FontAwesome.PLUS);
-	    
 	}
 	
 	@PostConstruct
@@ -50,7 +49,7 @@ public class CityManagementView extends VerticalLayout implements View {
 		addComponents(actions, grid, editor);
 
 		grid.setHeight(300, Unit.PIXELS);
-		grid.setColumns("id", "name");
+		grid.setColumns("id", "name", "province", "postalCode");
 
 		filter.setPlaceholder("Filter by name");
 

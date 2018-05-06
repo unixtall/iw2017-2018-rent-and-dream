@@ -16,16 +16,13 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.uca.iw.rentAndDream.cities.City;
-import es.uca.iw.rentAndDream.cities.CityService;
-import es.uca.iw.rentAndDream.cities.CityEditor.ChangeHandler;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 
 @SpringComponent
 @UIScope
 public class CityEditor extends VerticalLayout {
-
+	
 	private final CityService service;
 	
 	/**
@@ -53,7 +50,7 @@ public class CityEditor extends VerticalLayout {
 	public CityEditor(CityService service) {
 		this.service = service;
 
-		addComponents(name, province, postalCode);
+		addComponents(name, province, postalCode, actions);
 
 		binder.forField(postalCode)
 		.withConverter(
