@@ -28,16 +28,13 @@ public class Reserve {
 	
 	private Boolean confirmed;
 	
-	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public User user;
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public Housing housing;
 	
-	protected Reserve() {
-		
-	}
+	protected Reserve() {}
 	
 	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, Float price,
 			Boolean confirmed) {
@@ -87,4 +84,25 @@ public class Reserve {
 	public void setConfirmed(Boolean confirmed) {
 		this.confirmed = confirmed;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Housing getHousing() {
+		return housing;
+	}
+
+	public void setHousing(Housing housing) {
+		this.housing = housing;
+	}
+
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+	
 }

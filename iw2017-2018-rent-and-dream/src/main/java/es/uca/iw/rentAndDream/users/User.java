@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.reserves.Reserve;
+
 @Entity
 public class User implements UserDetails{
-	
 	
 	@Id
 	@GeneratedValue
@@ -40,6 +45,12 @@ public class User implements UserDetails{
 	private LocalDate registerDate;
 	
 	private RoleType role;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
+    private List<Housing> housing;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
+    private List<Reserve> reserve;
 
 	protected User() {
 	}
@@ -55,10 +66,6 @@ public class User implements UserDetails{
 		this.role = role;
 		this.registerDate = LocalDate.now();
 	}
-
-	/*public User(String firstName, String lastName) {
-		this(firstName,lastName,firstName);
-	}*/
 
 	public Long getId() {
 		return id;
@@ -163,6 +170,22 @@ public class User implements UserDetails{
 		return username;
 	}
 
+	public List<Housing> getHousing() {
+		return housing;
+	}
+
+	public void setHousing(List<Housing> housing) {
+		this.housing = housing;
+	}
+
+	public List<Reserve> getReserve() {
+		return reserve;
+	}
+
+	public void setReserve(List<Reserve> reserve) {
+		this.reserve = reserve;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
@@ -186,5 +209,4 @@ public class User implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 }

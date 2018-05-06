@@ -16,11 +16,6 @@ public class Housing {
 	@GeneratedValue
 	private Long id;
 	
-    @ManyToOne(fetch=FetchType.LAZY)
-	private User user;
-    @ManyToOne(fetch=FetchType.LAZY)
-    private City city;
-	
 	private String name;
 	
 	private Float assessment;
@@ -32,6 +27,12 @@ public class Housing {
 	private Integer beds;
 	
 	private Boolean airConditioner;
+	
+    @ManyToOne(fetch=FetchType.LAZY)
+	private User user;
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    private City city;
 	
 	protected Housing(){}
 	
@@ -107,6 +108,14 @@ public class Housing {
 
 	public void setAirConditioner(Boolean airConditioner) {
 		this.airConditioner = airConditioner;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

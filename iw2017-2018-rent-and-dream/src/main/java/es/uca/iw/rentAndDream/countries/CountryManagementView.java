@@ -29,7 +29,6 @@ public class CountryManagementView extends VerticalLayout implements View {
 
 	private CountryEditor editor;
 
-	
 	private final CountryService service;
 
 	@Autowired
@@ -51,7 +50,7 @@ public class CountryManagementView extends VerticalLayout implements View {
 		addComponents(actions, grid, editor);
 
 		grid.setHeight(300, Unit.PIXELS);
-		grid.setColumns("id", "name");
+		grid.setColumns("id", "name", "vat");
 
 		filter.setPlaceholder("Filter by name");
 

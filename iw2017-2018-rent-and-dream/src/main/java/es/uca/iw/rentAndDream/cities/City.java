@@ -1,12 +1,17 @@
 package es.uca.iw.rentAndDream.cities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity; 
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import es.uca.iw.rentAndDream.countries.Country;
+import es.uca.iw.rentAndDream.housing.Housing;
 
 @Entity
 public class City {
@@ -23,8 +28,10 @@ public class City {
 	@ManyToOne(fetch=FetchType.LAZY) 
     public Country country;
 	
-	protected City() {
-	}
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="city")
+    private List<Housing> housing;
+	
+	protected City() {}
 
 	public City(String name, String province, Integer postalCode) {
 		this.name = name;
@@ -58,5 +65,21 @@ public class City {
 
 	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public List<Housing> getHousing() {
+		return housing;
+	}
+
+	public void setHousing(List<Housing> housing) {
+		this.housing = housing;
 	}
 }

@@ -35,7 +35,7 @@ public class CountryEditor extends VerticalLayout {
 	
 	/* Fields to edit properties in Housing entity */
 	TextField name = new TextField("Name");
-	TextField iva = new TextField("IVA");
+	TextField iva = new TextField("vat");
 	
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -56,9 +56,7 @@ public class CountryEditor extends VerticalLayout {
 		binder.forField(iva)
 		.withConverter(
 			new StringToFloatConverter("Must enter a number"))
-	  	.bind(Country::getIVA, Country::setIVA);
-		
-		
+	  	.bind(Country::getVat, Country::setVat);
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);

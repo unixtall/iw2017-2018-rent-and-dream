@@ -13,14 +13,19 @@ import es.uca.iw.rentAndDream.housing.Housing;
 @Entity
 public class Availability {
 
-	@ManyToOne(fetch=FetchType.LAZY) 
-	private Housing housing;
 	@Id
 	@GeneratedValue
-	private Long id;	
+	private Long id;
+	
 	private LocalDate start_date;
+	
 	private LocalDate end_date;
+	
 	private Double price;
+	
+	@ManyToOne(fetch=FetchType.LAZY) 
+	private Housing housing;
+	
 	
 	public Availability(Housing housing, Long id, LocalDate start_date, LocalDate end_date, Double price) {
 		this.housing = housing;
@@ -40,10 +45,6 @@ public class Availability {
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public LocalDate getStart_date() {
@@ -69,10 +70,5 @@ public class Availability {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	
-	
-	
-	
 	
 }

@@ -20,16 +20,18 @@ public class Country {
 
 	private String name;
 
-	private float IVA;
+	private float vat;
 
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="country")
     public List<City> cities;
 
-	public Country(String name, float iVA) {
+	public Country(String name, float vat) {
 		this.name = name;
-		IVA = iVA;
+		vat = vat;
 	}
 
+	public Country() {}
+	
 	public Long getId() {
 		return id;
 	}
@@ -43,14 +45,20 @@ public class Country {
 		this.name = name;
 	}
 
-	public float getIVA() {
-		return IVA;
+	public float getVat() {
+		return vat;
 	}
 
-	public void setIVA(float iVA) {
-		IVA = iVA;
+	public void setVat(float vat) {
+		vat = vat;
 	}
-	
-	
-	
+
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+
 }
