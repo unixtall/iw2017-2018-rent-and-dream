@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 
 import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.cities.City;
+import es.uca.iw.rentAndDream.reserves.Reserve;
 import es.uca.iw.rentAndDream.users.User;
 
 @Entity
@@ -28,7 +29,9 @@ public class Housing {
 	private Boolean airConditioner;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="housing")
-    private List<Availability> availabilities;
+    private List<Availability> availability;
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="housing")
+    private List<Reserve> reserve;
     @ManyToOne(fetch=FetchType.LAZY)
 	private User user;    
     @ManyToOne(fetch=FetchType.LAZY)
