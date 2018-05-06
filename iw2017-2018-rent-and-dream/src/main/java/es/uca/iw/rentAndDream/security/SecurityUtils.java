@@ -24,7 +24,11 @@ public final class SecurityUtils {
 
     public static boolean hasRole(RoleType role) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication != null && authentication.getAuthorities().contains(new SimpleGrantedAuthority(role.toString()));
+        
+        if(authentication == null)
+        	return role == RoleType.GUEST;
+        else
+        	return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role.toString()));
     }
     
     public static Collection<? extends GrantedAuthority> roles() {

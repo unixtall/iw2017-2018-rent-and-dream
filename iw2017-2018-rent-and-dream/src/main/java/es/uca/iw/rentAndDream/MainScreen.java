@@ -19,6 +19,9 @@ import es.uca.iw.rentAndDream.cities.CityManagementView;
 import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
+import es.uca.iw.rentAndDream.security.LoginScreen;
+import es.uca.iw.rentAndDream.security.SecurityUtils;
+import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.UserManagementView;
 import es.uca.iw.rentAndDream.users.UserView;
 
@@ -42,18 +45,23 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		// Creamos la cabecera 
 		//root.addComponent(new Label("This is the session: " + VaadinSession.getCurrent()));
 		//root.addComponent(new Label("This is the UI: " + this.toString()));
-		
-		//Button logoutButton = new Button("Logout", event -> logout());
-		//logoutButton.setStyleName(ValoTheme.BUTTON_LINK);
-		//root.addComponent(logoutButton);
 
 		// Creamos la barra de navegación
 		final CssLayout navigationBar = new CssLayout();
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
 
-		//addAdministrationMenu(navigationBar);
+		// añadimos elementos al menu segun los roles de usuario
+		if(SecurityUtils.hasRole(RoleType.GUEST)) 
+			addGuestMenu(navigationBar);
+		else
+		if(SecurityUtils.hasRole(RoleType.USER)) 
+			addRegisterUserMenu(navigationBar);
+		else
+		if(SecurityUtils.hasRole(RoleType.MANAGER)) 
+			addManagerMenu(navigationBar);
+		else
+		if(SecurityUtils.hasRole(RoleType.ADMIN)) 
+			addAdministrationMenu(navigationBar);
 	
 		root.addComponent(navigationBar);
 
@@ -90,6 +98,35 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
+		
+		Button logoutButton = new Button("Logout", event -> logout());
+		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
+		navigationBar.addComponent(logoutButton);
+	}
+	
+	public void addGuestMenu(CssLayout navigationBar)
+	{
+		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
+	
+		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));
+	}
+	
+	public void addRegisterUserMenu(CssLayout navigationBar)
+	{
+		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
+		
+		Button logoutButton = new Button("Logout", event -> logout());
+		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
+		navigationBar.addComponent(logoutButton);
+	}
+	
+	public void addManagerMenu(CssLayout navigationBar)
+	{
+		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
+		
+		Button logoutButton = new Button("Logout", event -> logout());
+		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
+		navigationBar.addComponent(logoutButton);
 	}
 	
 	private void logout() {

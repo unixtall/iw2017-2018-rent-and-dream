@@ -16,16 +16,17 @@ import com.vaadin.ui.UI;
 import es.uca.iw.rentAndDream.security.AccessDeniedView;
 import es.uca.iw.rentAndDream.security.ErrorView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
-import es.uca.iw.rentAndDream.security.SecurityUtils;
 
 @SpringUI
 public class VaadinUI extends UI {
 
-	@Autowired
-	SpringViewProvider viewProvider;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	AuthenticationManager authenticationManager;
+	SpringViewProvider viewProvider;
 
 	@Autowired
     MainScreen mainScreen;
@@ -37,34 +38,7 @@ public class VaadinUI extends UI {
 		viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 		
 		//if (SecurityUtils.isLoggedIn()) {
-			showMainScreen();
-		//} else {
-			//showLoginScreen();
-		//}
-	}
+			setContent(mainScreen);
 
-	private void showLoginScreen() {
-		setContent(new LoginScreen(this::login));
-	}
-
-	private void showMainScreen() {
-		setContent(mainScreen);
-	}
-	
-	private boolean login(String username, String password) {
-		try {
-			Authentication token = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-			// Reinitialize the session to protect against session fixation
-			// attacks. This does not work with websocket communication.
-			VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
-			SecurityContextHolder.getContext().setAuthentication(token);
-			
-			// Show the main UI
-			showMainScreen();
-			return true;
-		} catch (AuthenticationException ex) {
-			return false;
-		}
 	}
 }
