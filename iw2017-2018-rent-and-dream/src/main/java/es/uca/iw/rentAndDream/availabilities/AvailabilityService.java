@@ -13,11 +13,11 @@ public class AvailabilityService {
 	@Autowired
 	private AvailabilityRepository repo;
 
-	public Availability loadAvailabilityByName(String name) throws NameNotFoundException {
+	public Availability loadAvailabilityById(Long id) throws NameNotFoundException {
 
-		Availability availability = repo.findByName(name);
+		Availability availability = repo.findById(id);
 		if (availability == null) {
-			throw new NameNotFoundException(name);
+			throw new NameNotFoundException();
 		}
 		return availability;
 	}
@@ -26,9 +26,9 @@ public class AvailabilityService {
 		return repo.save(availability);
 	}
 
-	public List<Availability> findByNameStartsWithIgnoreCase(String name) {
+	/*public List<Availability> findByNameStartsWithIgnoreCase(String name) {
 		return repo.findByNameStartsWithIgnoreCase(name);
-	}
+	}*/
 
 	public Availability findOne(Long arg0) {
 		return repo.findOne(arg0);

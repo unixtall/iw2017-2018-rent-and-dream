@@ -84,7 +84,7 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 		if (StringUtils.isEmpty(filterText)) {
 			grid.setItems(service.findAll());
 		} else {
-			grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
+			//grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
 		}
 	}
 	

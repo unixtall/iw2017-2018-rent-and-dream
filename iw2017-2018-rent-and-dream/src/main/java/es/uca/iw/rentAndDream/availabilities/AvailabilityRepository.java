@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AvailabilityRepository extends JpaRepository<Availability, Long> {
 
-	public List<Availability> findByNameStartsWithIgnoreCase(String name);
+	//public List<Availability> findByIdStartsWithIgnoreCase(Long id);
 	
-	public Availability findByName(String name);
+	public Availability findById(Long id);
 }

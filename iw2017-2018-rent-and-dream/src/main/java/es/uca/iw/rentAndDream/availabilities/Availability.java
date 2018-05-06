@@ -31,7 +31,7 @@ public class Availability {
 		this.endDate = endDate;
 		this.price = price;
 	}
-
+	public Availability() {}
 	public Housing getHousing() {
 		return housing;
 	}

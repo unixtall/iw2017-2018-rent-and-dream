@@ -14,6 +14,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.availabilities.AvailabilityManagementView;
 import es.uca.iw.rentAndDream.cities.CityManagementView;
 import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
@@ -60,6 +61,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Country Management", CountryManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
 
 		root.addComponent(navigationBar);
 

@@ -12,6 +12,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -33,8 +34,8 @@ public class AvailabilityEditor extends VerticalLayout {
 	private Binder<Availability> binder = new Binder<>(Availability.class);
 	
 	/* Fields to edit properties in Availability entity */
-	TextField startDate = new TextField("Start Date");
-	TextField endDate = new TextField("End Date");
+	DateField startDate = new DateField("Start Date");
+	DateField endDate = new DateField("End Date");
 	TextField price = new TextField("Price");
 
 	/* Action buttons */
@@ -106,7 +107,7 @@ public class AvailabilityEditor extends VerticalLayout {
 		// A hack to ensure the whole form is visible
 		save.focus();
 		// Select all text in firstName field automatically
-		name.selectAll();
+		/*name.selectAll();*/
 	}
 
 	public void setChangeHandler(ChangeHandler h) {
