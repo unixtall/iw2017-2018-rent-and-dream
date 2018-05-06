@@ -11,6 +11,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -38,7 +39,7 @@ public class HousingEditor extends VerticalLayout {
 	TextField description = new TextField("Description");
 	TextField bedrooms = new TextField("Bedrooms");
 	TextField beds = new TextField("Beds");
-	TextField airConditioner = new TextField("airConditioner");
+	CheckBox airConditioner = new CheckBox("airConditioner");
 
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -69,11 +70,6 @@ public class HousingEditor extends VerticalLayout {
 		.withConverter(
 			new StringToIntegerConverter("Must enter a number"))
 	  	.bind(Housing::getBeds, Housing::setBeds);
-		
-		binder.forField(airConditioner)
-		.withConverter(
-			new StringToBooleanConverter("Must enter a Bool"))
-	  	.bind(Housing::getAirConditioner, Housing::setAirConditioner);
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);

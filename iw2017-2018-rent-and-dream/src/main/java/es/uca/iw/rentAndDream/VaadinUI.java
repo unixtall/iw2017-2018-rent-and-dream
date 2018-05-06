@@ -29,20 +29,18 @@ public class VaadinUI extends UI {
 
 	@Autowired
     MainScreen mainScreen;
-
 	
 	@Override
 	protected void init(VaadinRequest request) {
 
 	   	this.getUI().getNavigator().setErrorView(ErrorView.class);
 		viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
-	
-		if (SecurityUtils.isLoggedIn()) {
+		
+		//if (SecurityUtils.isLoggedIn()) {
 			showMainScreen();
-		} else {
-			showLoginScreen();
-		}
-
+		//} else {
+			//showLoginScreen();
+		//}
 	}
 
 	private void showLoginScreen() {
@@ -52,7 +50,6 @@ public class VaadinUI extends UI {
 	private void showMainScreen() {
 		setContent(mainScreen);
 	}
-
 	
 	private boolean login(String username, String password) {
 		try {
@@ -70,6 +67,4 @@ public class VaadinUI extends UI {
 			return false;
 		}
 	}
-
-	
 }

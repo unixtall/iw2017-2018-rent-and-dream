@@ -4,7 +4,9 @@ import javax.annotation.PostConstruct;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -23,7 +25,7 @@ import es.uca.iw.rentAndDream.users.UserManagementView;
 import es.uca.iw.rentAndDream.users.UserView;
 
 @SpringViewDisplay
-public class MainScreen extends VerticalLayout implements ViewDisplay {
+public class HomeScreen extends VerticalLayout implements ViewDisplay {
 
 	private Panel springViewDisplay;
 	
@@ -40,21 +42,25 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		root.setSizeFull();
 		
 		// Creamos la cabecera 
-		//root.addComponent(new Label("This is the session: " + VaadinSession.getCurrent()));
-		//root.addComponent(new Label("This is the UI: " + this.toString()));
+		root.addComponent(new Label("This is the session: " + VaadinSession.getCurrent()));
+		root.addComponent(new Label("This is the UI: " + this.toString()));
 		
-		//Button logoutButton = new Button("Logout", event -> logout());
-		//logoutButton.setStyleName(ValoTheme.BUTTON_LINK);
-		//root.addComponent(logoutButton);
+		Button logoutButton = new Button("Logout", event -> logout());
+		logoutButton.setStyleName(ValoTheme.BUTTON_LINK);
+		root.addComponent(logoutButton);
 
 		// Creamos la barra de navegación
 		final CssLayout navigationBar = new CssLayout();
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("User Management", UserManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Housing Management", HousingManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Country Management", CountryManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
 
-		//addAdministrationMenu(navigationBar);
-	
 		root.addComponent(navigationBar);
 
 		// Creamos el panel
@@ -82,15 +88,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		springViewDisplay.setContent((Component) view);
 	}
 
-	public void addAdministrationMenu(CssLayout navigationBar)
-	{
-		navigationBar.addComponent(createNavigationButton("User Management", UserManagementView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Housing Management", HousingManagementView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Country Management", CountryManagementView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
-	}
 	
 	private void logout() {
 		getUI().getPage().reload();
