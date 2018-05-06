@@ -13,16 +13,15 @@ import es.uca.iw.rentAndDream.users.User;
 
 @Entity
 public class Reserve {
-
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	private Integer number_guests;
+	private Integer numberGuests;
 	
-	private LocalDate entry_date;
+	private LocalDate entryDate;
 	
-	private LocalDate departure_date;
+	private LocalDate departureDate;
 	
 	private Float price;
 	
@@ -38,35 +37,39 @@ public class Reserve {
 	
 	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, Float price,
 			Boolean confirmed) {
-		this.number_guests = number_guests;
-		this.entry_date = entry_date;
-		this.departure_date = departure_date;
+		this.numberGuests = number_guests;
+		this.entryDate = entry_date;
+		this.departureDate = departure_date;
 		this.price = price;
 		this.confirmed = confirmed;
 	}
 
-	public Integer getNumber_guests() {
-		return number_guests;
+	public Long getId() {
+		return id;
 	}
 
-	public void setNumber_guests(Integer number_guests) {
-		this.number_guests = number_guests;
+	public Integer getNumberGuests() {
+		return numberGuests;
 	}
 
-	public LocalDate getEntry_date() {
-		return entry_date;
+	public void setNumberGuests(Integer number_guests) {
+		this.numberGuests = number_guests;
 	}
 
-	public void setEntry_date(LocalDate entry_date) {
-		this.entry_date = entry_date;
+	public LocalDate getEntryDate() {
+		return entryDate;
 	}
 
-	public LocalDate getDeparture_date() {
-		return departure_date;
+	public void setEntryDate(LocalDate entry_date) {
+		this.entryDate = entry_date;
 	}
 
-	public void setDeparture_date(LocalDate departure_date) {
-		this.departure_date = departure_date;
+	public LocalDate getDepartureDate() {
+		return departureDate;
+	}
+
+	public void setDepartureDate(LocalDate departure_date) {
+		this.departureDate = departure_date;
 	}
 
 	public Float getPrice() {
