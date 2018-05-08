@@ -36,7 +36,7 @@ public class User implements UserDetails{
 
 	private String password;
 	
-	private LocalDate birthday;
+	private LocalDate birthDate;
 	
 	private String dni;
 	
@@ -55,12 +55,12 @@ public class User implements UserDetails{
 	protected User() {
 	}
 
-	public User(String firstName, String lastName, String username, String email, LocalDate birthday, String dni, String telephone, RoleType role) {
+	public User(String firstName, String lastName, String username, String email, LocalDate birthDate, String dni, String telephone, RoleType role) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
-		this.birthday = birthday;
+		this.birthDate = birthDate;
 		this.dni = dni;
 		this.telephone = telephone;
 		this.role = role;
@@ -105,12 +105,12 @@ public class User implements UserDetails{
 		this.email = email;
 	}
 
-	public LocalDate getBirthday() {
-		return birthday;
+	public LocalDate getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthday) {
-		this.birthday = birthday;
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public String getDni() {

@@ -38,7 +38,7 @@ public class UserEditor extends VerticalLayout {
 	TextField username = new TextField("Username");
 	TextField password = new TextField("Password");
 	TextField email = new TextField("Email");
-	DateField birthday = new DateField("Birthday");
+	DateField birthDate = new DateField("Birth Date");
 	TextField dni = new TextField("Dni");
 	TextField telephone = new TextField("Telephone");
 	ComboBox <RoleType> role = new ComboBox <RoleType>("role");
@@ -69,7 +69,7 @@ public class UserEditor extends VerticalLayout {
 //		    RoleType role = event.getValue().stream().findFirst().get();
 //		});
 
-		addComponents(firstName, lastName, username, password, email, birthday, dni, telephone, role, registerDate, actions);
+		addComponents(firstName, lastName, username, password, email, birthDate, dni, telephone, role, registerDate, actions);
 
 		// bind using naming convention
 		binder.bindInstanceFields(this);
