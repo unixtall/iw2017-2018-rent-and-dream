@@ -1,6 +1,7 @@
 package es.uca.iw.rentAndDream;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.housing.HousingService;
 import es.uca.iw.rentAndDream.security.VaadinSessionSecurityContextHolderStrategy;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.User;
@@ -36,27 +39,55 @@ public class MainApplication {
 	}
 
 	@Bean
-	public CommandLineRunner loadData(UserService service) {
+	public CommandLineRunner loadData(UserService userService, HousingService housingService ) {
 		return (args) -> {
 
-			if (service.findAll().size() == 0) {
-				// save a couple of users with default password: default
-				service.save(new User("Jack", "Bauer", "Jack", "Jack@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.USER));
-
+			log.info("User housing:");
+			log.info("--------------------------------");
+			//System.out.println(userService.findOne(1L).getHousing());
+			//System.out.println(userService.loadHousingByUserId(1L));
+			System.out.println(userService.findByUserId(1L).getHousing());
+			Housing house = userService.findByUserId(1L).getHousing().get(0);
+			
+			housingService.delete(house);
+			
+			
+			
+			log.info("");
+			
+			if (userService.findAll().size() == 0) {
+				
+				// save users with default password: default
+				User user1 = new User("user", "user", "user", "user@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.USER);
+				User user2 = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.MANAGER);
 				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", "678228328", RoleType.ADMIN);
 				root.setPassword("root");
-				service.save(root);
 
+				
+				// save 2 housing
+				Housing housing1 = new Housing("House 1", 0f, "description", 2, 2, false);
+				Housing housing2 = new Housing("House 2", 0f, "description", 4, 4, false);
+				
+				housing1.setUser(user1);
+				housing2.setUser(user1);
+
+				//Save all entity in bd
+				userService.save(user1);
+				userService.save(user2);
+				userService.save(root);
+				housingService.save(housing1);
+				housingService.save(housing2);
+				
 				// fetch all users
 				log.info("Users found with findAll():");
 				log.info("-------------------------------");
-				for (User user : service.findAll()) {
+				for (User user : userService.findAll()) {
 					log.info(user.toString());
 				}
 				log.info("");
 
 				// fetch an individual user by ID
-				User user = service.findOne(1L);
+				User user = userService.findOne(1L);
 				log.info("User found with findOne(1L):");
 				log.info("--------------------------------");
 				log.info(user.toString());
@@ -65,7 +96,7 @@ public class MainApplication {
 				// fetch users by last name
 				log.info("User found with findByLastNameStartsWithIgnoreCase('Bauer'):");
 				log.info("--------------------------------------------");
-				for (User bauer : service.findByLastNameStartsWithIgnoreCase("Bauer")) {
+				for (User bauer : userService.findByLastNameStartsWithIgnoreCase("Bauer")) {
 					log.info(bauer.toString());
 				}
 				log.info("");
