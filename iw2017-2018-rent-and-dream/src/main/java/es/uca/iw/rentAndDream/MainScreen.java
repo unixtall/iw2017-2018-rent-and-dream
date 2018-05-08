@@ -18,6 +18,7 @@ import es.uca.iw.rentAndDream.availabilities.AvailabilityManagementView;
 import es.uca.iw.rentAndDream.cities.CityManagementView;
 import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
+import es.uca.iw.rentAndDream.housing.HousingSearchView;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
@@ -98,7 +99,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
-		
+		navigationBar.addComponent(createNavigationButton("Housing Search", HousingSearchView.VIEW_NAME));
+
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
 		navigationBar.addComponent(logoutButton);
