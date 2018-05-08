@@ -48,8 +48,7 @@ public class CityManagementView extends VerticalLayout implements View {
 		
 		addComponents(actions, grid, editor);
 
-		//grid.setHeight(300, Unit.PIXELS);
-		grid.setSizeFull();
+		grid.setHeight(300, Unit.PIXELS);
 		grid.setColumns("id", "name", "province", "postalCode");
 
 		filter.setPlaceholder("Filter by name");

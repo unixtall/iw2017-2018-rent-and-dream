@@ -48,8 +48,7 @@ public class ReserveManagementView extends VerticalLayout implements View {
 		
 		addComponents(actions, grid, editor);
 
-		//grid.setHeight(300, Unit.PIXELS);
-		grid.setSizeFull();
+		grid.setHeight(300, Unit.PIXELS);
 		grid.setColumns("id", "numberGuests", "entryDate", "departureDate", "price", "confirmed");
 
 		filter.setPlaceholder("Filter by id");

@@ -49,8 +49,7 @@ public class CountryManagementView extends VerticalLayout implements View {
 		
 		addComponents(actions, grid, editor);
 
-		//grid.setHeight(300, Unit.PIXELS);
-		grid.setSizeFull();
+		grid.setHeight(300, Unit.PIXELS);
 		grid.setColumns("id", "name", "vat");
 
 		filter.setPlaceholder("Filter by name");

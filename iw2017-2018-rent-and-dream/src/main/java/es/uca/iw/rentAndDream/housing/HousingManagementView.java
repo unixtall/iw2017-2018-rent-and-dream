@@ -50,8 +50,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 		
 		addComponents(actions, grid, editor);
 
-		//grid.setHeight(300, Unit.PIXELS);
-		grid.setSizeFull();
+		grid.setHeight(300, Unit.PIXELS);
 		grid.setColumns("id", "name", "assessment", "description", "bedrooms", "beds", "airConditioner");
 
 		filter.setPlaceholder("Filter by name");
