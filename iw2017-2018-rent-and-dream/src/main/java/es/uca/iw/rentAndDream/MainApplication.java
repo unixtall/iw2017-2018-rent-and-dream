@@ -46,10 +46,10 @@ public class MainApplication {
 			log.info("--------------------------------");
 			//System.out.println(userService.findOne(1L).getHousing());
 			//System.out.println(userService.loadHousingByUserId(1L));
-			System.out.println(userService.findByUserId(1L).getHousing());
-			Housing house = userService.findByUserId(1L).getHousing().get(0);
+			//System.out.println(userService.findByUserId(1L).getHousing());
+			//Housing house = userService.findByUserId(1L).getHousing().get(0);
 			
-			housingService.delete(house);
+			//housingService.delete(house);
 			
 			
 			
