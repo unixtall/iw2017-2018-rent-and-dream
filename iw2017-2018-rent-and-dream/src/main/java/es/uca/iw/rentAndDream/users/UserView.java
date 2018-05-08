@@ -51,7 +51,7 @@ public class UserView extends VerticalLayout implements View {
 		addComponents(actions, grid);
 
 		grid.setHeight(300, Unit.PIXELS);
-		grid.setColumns("id", "firstName", "lastName", "username", "email", "birthDate", "dni", "telephone", "registerDate", "role");
+		grid.setColumns("id", "firstName", "lastName", "username", "email", "birthday", "dni", "telephone", "registerDate", "role");
 
 		filter.setPlaceholder("Filter by last name");
 
