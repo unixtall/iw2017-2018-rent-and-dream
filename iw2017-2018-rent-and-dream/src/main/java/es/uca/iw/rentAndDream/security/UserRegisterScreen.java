@@ -25,7 +25,8 @@ import es.uca.iw.rentAndDream.WelcomeView;
 
 @SpringView(name = UserRegisterScreen.VIEW_NAME)
 public class UserRegisterScreen extends VerticalLayout implements View  {
-	public static final String VIEW_NAME = "loginScreen";
+
+	public static final String VIEW_NAME = "userRegisterScreen";
   
 	@Autowired
 	AuthenticationManager authenticationManager;
