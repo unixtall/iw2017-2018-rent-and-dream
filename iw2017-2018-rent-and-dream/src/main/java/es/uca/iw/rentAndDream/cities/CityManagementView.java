@@ -50,7 +50,7 @@ public class CityManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "name", "province", "postalCode");
+		grid.setColumns("id", "name", "latitude", "longitude");
 
 		filter.setPlaceholder("Filter by name");
 
@@ -66,7 +66,7 @@ public class CityManagementView extends VerticalLayout implements View {
 		});
 
 		// Instantiate and edit new User the new button is clicked
-		addNewBtn.addClickListener(e -> editor.editCity(new City("", "", 0)));
+		addNewBtn.addClickListener(e -> editor.editCity(new City("", 0f, 0f)));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {

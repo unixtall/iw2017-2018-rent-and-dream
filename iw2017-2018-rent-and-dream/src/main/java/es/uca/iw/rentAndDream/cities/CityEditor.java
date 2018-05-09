@@ -34,8 +34,8 @@ public class CityEditor extends VerticalLayout {
 	
 	/* Fields to edit properties in City entity */
 	TextField name = new TextField("Name");
-	TextField province = new TextField("Province");
-	TextField postalCode = new TextField("Postal Code");
+	TextField latitude = new TextField("Latitude");
+	TextField longitude = new TextField("Longitude");
 
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -50,12 +50,17 @@ public class CityEditor extends VerticalLayout {
 	public CityEditor(CityService service) {
 		this.service = service;
 
-		addComponents(name, province, postalCode, actions);
+		addComponents(name, longitude, latitude, actions);
 
-		binder.forField(postalCode)
+		binder.forField(latitude)
 		.withConverter(
-			new StringToIntegerConverter("Must enter a number"))
-	  	.bind(City::getPostalCode, City::setPostalCode);
+			new StringToFloatConverter("Must enter a number"))
+	  	.bind(City::getLatitude, City::setLatitude);
+		
+		binder.forField(longitude)
+		.withConverter(
+			new StringToFloatConverter("Must enter a number"))
+	  	.bind(City::getLongitude, City::setLongitude);
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);

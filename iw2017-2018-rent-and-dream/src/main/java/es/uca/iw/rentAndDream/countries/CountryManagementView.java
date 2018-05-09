@@ -67,7 +67,7 @@ public class CountryManagementView extends VerticalLayout implements View {
 		});
 
 		// Instantiate and edit new User the new button is clicked
-		addNewBtn.addClickListener(e -> editor.editCountry(new Country("", 0f)));
+		addNewBtn.addClickListener(e -> editor.editCountry(new Country("", "", 0f)));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {

@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	public User findByUsername(String username);
 	
-	@Query("SELECT u FROM User u JOIN FETCH u.housing WHERE u.id = ?1")
+	@Query("SELECT u FROM User u LEFT JOIN FETCH u.housing WHERE u.id = ?1")
 	public User findByUserIdWithJoinFetch(Long id);
 }
 

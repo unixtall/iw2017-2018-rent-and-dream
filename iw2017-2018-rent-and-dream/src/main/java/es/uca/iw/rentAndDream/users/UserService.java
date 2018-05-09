@@ -20,7 +20,7 @@ import es.uca.iw.rentAndDream.housing.Housing;
  *
  */
 @Service
-@Transactional
+
 public class UserService implements UserDetailsService {
 
 	@Autowired

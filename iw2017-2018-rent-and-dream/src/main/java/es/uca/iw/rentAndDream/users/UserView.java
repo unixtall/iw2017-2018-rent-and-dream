@@ -23,6 +23,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author ruizrube
  *
  */
+
 @SpringView(name = UserView.VIEW_NAME)
 public class UserView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "userView";

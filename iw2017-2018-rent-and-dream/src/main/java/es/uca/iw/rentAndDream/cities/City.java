@@ -3,7 +3,7 @@ package es.uca.iw.rentAndDream.cities;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity; 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 
 import es.uca.iw.rentAndDream.countries.Country;
 import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.regions.Region;
 
 @Entity
 public class City {
@@ -21,22 +22,25 @@ public class City {
 	
 	private String name;
 	
-	private String province;
+	private Float latitude;
 	
-	private Integer postalCode;
+	private Float longitude;
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public Country country;
+	
+	@ManyToOne(fetch=FetchType.LAZY) 
+    public Region region;
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="city")
     private List<Housing> housing;
 	
 	protected City() {}
 
-	public City(String name, String province, Integer postalCode) {
+	public City(String name, Float latitude, Float longitude) {
 		this.name = name;
-		this.province = province;
-		this.postalCode = postalCode;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 	
 	public Long getId() {
@@ -49,22 +53,6 @@ public class City {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
-	} 
-	
-	public Integer getPostalCode() {
-		return postalCode;
-	}
-
-	public void setPostalCode(Integer postalCode) {
-		this.postalCode = postalCode;
 	}
 
 	public Country getCountry() {
@@ -81,5 +69,21 @@ public class City {
 
 	public void setHousing(List<Housing> housing) {
 		this.housing = housing;
+	}
+
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
 	}
 }
