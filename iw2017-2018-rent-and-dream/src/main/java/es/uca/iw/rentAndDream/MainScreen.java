@@ -111,10 +111,11 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	{
 		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
-		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));
-		
+		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
+
 		navigationBar.addComponent(createNavigationButton("Search your housing", HousingSearchView.VIEW_NAME));
 		
+		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterScreen.VIEW_NAME));
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
