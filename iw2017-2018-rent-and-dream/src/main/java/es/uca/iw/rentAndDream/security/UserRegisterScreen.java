@@ -32,21 +32,25 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.VaadinUI;
 import es.uca.iw.rentAndDream.WelcomeView;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.User;
 import es.uca.iw.rentAndDream.users.UserEditor.ChangeHandler;
+import es.uca.iw.rentAndDream.users.UserService;
 
 @SpringView(name = UserRegisterScreen.VIEW_NAME)
 public class UserRegisterScreen extends VerticalLayout implements View  {
 
 	public static final String VIEW_NAME = "userRegisterScreen";
 	
-	private User user;
+	private User user; 
+	private UserService service;
+    private VaadinUI myUI;
 
 	@PostConstruct
-	void init() {			
-		
+	void init() {		
+				
         FormLayout layout = new FormLayout();
         layout.setSpacing(false);
         layout.setMargin(false);
@@ -105,32 +109,29 @@ public class UserRegisterScreen extends VerticalLayout implements View  {
         }, "Entered password and confirmation password must match"));
  
         Label validationStatus = new Label();
-        binder.setStatusLabel(validationStatus);
+        binder.setStatusLabel(validationStatus);        
         
-       // binder.setBean(new User());
- 
-        Button registerButton = new Button("Register");
+        binder.setBean(user);
         
-        /*registerButton.setEnabled(false);
-        registerButton.addClickListener(
-                event -> registerNewUser(binder.getBean()));
- 
+        Button save = new Button("Register");
+        
+        addComponents(firstName, lastName, username, passwordField, confirmPasswordField, email, birthday, dni, telephone, save);       
+        
+        //binder.bindInstanceFields(this);
+
+        //save.setEnabled(false);
+        save.addClickListener(e -> service.save(user));
+    
+        /*
         binder.addStatusChangeListener(
-                event -> registerButton.setEnabled(binder.isValid()));
-                */
-        
-        addComponent(firstName);
-        addComponent(lastName);
-        addComponent(username);
-        addComponent(passwordField);
-        addComponent(confirmPasswordField);
-        addComponent(email);
-        addComponent(birthday);
-        addComponent(dni);
-        addComponent(telephone);
-        addComponent(registerButton);        
-        
-		
+                event -> save.setEnabled(binder.isValid()));
+        */
+
+	}
+	
+	public interface ChangeHandler {
+
+		void onChange();
 	}
 
 	@Override
@@ -138,5 +139,10 @@ public class UserRegisterScreen extends VerticalLayout implements View  {
 		// TODO Auto-generated method stub
 		
 	}
+	/*public void setChangeHandler(ChangeHandler h) {
+		// ChangeHandler is notified when either save or delete
+		// is clicked
+		save.addClickListener(e -> h.onChange());
+	}*/
     
 }
