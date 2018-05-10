@@ -1,5 +1,7 @@
 package es.uca.iw.rentAndDream.security;
 
+import java.util.Objects;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,107 +11,132 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.vaadin.data.Binder;
+import com.vaadin.data.Validator;
+import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.WelcomeView;
+import es.uca.iw.rentAndDream.users.RoleType;
+import es.uca.iw.rentAndDream.users.User;
+import es.uca.iw.rentAndDream.users.UserEditor.ChangeHandler;
 
 @SpringView(name = UserRegisterScreen.VIEW_NAME)
 public class UserRegisterScreen extends VerticalLayout implements View  {
 
 	public static final String VIEW_NAME = "userRegisterScreen";
-  
-	@Autowired
-	AuthenticationManager authenticationManager;
 	
+	private User user;
+
 	@PostConstruct
-	void init() {
-        setMargin(true);
-        setSpacing(true);
-
+	void init() {			
+		
+        FormLayout layout = new FormLayout();
+        layout.setSpacing(false);
+        layout.setMargin(false);
+        layout.setCaption("Registration Form");
+ 
+        TextField firstName = new TextField("First Name");
+        TextField lastName = new TextField("Last Name");
         TextField username = new TextField("Username");
-        addComponent(username);
+        PasswordField passwordField = new PasswordField("Password");
+        PasswordField confirmPasswordField = new PasswordField("Confirm Password");
+        TextField email = new TextField("Email");
+    	DateField birthday = new DateField("Birthday");
+    	TextField dni = new TextField("Dni");
+    	TextField telephone = new TextField("Telephone");
+ 
+        Binder<User> binder = new Binder<>();
+ 
+        binder.forField(firstName)
+        		.asRequired("First name may not be empty")
+                .bind(User::getFirstName, User::setFirstName);
+        
+        binder.forField(lastName)
+        		.asRequired("Last name may not be empty")
+        		.bind(User::getLastName, User::setLastName);  
+        
+        binder.forField(username)
+			.asRequired("Username may not be empty")
+			.bind(User::getUsername, User::setUsername);
+        
+        binder.forField(passwordField)
+        		.asRequired("Password may not be empty")
+        		.withValidator(new StringLengthValidator(
+        				"Password must be at least 7 characters long", 7, null))
+        		.bind(User::getPassword, User::setPassword);
 
-        PasswordField password = new PasswordField("Password");
-        addComponent(password);
-
-        Button login = new Button("Login", evt -> {
-            String pword = password.getValue();
-            password.setValue("");
-            
-            if (!login(username.getValue(), pword)) {
-                Notification.show("Login failed");
-                username.focus();
+        binder.forField(confirmPasswordField)
+        	.asRequired("Must confirm password")
+        	.bind(User::getPassword, (user, password) -> {});
+        
+        binder.forField(email)
+        	.asRequired("Email may not be empty")
+        	.withValidator(new EmailValidator("Not a valid email address"))
+        	.bind(User::getEmail, User::setEmail);
+        
+        binder.forField(birthday)
+        		.asRequired("Birthday may not be empty")
+        		.bind(User::getBirthday, User::setBirthday);
+        
+        binder.withValidator(Validator.from(user -> {
+            if (passwordField.isEmpty() || confirmPasswordField.isEmpty()) {
+                return true;
+            } else {
+                return Objects.equals(passwordField.getValue(),
+                        confirmPasswordField.getValue());
             }
-        });
-        login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        addComponent(login);
+        }, "Entered password and confirmation password must match"));
+ 
+        Label validationStatus = new Label();
+        binder.setStatusLabel(validationStatus);
+        
+       // binder.setBean(new User());
+ 
+        Button registerButton = new Button("Register");
+        
+        /*registerButton.setEnabled(false);
+        registerButton.addClickListener(
+                event -> registerNewUser(binder.getBean()));
+ 
+        binder.addStatusChangeListener(
+                event -> registerButton.setEnabled(binder.isValid()));
+                */
+        
+        addComponent(firstName);
+        addComponent(lastName);
+        addComponent(username);
+        addComponent(passwordField);
+        addComponent(confirmPasswordField);
+        addComponent(email);
+        addComponent(birthday);
+        addComponent(dni);
+        addComponent(telephone);
+        addComponent(registerButton);        
+        
+		
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
-
+		
 	}
-	
-	/*
-	public LoginScreen(LoginCallback callback) {
-        setMargin(true);
-        setSpacing(true);
-
-        TextField username = new TextField("Username");
-        addComponent(username);
-
-        PasswordField password = new PasswordField("Password");
-        addComponent(password);
-
-        Button login = new Button("Login", evt -> {
-            String pword = password.getValue();
-            password.setValue("");
-            if (!callback.login(username.getValue(), pword)) {
-                Notification.show("Login failed");
-                username.focus();
-            }
-        });
-        login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        addComponent(login);
-    }
-*/
-    @FunctionalInterface
-    public interface LoginCallback {
-
-        boolean login(String username, String password);
-    }
-	
-	private boolean login(String username, String password) {
-		try {
-			Authentication token = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-			// Reinitialize the session to protect against session fixation
-			// attacks. This does not work with websocket communication.
-			VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
-			SecurityContextHolder.getContext().setAuthentication(token);
-			
-			// Show the main view
-			//getUI().getNavigator().navigateTo(WelcomeView.VIEW_NAME);
-			getUI().getPage().reload();
-			return true;
-		} catch (AuthenticationException ex) {
-			return false;
-		}
-	}
-	
-    /**
-  	 * 
-  	 */
-  	private static final long serialVersionUID = 5304492736395275231L;
+    
 }
