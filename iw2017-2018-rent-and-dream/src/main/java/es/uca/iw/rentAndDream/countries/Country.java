@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import es.uca.iw.rentAndDream.cities.City;
+import es.uca.iw.rentAndDream.regions.Region;
 
 @Entity
 public class Country {
@@ -26,6 +27,9 @@ public class Country {
 
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="country")
     public List<City> cities;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="country")
+    public List<Region> region;
 
 	public Country(String name, String code, Float vat) {
 		this.name = name;
@@ -69,6 +73,19 @@ public class Country {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public List<Region> getRegion() {
+		return region;
+	}
+
+	public void setRegion(List<Region> region) {
+		this.region = region;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 	
 }

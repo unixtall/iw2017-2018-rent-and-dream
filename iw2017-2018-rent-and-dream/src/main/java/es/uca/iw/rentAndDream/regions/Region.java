@@ -19,7 +19,7 @@ public class Region {
 	
     @ManyToOne(fetch=FetchType.LAZY)
     private Country country;
-	
+
 	protected Region(){}
 	
 	public Region(String name, String code) {
@@ -55,5 +55,8 @@ public class Region {
 		this.country = country;
 	}
 	
-
+	@Override
+	public String toString() {
+		return name;
+	}
 }
