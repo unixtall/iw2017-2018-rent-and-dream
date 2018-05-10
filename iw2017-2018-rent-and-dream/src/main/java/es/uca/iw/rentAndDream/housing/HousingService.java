@@ -29,7 +29,7 @@ public class HousingService {
 	public List<Housing> findByNameStartsWithIgnoreCase(String name) {
 		return repo.findByNameStartsWithIgnoreCase(name);
 	}
-
+	
 	public Housing findOne(Long arg0) {
 		return repo.findOne(arg0);
 	}
