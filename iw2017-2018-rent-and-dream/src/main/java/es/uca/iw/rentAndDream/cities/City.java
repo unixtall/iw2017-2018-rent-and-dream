@@ -31,7 +31,7 @@ public class City {
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public Region region;
-	
+
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="city")
     private List<Housing> housing;
 	
@@ -85,5 +85,10 @@ public class City {
 
 	public void setLongitude(Float longitude) {
 		this.longitude = longitude;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 }
