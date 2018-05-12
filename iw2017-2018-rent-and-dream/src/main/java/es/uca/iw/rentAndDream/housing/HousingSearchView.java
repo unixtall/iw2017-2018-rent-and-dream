@@ -1,5 +1,6 @@
 package es.uca.iw.rentAndDream.housing;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,7 +77,7 @@ public class HousingSearchView extends VerticalLayout implements View{
 		this.guests = new NativeSelect<>("Select the number of guests:", rangoGuests);
 		
 		entryDate.setValue(LocalDateTime.now());
-		endDate.setValue(LocalDateTime.now());
+		endDate.setValue(LocalDateTime.now().plusDays(1));
 	}
 	
 	@PostConstruct

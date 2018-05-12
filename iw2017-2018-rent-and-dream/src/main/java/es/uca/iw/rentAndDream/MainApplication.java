@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingService;
 import es.uca.iw.rentAndDream.security.VaadinSessionSecurityContextHolderStrategy;
@@ -39,68 +40,36 @@ public class MainApplication {
 	}
 
 	@Bean
-	public CommandLineRunner loadData(UserService userService, HousingService housingService ) {
+	public CommandLineRunner loadData(UserService userService, HousingService housingService, CityService cityService) {
 		return (args) -> {
-
-			log.info("User housing:");
-			log.info("--------------------------------");
-			//System.out.println(userService.findOne(1L).getHousing());
-			//System.out.println(userService.loadHousingByUserId(1L));
-			//System.out.println(userService.findByUserId(1L).getHousing());
-			//Housing house = userService.findByUserId(1L).getHousing().get(0);
-			
-			//housingService.delete(house);
-			
-			
-			
-			log.info("");
 			
 			if (userService.findAll().size() == 0) {
 				
 				// save users with default password: default
-				User user1 = new User("user", "user", "user", "user@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.USER);
-				User user2 = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.MANAGER);
+				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.USER);
+				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", "956493387", RoleType.USER);
+				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.MANAGER);
 				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", "678228328", RoleType.ADMIN);
 				root.setPassword("root");
-
+				userService.save(user1);
+				userService.save(manager);
+				userService.save(root);	
+			}
+			
+			if (housingService.findAll().size() == 0) {
 				
-				// save 2 housing
 				Housing housing1 = new Housing("House 1", 0f, "description", 2, 2, false);
 				Housing housing2 = new Housing("House 2", 0f, "description", 4, 4, false);
-				
-				housing1.setUser(user1);
-				housing2.setUser(user1);
-
-				//Save all entity in bd
-				userService.save(user1);
-				userService.save(user2);
-				userService.save(root);
+				housing1.setUser(userService.loadUserByUsername("user1"));
+				housing2.setUser(userService.loadUserByUsername("user2"));
+				housing1.setCity(cityService.findOne(700044L));
+				housing2.setCity(cityService.findOne(700044L));
 				housingService.save(housing1);
 				housingService.save(housing2);
-				
-				// fetch all users
-				log.info("Users found with findAll():");
-				log.info("-------------------------------");
-				for (User user : userService.findAll()) {
-					log.info(user.toString());
-				}
-				log.info("");
-
-				// fetch an individual user by ID
-				User user = userService.findOne(1L);
-				log.info("User found with findOne(1L):");
-				log.info("--------------------------------");
-				log.info(user.toString());
-				log.info("");
-
-				// fetch users by last name
-				log.info("User found with findByLastNameStartsWithIgnoreCase('Bauer'):");
-				log.info("--------------------------------------------");
-				for (User bauer : userService.findByLastNameStartsWithIgnoreCase("Bauer")) {
-					log.info(bauer.toString());
-				}
-				log.info("");
 			}
+			
+
+
 		};
 	}
 
