@@ -121,6 +121,22 @@ public class Housing {
 		this.user = user;
 	}
 
+	public List<Availability> getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(List<Availability> availability) {
+		this.availability = availability;
+	}
+
+	public List<Reserve> getReserve() {
+		return reserve;
+	}
+
+	public void setReserve(List<Reserve> reserve) {
+		this.reserve = reserve;
+	}
+
 	@Override
 	public String toString() {
 		return "Housing [id=" + id + ", user=" + user + ", name=" + name + ", assessment="

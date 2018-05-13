@@ -1,7 +1,6 @@
 package es.uca.iw.rentAndDream;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import es.uca.iw.rentAndDream.availabilities.Availability;
+import es.uca.iw.rentAndDream.availabilities.AvailabilityService;
 import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingService;
@@ -40,7 +41,7 @@ public class MainApplication {
 	}
 
 	@Bean
-	public CommandLineRunner loadData(UserService userService, HousingService housingService, CityService cityService) {
+	public CommandLineRunner loadData(UserService userService, HousingService housingService, CityService cityService, AvailabilityService availabilityService) {
 		return (args) -> {
 			
 			if (userService.findAll().size() == 0) {
@@ -52,6 +53,7 @@ public class MainApplication {
 				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", "678228328", RoleType.ADMIN);
 				root.setPassword("root");
 				userService.save(user1);
+				userService.save(user2);
 				userService.save(manager);
 				userService.save(root);	
 			}
@@ -64,12 +66,24 @@ public class MainApplication {
 				housing2.setUser(userService.loadUserByUsername("user2"));
 				housing1.setCity(cityService.findOne(700044L));
 				housing2.setCity(cityService.findOne(700044L));
+				
+				Availability availability1 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
+				Availability availability2 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
+				Availability availability3 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
+				Availability availability4 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
+				
+				availability1.setHousing(housing1);
+				availability2.setHousing(housing1);
+				availability3.setHousing(housing2);
+				availability4.setHousing(housing2);
+				
 				housingService.save(housing1);
 				housingService.save(housing2);
+				availabilityService.save(availability1);
+				availabilityService.save(availability2);
+				availabilityService.save(availability3);
+				availabilityService.save(availability4);
 			}
-			
-
-
 		};
 	}
 
@@ -97,14 +111,6 @@ public class MainApplication {
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 			auth.authenticationProvider(authenticationProvider());
-
-			 /*auth
-			 .inMemoryAuthentication()
-			 .withUser("admin").password("p").roles("ADMIN", "MANAGER", "USER")
-			 .and()
-			 .withUser("manager").password("p").roles("MANAGER", "USER")
-			 .and()
-			 .withUser("user").password("p").roles("USER");*/
 			
 		}
 

@@ -1,11 +1,14 @@
 package es.uca.iw.rentAndDream.housing;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import es.uca.iw.rentAndDream.cities.City;
 
 @Service
 public class HousingService {
@@ -40,5 +43,10 @@ public class HousingService {
 
 	public List<Housing> findAll() {
 		return repo.findAll();
+	}
+	
+	public List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, LocalDate endDate, Integer guests)
+	{
+		return repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
 	}
 }

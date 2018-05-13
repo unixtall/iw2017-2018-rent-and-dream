@@ -1,7 +1,6 @@
 package es.uca.iw.rentAndDream.housing;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -10,21 +9,21 @@ import javax.annotation.PostConstruct;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DateTimeField;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import es.uca.iw.rentAndDream.WelcomeView;
 import es.uca.iw.rentAndDream.cities.City;
 import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.countries.Country;
@@ -42,13 +41,13 @@ public class HousingSearchView extends VerticalLayout implements View{
 	private Button search;
 	
 	private Housing housing;
-	private NativeSelect<Country> country; 
-	private NativeSelect<Region> region; 
-	private NativeSelect<City> city; 
-	private DateTimeField entryDate;
-	private DateTimeField endDate;
-	private NativeSelect<String> guests;
-	private List<String> rangoGuests;
+	private ComboBox<Country> country; 
+	private ComboBox<Region> region; 
+	private ComboBox<City> city; 
+	private DateField startDate;
+	private DateField endDate;
+	private ComboBox<Integer> guests;
+	private List<Integer> rangoGuests;
 	//private NativeSelect<Integer> price;
 	//private NativeSelect<Integer> type;
 	
@@ -58,94 +57,81 @@ public class HousingSearchView extends VerticalLayout implements View{
 	private final CountryService countryService;
 
 	@Autowired
-	public HousingSearchView(CountryService countryService, RegionService regionService, CityService cityService) {
+	public HousingSearchView(CountryService countryService, RegionService regionService, CityService cityService, HousingService housingService) {
 		
 		this.cityService = cityService;
 		this.regionService = regionService;
 		this.countryService = countryService;
-		
-		this.grid = new Grid<>(Housing.class);
+		this.housingService = housingService;
 		this.filter = new TextField();
 		this.search = new Button("Search");
-
-		this.country = new NativeSelect<>("Select a country:", countryService.findAll());
-		this.region = new NativeSelect<>("Select a region:");
-		this.city = new NativeSelect<>("Select a city");
-		this.entryDate = new DateTimeField("Select an entry date:");
-		this.endDate = new DateTimeField("Select an end date:");
-		this.rangoGuests = IntStream.range(1, 31).mapToObj(i -> i + " guest").collect(Collectors.toList());
-		this.guests = new NativeSelect<>("Select the number of guests:", rangoGuests);
-		
-		entryDate.setValue(LocalDateTime.now());
-		endDate.setValue(LocalDateTime.now().plusDays(1));
+		this.country = new ComboBox<Country>(null, countryService.findAll());
+		this.region = new ComboBox<Region>();
+		this.city = new ComboBox<City>();
+		this.startDate = new DateField("Select an entry date:");
+		this.endDate = new DateField("Select an end date:");
+		this.rangoGuests = IntStream.range(1, 31).mapToObj(i -> i).collect(Collectors.toList());
+		this.guests = new ComboBox<>(null, rangoGuests);
 	}
 	
 	@PostConstruct
 	void init() throws NameNotFoundException {
 		
-		// build layout
-
-		VerticalLayout filtrosBusqueda = new VerticalLayout(country, region, city, entryDate, endDate, guests, search);
+		//Seteo para hacer mas facil el debug
+		city.setItems(cityService.findOne(700044L));
+		city.setSelectedItem(cityService.findOne(700044L));
+		//
+		country.setPlaceholder("Select a Country");
+		country.setEmptySelectionAllowed(false);
+		region.setPlaceholder("Select a Region");
+		region.setEmptySelectionAllowed(false);
+		city.setPlaceholder("Select a City");
+		city.setEmptySelectionAllowed(false);
+		guests.setPlaceholder("Number of guests");
+		guests.setEmptySelectionAllowed(false);
+		startDate.setValue(LocalDate.now());
+		endDate.setValue(LocalDate.now().plusDays(1));
 		
-		addComponents(filtrosBusqueda);
-
-		grid.setSizeFull();
-		grid.setColumns("id", "name", "assessment", "description", "bedrooms", "beds", "airConditioner");
+		guests.setValue(1);
 		
-		// Hook logic to components
-
-		// Replace listing with filtered content when user changes filter
-		/*
-		filter.setValueChangeMode(ValueChangeMode.LAZY);
-		filter.addValueChangeListener(e -> {
-			try {
-				listHousingByCity(e.getValue());
-			} catch (NameNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
-		*/
+		VerticalLayout filtrosBusqueda = new VerticalLayout(country, region, city, startDate, endDate, guests, search);
+		filtrosBusqueda.setWidth("25%");
+		
+		GridLayout offers = new GridLayout();
+		offers.setWidthUndefined();
+		offers.setColumns(3);
+		offers.setSpacing(true);
+		
 		country.addValueChangeListener(event -> region.setItems(countryService.findOne(event.getValue().getId()).getRegion()));
-		
 		region.addValueChangeListener(event -> city.setItems(regionService.findOne(event.getValue().getId()).getCities()));
 		
-		//Para añadir al grid los alojamientos que hay en la ciudad seleccionada de la lista de ciudades:
-		city.addValueChangeListener(event -> grid.setItems(cityService.findOne(event.getValue().getId()).getHousing()));
+		//Para que al pulsar el boton 'Search' se cargen todos los anuncios:
+		search.addClickListener(event ->  addOffers(offers));
 		
-/*
-		// Instantiate and edit new User the new button is clicked
-		search.addClickListener(e -> editor.editHousing(new Housing("", 0f, "", 0, 0, false)));
-
-		// Listen changes made by the editor, refresh data from backend
-		editor.setChangeHandler(() -> {
-			editor.setVisible(false);
-			listHousing(filter.getValue());
-		});
-*/
-		// Initialize listing
-		//listHousingByCity();
+		HorizontalLayout items = new HorizontalLayout(filtrosBusqueda, offers);
+		addComponents(items);
 		
-		//Para que al pulsar el boton 'Search' me muestre la tabla con los alojamientos:
-		
-		search.addClickListener(e -> addComponents(grid));
-		
-		//search.addClickListener(grid.setItems(cityService.loadCityByName(city.getValue().getName()).getHousing()));
 	}
-	
-	/*
-	private void listHousingByCity(String filterText) throws NameNotFoundException {
-		if (StringUtils.isEmpty(filterText)) {
-			//grid.setItems(service.findAll());
-		} else {
-			//grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
-		}
-	}
-	*/
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	//añade las ofertas según los parámetros de la busqueda al grid
+	private void addOffers(GridLayout gridLayout)
+	{
+		List<Housing> listaCasas = housingService.findByCityidAndAvailabilityAndGuest(city.getValue(), startDate.getValue(), endDate.getValue(), guests.getValue());
+		gridLayout.removeAllComponents();
+		listaCasas.forEach(e -> {
+				VerticalLayout anuncio = new VerticalLayout();
+				anuncio.addComponent(new Label("Tipo: habitación privada · " + e.getBeds() + " BEDS"));
+				anuncio.addComponent(new Label(e.getName()));
+				anuncio.addComponent(new Label("Desde 30€ por noche, stars: " + e.getAssessment()));
+				anuncio.setWidth("250px");
+				anuncio.addLayoutClickListener(event -> getUI().getNavigator().navigateTo(WelcomeView.VIEW_NAME));
+				gridLayout.addComponent(anuncio);
+			}
+		);
 	}
 }
