@@ -60,7 +60,7 @@ public class UserRegisterScreen extends VerticalLayout implements View  {
 		
 		addComponents(editor);
 
-		editor.editUser(new User("", "", "", "", LocalDate.now(), "", "", RoleType.USER ));
+		editor.editUser(new User("", "", "", "", LocalDate.now(), "", 0,RoleType.USER ));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {

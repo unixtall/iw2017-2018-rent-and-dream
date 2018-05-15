@@ -49,10 +49,10 @@ public class MainApplication {
 			if (userService.findAll().size() == 0) {
 				
 				// save users with default password: default
-				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.USER);
-				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", "956493387", RoleType.USER);
-				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", "956403954", RoleType.MANAGER);
-				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", "678228328", RoleType.ADMIN);
+				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, RoleType.USER);
+				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, RoleType.USER);
+				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, RoleType.MANAGER);
+				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", 678228328, RoleType.ADMIN);
 				root.setPassword("root");
 				userService.save(user1);
 				userService.save(user2);
