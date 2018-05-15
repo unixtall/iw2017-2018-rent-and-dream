@@ -7,6 +7,7 @@ import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import es.uca.iw.rentAndDream.cities.City;
 
@@ -45,8 +46,13 @@ public class HousingService {
 		return repo.findAll();
 	}
 	
+	@Transactional
 	public List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, LocalDate endDate, Integer guests)
 	{
-		return repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
+		List<Housing> ret = repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
+		
+		ret.forEach(e -> e.getReserve());
+		
+		return ret;
 	}
 }

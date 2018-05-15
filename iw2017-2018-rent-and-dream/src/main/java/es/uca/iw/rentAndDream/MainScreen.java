@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -35,18 +34,21 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	@Override
     public void attach() {
         super.attach();
-        this.getUI().getNavigator().navigateTo("");
+        if(SecurityUtils.hasRole(RoleType.ADMIN))
+        	this.getUI().getNavigator().navigateTo("userManagementView");
+        else
+        if(SecurityUtils.hasRole(RoleType.MANAGER))
+        	this.getUI().getNavigator().navigateTo("reserveManagementView");
+        else
+        	this.getUI().getNavigator().navigateTo("housingSearchView");
     }
 	
 	@PostConstruct
-	void init() {
-
-		final VerticalLayout root = new VerticalLayout();
+	void init() {		
+        
+		final CssLayout root = new CssLayout();
 		root.setSizeFull();
-		
-		// Creamos la cabecera 
-		//root.addComponent(new Label("This is the session: " + VaadinSession.getCurrent()));
-		//root.addComponent(new Label("This is the UI: " + this.toString()));
+		//root.setMargin(false);
 
 		// Creamos la barra de navegación
 		final CssLayout navigationBar = new CssLayout();
@@ -70,11 +72,12 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		// Creamos el panel
 		springViewDisplay = new Panel();
 		springViewDisplay.setSizeFull();
+		springViewDisplay.setStyleName(ValoTheme.PANEL_BORDERLESS);
 		root.addComponent(springViewDisplay);
-		root.setExpandRatio(springViewDisplay, 1.0f);
-
-		addComponent(root);
+		//root.setExpandRatio(springViewDisplay, 1.0f);
 		
+		addComponent(root);
+		setMargin(false);
 	}
 
 	private Button createNavigationButton(String caption, final String viewName) {
@@ -85,7 +88,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		button.addClickListener(event -> getUI().getNavigator().navigateTo(viewName));
 		return button;
 	}
-	
 	
 	@Override
 	public void showView(View view) {
@@ -109,18 +111,18 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	
 	public void addGuestMenu(CssLayout navigationBar)
 	{
-		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
+		
+		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
 		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
-
-		navigationBar.addComponent(createNavigationButton("Search your housing", HousingSearchView.VIEW_NAME));
-		
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterScreen.VIEW_NAME));
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
 	{
-		navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
+		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);

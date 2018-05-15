@@ -3,6 +3,7 @@ package es.uca.iw.rentAndDream.housing;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,7 +15,8 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	
 	public Housing findByName(String name);
 	
-	@Query("select DISTINCT h from Housing h, Availability a where a.housing = h and h.city = ?1 "
+	@EntityGraph(attributePaths = {"city", "reserve"})
+	@Query("select DISTINCT h from Housing h, Availability a where h.city = ?1 "
 			+ "and h.beds >= ?4 and ?2 < a.endDate and ?3 >= a.startDate")
 	List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, LocalDate endDate, Integer guests);
 }

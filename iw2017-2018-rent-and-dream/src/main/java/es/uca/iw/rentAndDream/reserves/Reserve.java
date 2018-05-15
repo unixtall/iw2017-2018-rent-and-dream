@@ -107,5 +107,12 @@ public class Reserve {
 	public Boolean getConfirmed() {
 		return confirmed;
 	}
+
+	@Override
+	public String toString() {
+		return "Reserve [numberGuests=" + numberGuests + ", entryDate=" + entryDate + ", departureDate=" + departureDate
+				+ ", price=" + price + ", confirmed=" + confirmed + ", user=" + user + ", housing=" + housing + "]";
+	}
+	
 	
 }

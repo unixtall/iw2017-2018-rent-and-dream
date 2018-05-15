@@ -26,6 +26,7 @@
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-java8</artifactId>
@@ -76,7 +77,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -85,6 +85,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

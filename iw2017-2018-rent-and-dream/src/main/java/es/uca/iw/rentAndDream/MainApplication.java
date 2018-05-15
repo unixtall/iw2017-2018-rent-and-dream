@@ -26,6 +26,7 @@ import es.uca.iw.rentAndDream.availabilities.AvailabilityService;
 import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingService;
+import es.uca.iw.rentAndDream.reserves.ReserveService;
 import es.uca.iw.rentAndDream.security.VaadinSessionSecurityContextHolderStrategy;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.User;
@@ -41,7 +42,8 @@ public class MainApplication {
 	}
 
 	@Bean
-	public CommandLineRunner loadData(UserService userService, HousingService housingService, CityService cityService, AvailabilityService availabilityService) {
+	public CommandLineRunner loadData(UserService userService, HousingService housingService, CityService cityService, AvailabilityService availabilityService,
+			ReserveService reserveService) {
 		return (args) -> {
 			
 			if (userService.findAll().size() == 0) {
@@ -62,27 +64,49 @@ public class MainApplication {
 				
 				Housing housing1 = new Housing("House 1", 0f, "description", 2, 2, false);
 				Housing housing2 = new Housing("House 2", 0f, "description", 4, 4, false);
+				Housing housing3 = new Housing("House 3", 0f, "description", 4, 8, false);
+				Housing housing4 = new Housing("House 4", 0f, "description", 1, 1, false);
 				housing1.setUser(userService.loadUserByUsername("user1"));
 				housing2.setUser(userService.loadUserByUsername("user2"));
+				housing3.setUser(userService.loadUserByUsername("user1"));
+				housing4.setUser(userService.loadUserByUsername("user2"));
+				//Asignadas a la ciudad de campano
 				housing1.setCity(cityService.findOne(700044L));
 				housing2.setCity(cityService.findOne(700044L));
+				housing3.setCity(cityService.findOne(700044L));
+				housing4.setCity(cityService.findOne(700044L));
 				
 				Availability availability1 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
 				Availability availability2 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
 				Availability availability3 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
 				Availability availability4 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
+				Availability availability5 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
+				Availability availability6 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
+				Availability availability7 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
 				
 				availability1.setHousing(housing1);
 				availability2.setHousing(housing1);
 				availability3.setHousing(housing2);
 				availability4.setHousing(housing2);
+				availability5.setHousing(housing3);
+				availability6.setHousing(housing3);
+				availability7.setHousing(housing4);
 				
 				housingService.save(housing1);
 				housingService.save(housing2);
+				housingService.save(housing3);
+				housingService.save(housing4);
 				availabilityService.save(availability1);
 				availabilityService.save(availability2);
 				availabilityService.save(availability3);
 				availabilityService.save(availability4);
+				availabilityService.save(availability5);
+				availabilityService.save(availability6);
+				availabilityService.save(availability7);
+			}
+			
+			if (reserveService.findAll().size() == 0) {
+
 			}
 		};
 	}

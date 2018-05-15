@@ -27,7 +27,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 	private TextField filter;
 	private Button addNewBtn;
 
-	private HousingEditor editor;
+	private final HousingEditor editor;
 
 	
 	private final HousingService service;
