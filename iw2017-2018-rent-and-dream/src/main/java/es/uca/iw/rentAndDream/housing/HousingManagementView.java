@@ -52,7 +52,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "name", "assessment", "description", "bedrooms", "beds", "airConditioner");
+		grid.setColumns("id", "name", "address", "assessment", "description", "bedrooms", "beds", "airConditioner");
 
 		filter.setPlaceholder("Filter by name");
 
@@ -68,7 +68,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 		});
 
 		// Instantiate and edit new User the new button is clicked
-		addNewBtn.addClickListener(e -> editor.editHousing(new Housing("", 0f, "", 0, 0, false)));
+		addNewBtn.addClickListener(e -> editor.editHousing(new Housing("", "", 0f, "", 0, 0, false)));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {
