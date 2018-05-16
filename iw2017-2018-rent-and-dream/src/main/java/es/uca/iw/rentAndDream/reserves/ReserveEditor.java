@@ -11,12 +11,14 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.cities.City;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 
@@ -38,7 +40,7 @@ public class ReserveEditor extends VerticalLayout {
 	DateField entryDate = new DateField("Entry Date");
 	DateField departureDate = new DateField("Departure Date");
 	TextField price = new TextField("Price");
-	CheckBox confirmed = new CheckBox("Confirmed");
+	ComboBox<TypeReserveStatus> status = new ComboBox<TypeReserveStatus>("Status");
 	
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -52,8 +54,10 @@ public class ReserveEditor extends VerticalLayout {
 	@Autowired
 	public ReserveEditor(ReserveService service) {
 		this.service = service;
-
-		addComponents(numberGuests, entryDate, departureDate, price, confirmed, actions);
+		
+		status.setItems(TypeReserveStatus.values());
+		
+		addComponents(numberGuests, entryDate, departureDate, price, status, actions);
 
 		binder.forField(numberGuests)
 		.withConverter(
