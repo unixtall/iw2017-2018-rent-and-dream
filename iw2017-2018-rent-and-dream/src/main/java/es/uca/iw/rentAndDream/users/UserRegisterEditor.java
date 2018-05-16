@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -54,7 +55,9 @@ public class UserRegisterEditor extends VerticalLayout {
 		this.service = service;
 
 		addComponents(firstName, lastName, username, password, email, birthday, dni, telephone, actions);
-		
+		binder.forField(telephone)
+			.withConverter(new StringToIntegerConverter("Must enter a number"))
+			.bind(User::getTelephone, User::setTelephone);
 		// bind using naming convention
 		binder.bindInstanceFields(this);
 	

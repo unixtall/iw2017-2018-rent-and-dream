@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class User implements UserDetails{
 	private String firstName;
 
 	private String lastName;
-	
+	@Column(name="username", unique=true)
 	private String username;
 	
 	private String email;
@@ -39,9 +40,10 @@ public class User implements UserDetails{
 	
 	private LocalDate birthday;
 	
+	@Column(name="dni", unique=true)
 	private String dni;
-	
-	private String telephone;
+
+	private Integer telephone;
 	
 	private LocalDate registerDate;
 	
@@ -56,7 +58,7 @@ public class User implements UserDetails{
 	protected User() {
 	}
 
-	public User(String firstName, String lastName, String username, String email, LocalDate birthday, String dni, String telephone, RoleType role) {
+	public User(String firstName, String lastName, String username, String email, LocalDate birthday, String dni, Integer telephone, RoleType role) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.username = username;
@@ -122,11 +124,11 @@ public class User implements UserDetails{
 		this.dni = dni;
 	}
 
-	public String getTelephone() {
+	public Integer getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(String telephone) {
+	public void setTelephone(Integer telephone) {
 		this.telephone = telephone;
 	}
 
@@ -144,12 +146,6 @@ public class User implements UserDetails{
 
 	public void setRole(RoleType role) {
 		this.role = role;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("User[id=%d, firstName='%s', lastName='%s', username='%s', password='%s']", id,
-				firstName, lastName,username,password);
 	}
 
 	@Override
@@ -209,5 +205,10 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return  username;
 	}
 }
