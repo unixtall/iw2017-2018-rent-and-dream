@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -56,8 +57,28 @@ public class UserRegisterEditor extends VerticalLayout {
 
 		addComponents(firstName, lastName, username, password, email, birthday, dni, telephone, actions);
 		binder.forField(telephone)
+			.asRequired("Is Required")
 			.withConverter(new StringToIntegerConverter("Must enter a number"))
 			.bind(User::getTelephone, User::setTelephone);
+		
+		//Validaciones
+		binder.forField(firstName).asRequired("Is Required").bind(User::getFirstName, User::setFirstName);
+		binder.forField(lastName).asRequired("Is Required").bind(User::getLastName, User::setLastName);
+		binder.forField(username)
+			.asRequired("Is Required")
+			.bind(User::getUsername, User::setUsername);
+		binder.forField(password).asRequired("Is Required").bind(User::getPassword, User::setPassword);
+		binder.forField(email).asRequired("Is Required").bind(User::getEmail, User::setEmail);
+		binder.forField(birthday).asRequired("Is Required").bind(User::getBirthday, User::setBirthday);
+		binder.forField(dni).asRequired("Is Required").bind(User::getDni, User::setDni);
+		
+        //mostramos el boton buscar si el binder está validado
+		binder.addStatusChangeListener(event -> save.setEnabled(binder.isValid()));
+		
+		//Para mostrar el estado de validacion
+		Label validationStatus = new Label();
+		binder.setStatusLabel(validationStatus);
+		        
 		// bind using naming convention
 		binder.bindInstanceFields(this);
 	
