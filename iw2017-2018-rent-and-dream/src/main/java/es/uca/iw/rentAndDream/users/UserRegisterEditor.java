@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.Objects;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.vaadin.data.Binder;
@@ -25,6 +27,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -100,6 +103,14 @@ public class UserRegisterEditor extends FormLayout {
 
 		binder.forField(confirmPasswordField)
         	.asRequired("Must confirm password")
+        	.withValidator(Validator.from(user -> {
+    		    if (passwordField.isEmpty() || confirmPasswordField.isEmpty()) {
+    		        return true;
+    		    } else {
+    		        return Objects.equals(passwordField.getValue(),
+    		                confirmPasswordField.getValue());
+    		    }
+    		}, "Entered password and confirmation password must match"))
         	.bind(User::getPassword, (person, password) -> {});
 
 		binder.forField(email)
@@ -120,15 +131,6 @@ public class UserRegisterEditor extends FormLayout {
 			.asRequired("Is Required")
 			.withConverter(new StringToIntegerConverter("Must enter a number"))
 			.bind(User::getTelephone, User::setTelephone);
-		
-		binder.withValidator(Validator.from(user -> {
-		    if (passwordField.isEmpty() || confirmPasswordField.isEmpty()) {
-		        return true;
-		    } else {
-		        return Objects.equals(passwordField.getValue(),
-		                confirmPasswordField.getValue());
-		    }
-		}, "Entered password and confirmation password must match"));
 		
 		Label validationStatus = new Label();
 		binder.setStatusLabel(validationStatus);
@@ -152,7 +154,14 @@ public class UserRegisterEditor extends FormLayout {
 		//setVisible(false);
 		
 		save.addClickListener(
-	              event -> service.save(binder.getBean()));
+	              event -> {
+	            	  try {
+	            		  service.save(binder.getBean());
+	            	  } catch (DataIntegrityViolationException e) {
+	            	      Notification.show("Username or DNI already used, " +
+	            	    	        "please use another username/dni");
+	            	  }
+	              });
 	 
 	        binder.addStatusChangeListener(
 	                event -> save.setEnabled(binder.isValid()));
