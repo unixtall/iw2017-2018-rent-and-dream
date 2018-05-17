@@ -21,7 +21,8 @@ public class Housing {
 	@Id
 	@GeneratedValue
 	private Long id;	
-	private String name;	
+	private String name;
+	private String address;
 	private Float assessment;	
 	private String description;	
 	private Integer bedrooms;	
@@ -39,9 +40,10 @@ public class Housing {
 	
 	protected Housing(){}
 	
-	public Housing(String name, Float assessment, String description,
+	public Housing(String name, String address, Float assessment, String description,
 			Integer bedrooms, Integer beds, Boolean airConditioner) {
 		this.name = name;
+		this.address = address;
 		this.assessment = assessment;
 		this.description = description;
 		this.bedrooms = bedrooms;
@@ -63,6 +65,14 @@ public class Housing {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	public City getCity() {
@@ -139,7 +149,7 @@ public class Housing {
 
 	@Override
 	public String toString() {
-		return "Housing [id=" + id + ", user=" + user + ", name=" + name + ", assessment="
+		return "Housing [id=" + id + ", user=" + user + ", address=" + address + ", name=" + name + ", assessment="
 				+ assessment + ", description=" + description + ", bedrooms=" + bedrooms + ", beds=" + beds
 				+ ", airConditioner=" + airConditioner + "]";
 	}

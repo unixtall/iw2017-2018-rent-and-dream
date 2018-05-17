@@ -117,6 +117,7 @@ public class UserRegisterEditor extends FormLayout {
     		.bind(User::getDni, User::setDni);
 		
 		binder.forField(telephone)
+			.asRequired("Is Required")
 			.withConverter(new StringToIntegerConverter("Must enter a number"))
 			.bind(User::getTelephone, User::setTelephone);
 		

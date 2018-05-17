@@ -62,10 +62,10 @@ public class MainApplication {
 			
 			if (housingService.findAll().size() == 0) {
 				
-				Housing housing1 = new Housing("House 1", 0f, "description", 2, 2, false);
-				Housing housing2 = new Housing("House 2", 0f, "description", 4, 4, false);
-				Housing housing3 = new Housing("House 3", 0f, "description", 4, 8, false);
-				Housing housing4 = new Housing("House 4", 0f, "description", 1, 1, false);
+				Housing housing1 = new Housing("House 1", "address", 0f, "description", 2, 2, false);
+				Housing housing2 = new Housing("House 2", "address", 0f, "description", 4, 4, false);
+				Housing housing3 = new Housing("House 3", "address", 0f, "description", 4, 8, false);
+				Housing housing4 = new Housing("House 4", "address", 0f, "description", 1, 1, false);
 				housing1.setUser(userService.loadUserByUsername("user1"));
 				housing2.setUser(userService.loadUserByUsername("user2"));
 				housing3.setUser(userService.loadUserByUsername("user1"));

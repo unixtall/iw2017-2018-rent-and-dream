@@ -35,6 +35,7 @@ public class HousingEditor extends VerticalLayout {
 	
 	/* Fields to edit properties in Housing entity */
 	TextField name = new TextField("Name");
+	TextField address = new TextField("Address");
 	TextField assessment = new TextField("Calification");
 	TextField description = new TextField("Description");
 	TextField bedrooms = new TextField("Bedrooms");
@@ -54,7 +55,7 @@ public class HousingEditor extends VerticalLayout {
 	public HousingEditor(HousingService service) {
 		this.service = service;
 
-		addComponents(name, assessment, description, bedrooms, beds, airConditioner, actions);
+		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
 
 		binder.forField(assessment)
 			.withConverter(

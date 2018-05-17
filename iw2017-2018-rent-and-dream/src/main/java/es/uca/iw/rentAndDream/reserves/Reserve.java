@@ -25,7 +25,7 @@ public class Reserve {
 	
 	private Float price;
 	
-	private Boolean confirmed;
+	private TypeReserveStatus status;
 	
 	@ManyToOne(fetch=FetchType.LAZY) 
     public User user;
@@ -36,12 +36,12 @@ public class Reserve {
 	protected Reserve() {}
 	
 	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, Float price,
-			Boolean confirmed) {
+			TypeReserveStatus status) {
 		this.numberGuests = number_guests;
 		this.entryDate = entry_date;
 		this.departureDate = departure_date;
 		this.price = price;
-		this.confirmed = confirmed;
+		this.status = status;
 	}
 
 	public Long getId() {
@@ -79,13 +79,13 @@ public class Reserve {
 	public void setPrice(Float price) {
 		this.price = price;
 	}
-
-	public Boolean isConfirmed() {
-		return confirmed;
+	
+	public TypeReserveStatus getStatus() {
+		return status;
 	}
  
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
+	public void setStatus(TypeReserveStatus status) {
+		this.status = status;
 	}
 
 	public User getUser() {
@@ -104,14 +104,11 @@ public class Reserve {
 		this.housing = housing;
 	}
 
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
 
 	@Override
 	public String toString() {
 		return "Reserve [numberGuests=" + numberGuests + ", entryDate=" + entryDate + ", departureDate=" + departureDate
-				+ ", price=" + price + ", confirmed=" + confirmed + ", user=" + user + ", housing=" + housing + "]";
+				+ ", price=" + price + ", status=" + status + ", user=" + user + ", housing=" + housing + "]";
 	}
 	
 	

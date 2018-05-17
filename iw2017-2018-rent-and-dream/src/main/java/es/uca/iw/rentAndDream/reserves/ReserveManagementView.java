@@ -50,7 +50,7 @@ public class ReserveManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "numberGuests", "entryDate", "departureDate", "price", "confirmed");
+		grid.setColumns("id", "numberGuests", "entryDate", "departureDate", "price", "status");
 
 		filter.setPlaceholder("Filter by id");
 
@@ -66,7 +66,7 @@ public class ReserveManagementView extends VerticalLayout implements View {
 		});
 
 		// Instantiate and edit new User the new button is clicked
-		addNewBtn.addClickListener(e -> editor.editReserve(new Reserve(0, null, null, 0f, false)));
+		addNewBtn.addClickListener(e -> editor.editReserve(new Reserve(0, null, null, 0f, null)));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {

@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -17,6 +18,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.reserves.Reserve;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 
 @SpringComponent
@@ -71,6 +73,11 @@ public class UserEditor extends VerticalLayout {
 
 		addComponents(firstName, lastName, username, password, email, birthday, dni, telephone, role, registerDate, actions);
 
+		binder.forField(telephone)
+		.withConverter(
+			new StringToIntegerConverter("Must enter a number"))
+	  	.bind(User::getTelephone, User::setTelephone);
+		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
 
