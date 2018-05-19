@@ -45,6 +45,7 @@ public class CitySearch extends VerticalLayout {
 		this.city = new ComboBox<City>();
 		
 		//Seteo para hacer mas facil el debug (BORRAR)
+		
 		country.setItems(countryService.findOne(62L));
 		country.setSelectedItem(countryService.findOne(62L));
 		region.setItems(regionService.findOne(965L));
@@ -128,5 +129,8 @@ public class CitySearch extends VerticalLayout {
 	public void setChangeHandler(ChangeHandler h) {
 		// ChangeHandler is notified when either save or delete
 		// is clicked
+		country.addValueChangeListener(e -> h.onChange());
+		region.addValueChangeListener(e -> h.onChange());
+		city.addValueChangeListener(e -> h.onChange());
 	}
 }

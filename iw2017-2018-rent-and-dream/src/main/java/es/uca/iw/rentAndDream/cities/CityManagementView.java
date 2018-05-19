@@ -1,7 +1,5 @@
 package es.uca.iw.rentAndDream.cities;
 
-import java.time.LocalDate;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +8,12 @@ import org.springframework.util.StringUtils;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -30,10 +28,12 @@ public class CityManagementView extends VerticalLayout implements View {
 	private CityEditor editor;
 
 	private final CityService service;
+	private CitySearch citysearch;
 
 	@Autowired
-	public CityManagementView(CityService service, CityEditor editor) {
+	public CityManagementView(CityService service, CityEditor editor, CitySearch citysearch) {
 		this.service = service;
+		this.citysearch = citysearch;
 		this.editor = editor;
 		this.grid = new Grid<>(City.class);
 		this.filter = new TextField();
@@ -45,7 +45,7 @@ public class CityManagementView extends VerticalLayout implements View {
 		
 		// build layout
 		HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
-		
+		addComponent(citysearch);
 		addComponents(actions, grid, editor);
 
 		//grid.setHeight(300, Unit.PIXELS);
@@ -74,16 +74,21 @@ public class CityManagementView extends VerticalLayout implements View {
 			listCity(filter.getValue());
 		});
 
+		citysearch.setChangeHandler(() -> 
+		{
+			grid.setItems(citysearch.get_city());
+		});
+		
 		// Initialize listing
-		listCity(null);
+		//listCity(null);
 
 	}
 
 	private void listCity(String filterText) {
 		if (StringUtils.isEmpty(filterText)) {
-			grid.setItems(service.findAll());
+			//grid.setItems(service.findAll());
 		} else {
-			grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
+			grid.setItems(citysearch.get_city());
 		}
 	}
 	
