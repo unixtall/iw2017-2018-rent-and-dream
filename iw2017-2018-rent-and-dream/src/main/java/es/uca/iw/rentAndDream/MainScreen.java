@@ -23,6 +23,7 @@ import es.uca.iw.rentAndDream.reserves.ReserveRequestView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
+import es.uca.iw.rentAndDream.users.UserEditProfileView;
 import es.uca.iw.rentAndDream.users.UserManagementView;
 import es.uca.iw.rentAndDream.users.UserRegisterView;
 import es.uca.iw.rentAndDream.users.UserView;
