@@ -19,6 +19,7 @@ import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
 import es.uca.iw.rentAndDream.housing.HousingSearchView;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
+import es.uca.iw.rentAndDream.reserves.ReserveRequestView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
@@ -39,7 +40,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
         else
         if(SecurityUtils.hasRole(RoleType.MANAGER))
         	this.getUI().getNavigator().navigateTo("reserveManagementView");
-        else
+        else 
         	this.getUI().getNavigator().navigateTo("housingSearchView");
     }
 	
@@ -116,13 +117,19 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
 		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
+
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Reserves requests", ReserveRequestView.VIEW_NAME));
+
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
 	{
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
+
+		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
+
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);

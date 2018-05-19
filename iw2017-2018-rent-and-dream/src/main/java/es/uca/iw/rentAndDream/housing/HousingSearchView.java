@@ -8,9 +8,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
+import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.Offer;
 
 @SpringView(name = HousingSearchView.VIEW_NAME)
@@ -20,29 +19,32 @@ public class HousingSearchView extends CssLayout implements View{
 	
 	//Reservamos memoria para la dependencia housingSearch
 	private HousingSearch housingSearch;
+	
+	private HorizontalItemLayout horizontalItemLayout;
 
 	//Inyectamos la dependencia housingSearch
 	@Autowired
 	public HousingSearchView(HousingSearch housingSearch) {
 		this.housingSearch = housingSearch;
+		this.horizontalItemLayout = new HorizontalItemLayout();
+		horizontalItemLayout.addComponent(housingSearch);
+		
+		addComponent(horizontalItemLayout);
+		
+		//Cargamos la busqueda inicial
+		housingSearch.getResults().forEach(e -> 
+			horizontalItemLayout.addComponent(new Offer(e))
+		);	
 	}
 	
 	@PostConstruct
 	void init(){
-		
-		addComponent(housingSearch);
-		
-		//Cargamos la busqueda inicial
-		housingSearch.getResults().forEach(e -> 
-			addComponent(new Offer(e))
-		);	
-		
 		//cada vez que el componente housingSearch se cambia
 		housingSearch.setChangeHandler(() -> {
-			this.removeAllComponents();
-			addComponent(housingSearch);
+			horizontalItemLayout.removeAllComponents();
+			horizontalItemLayout.addComponent(housingSearch);
 			housingSearch.getResults().forEach(e -> 
-				addComponent(new Offer(e))
+				horizontalItemLayout.addComponent(new Offer(e))
 			);	
 		});
 	
