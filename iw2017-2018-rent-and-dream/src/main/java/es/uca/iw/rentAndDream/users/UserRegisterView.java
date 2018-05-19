@@ -62,11 +62,6 @@ public class UserRegisterView extends VerticalLayout implements View  {
 
 		editor.editUser(new User("", "", "", "", null, "", 0, RoleType.USER ));
 
-		// Listen changes made by the editor, refresh data from backend
-		editor.setChangeHandler(() -> {
-			editor.setVisible(false);
-		});
-
 	}
 
 	@Override
