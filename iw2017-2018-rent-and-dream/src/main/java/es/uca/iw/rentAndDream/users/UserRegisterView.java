@@ -41,16 +41,16 @@ import com.vaadin.ui.themes.ValoTheme;
 import es.uca.iw.rentAndDream.VaadinUI;
 import es.uca.iw.rentAndDream.WelcomeView;
 
-@SpringView(name = UserRegisterScreen.VIEW_NAME)
-public class UserRegisterScreen extends VerticalLayout implements View  {
+@SpringView(name = UserRegisterView.VIEW_NAME)
+public class UserRegisterView extends VerticalLayout implements View  {
 
-	public static final String VIEW_NAME = "userRegisterScreen";
+	public static final String VIEW_NAME = "userRegisterView";
 	
-	private UserRegisterEditor editor;	
+	private UserEditor editor;	
 	private UserService service;
 
 	@Autowired
-	public UserRegisterScreen(UserService service, UserRegisterEditor editor) {
+	public UserRegisterView(UserService service, UserEditor editor) {
 		this.service = service;
 		this.editor = editor;	    
 	}
@@ -60,7 +60,7 @@ public class UserRegisterScreen extends VerticalLayout implements View  {
 		
 		addComponents(editor);
 
-		editor.editUser(new User("", "", "", "", LocalDate.now(), "", 0,RoleType.USER ));
+		editor.editUser(new User("", "", "", "", null, "", 0, RoleType.USER ));
 
 		// Listen changes made by the editor, refresh data from backend
 		editor.setChangeHandler(() -> {

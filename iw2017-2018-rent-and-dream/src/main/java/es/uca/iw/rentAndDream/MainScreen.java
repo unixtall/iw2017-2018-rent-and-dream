@@ -8,6 +8,7 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -24,7 +25,7 @@ import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.UserEditProfileView;
 import es.uca.iw.rentAndDream.users.UserManagementView;
-import es.uca.iw.rentAndDream.users.UserRegisterScreen;
+import es.uca.iw.rentAndDream.users.UserRegisterView;
 import es.uca.iw.rentAndDream.users.UserView;
 
 @SpringViewDisplay
@@ -117,7 +118,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
 		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
-		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterScreen.VIEW_NAME));
+
+		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserves requests", ReserveRequestView.VIEW_NAME));
 
 	}
@@ -128,6 +130,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 
 		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
+
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
