@@ -12,6 +12,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
@@ -55,7 +56,6 @@ public class UserEditor extends FormLayout {
 	DateField birthday = new DateField("Birthday");
 	TextField dni = new TextField("Dni");
 	TextField telephone = new TextField("Telephone");
-	
 	ComboBox <RoleType> role = new ComboBox <RoleType>("role");
 	DateField registerDate = new DateField("Register Date");
 	
@@ -66,27 +66,28 @@ public class UserEditor extends FormLayout {
 	/* Layout for buttons */
 	CssLayout actions = new CssLayout(save,delete);
 
-
 	@Autowired
 	public UserEditor(UserService service) {
 		this.service = service;
-
-			
+		
 		// Add some items
 		role.setItems(EnumSet.allOf(RoleType.class));
 		role.setSelectedItem(RoleType.USER);
 		registerDate.setValue(LocalDate.now());
 		birthday.setPlaceholder("dd/mm/yy");
 
-		addComponents(firstName, lastName, username, passwordField, confirmPasswordField, email, birthday, dni, telephone, role, registerDate, actions);
+		addComponents(firstName, lastName, username, passwordField, confirmPasswordField, 
+				email, birthday, dni, telephone, role, registerDate, actions);
 
-		//Binders
-		
+		//Binders		
 		binder.forField(firstName)
         	.asRequired("First name may not be empty")
         	.withValidator(
         		    name -> name.length() >= 2,
         		    "First name must contain at least two characters")
+        	.withValidator(new RegexpValidator("First name can consist of alphabetical characters and only one space between them",
+        			"^[a-zA-Z_]+( [a-zA-Z_]+)*$"))
+
         	.bind(User::getFirstName, User::setFirstName);
 		
 		binder.forField(lastName)
@@ -94,6 +95,8 @@ public class UserEditor extends FormLayout {
     		.withValidator(
         		    name -> name.length() >= 2,
         		    "Last name must contain at least two characters")
+    		.withValidator(new RegexpValidator("Last name can consist of alphabetical characters and only one space between them",
+        			"^[a-zA-Z_]+( [a-zA-Z_]+)*$"))
     		.bind(User::getLastName, User::setLastName);
 		
 		binder.forField(username)
@@ -101,6 +104,8 @@ public class UserEditor extends FormLayout {
     		.withValidator(new StringLengthValidator(
     		        "Username must be between 3 and 15 characters long",
     		        3, 15))
+    		.withValidator(new RegexpValidator("Username can consist of alphanumerical characters without spaces",
+        			"^[a-zA-Z0-9_]*$"))
     		.bind(User::getUsername, User::setUsername);
 		
 		binder.forField(passwordField)
@@ -128,15 +133,20 @@ public class UserEditor extends FormLayout {
 		
 		binder.forField(birthday)
 			.asRequired("Birthday may not be empty")
-			.withValidator(new DateRangeValidator("You must be more than 18 years old", null, LocalDate.now().minusYears(18)))
+			.withValidator(new DateRangeValidator("You must be over 18 years old", null, LocalDate.now().minusYears(18)))
 			.bind(User::getBirthday, User::setBirthday);
 		
 		binder.forField(dni)
     		.asRequired("DNI name may not be empty")
+    		.withValidator(new RegexpValidator("Username can consist of alphanumerical characters without spaces",
+        			"^[a-zA-Z0-9_]*$"))
     		.bind(User::getDni, User::setDni);
 		
 		binder.forField(telephone)
-			.asRequired("Is Required")
+			.withValidator(
+	    		    phone -> phone.length() >= 9,
+	    		    "Telephone must contain at least 9 characters")
+			.asRequired("Telephone may not be empty")
 			.withConverter(new StringToIntegerConverter("Must enter a number"))
 			.bind(User::getTelephone, User::setTelephone);
 		
@@ -156,31 +166,28 @@ public class UserEditor extends FormLayout {
 		actions.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-		// wire action buttons to save
-		//save.addClickListener(e -> service.save(user));
-		//setVisible(false);
 		
 		save.addClickListener(
 	              event -> {
 	            	  try {
 	            		  service.save(binder.getBean());
+	            	      Notification.show("\r\n" + 
+	            	      		"The user has successfully registered");
+	            	      setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");
 	            	  }
+
 	              });
  
         binder.addStatusChangeListener(
                 event -> save.setEnabled(binder.isValid()));		
-		
-		
-		
 
 		// wire action buttons to delete and reset	
 		delete.addClickListener(e -> service.delete(user));
 		
-		setVisible(false);
+		//setVisible(false);
 		
 		// Solo borra el admin
 		role.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
