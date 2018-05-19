@@ -22,7 +22,7 @@ public class SampleViewAccessControl implements ViewAccessControl {
     	} else if (beanName.equals("welcomeView") || beanName.equals("loginScreen") || beanName.equals("userRegisterScreen") 
     			|| beanName.equals("housingSearchView") || beanName.equals("housingView")) {
             return true;
-        } else if (beanName.equals("userView")) {
+        } else if (beanName.equals("userView") || beanName.equals("userEditProfileView")) {
             return SecurityUtils.hasRole(RoleType.USER) || SecurityUtils.hasRole(RoleType.MANAGER);
         } else if (beanName.equals("userManagementView") || beanName.equals("reserveManagementView")) {
             return SecurityUtils.hasRole(RoleType.MANAGER);
