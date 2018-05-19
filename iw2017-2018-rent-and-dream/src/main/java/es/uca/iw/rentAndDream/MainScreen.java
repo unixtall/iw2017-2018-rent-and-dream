@@ -23,7 +23,7 @@ import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.UserManagementView;
-import es.uca.iw.rentAndDream.users.UserRegisterScreen;
+import es.uca.iw.rentAndDream.users.UserRegisterView;
 import es.uca.iw.rentAndDream.users.UserView;
 
 @SpringViewDisplay
@@ -116,7 +116,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
 		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
-		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterScreen.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
