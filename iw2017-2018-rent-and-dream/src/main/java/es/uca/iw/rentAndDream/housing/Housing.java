@@ -149,8 +149,6 @@ public class Housing {
 
 	@Override
 	public String toString() {
-		return "Housing [id=" + id + ", user=" + user + ", address=" + address + ", name=" + name + ", assessment="
-				+ assessment + ", description=" + description + ", bedrooms=" + bedrooms + ", beds=" + beds
-				+ ", airConditioner=" + airConditioner + "]";
+		return id.toString();
 	}
 }

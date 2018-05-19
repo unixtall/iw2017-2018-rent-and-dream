@@ -26,7 +26,9 @@ import es.uca.iw.rentAndDream.availabilities.AvailabilityService;
 import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingService;
+import es.uca.iw.rentAndDream.reserves.Reserve;
 import es.uca.iw.rentAndDream.reserves.ReserveService;
+import es.uca.iw.rentAndDream.reserves.TypeReserveStatus;
 import es.uca.iw.rentAndDream.security.VaadinSessionSecurityContextHolderStrategy;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.User;
@@ -51,8 +53,8 @@ public class MainApplication {
 				// save users with default password: default
 				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, RoleType.USER);
 				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, RoleType.USER);
-				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, RoleType.MANAGER);
-				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321J", 678228328, RoleType.ADMIN);
+				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678Q", 956403954, RoleType.MANAGER);
+				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321E", 678228328, RoleType.ADMIN);
 				root.setPassword("root");
 				userService.save(user1);
 				userService.save(user2);
@@ -103,10 +105,11 @@ public class MainApplication {
 				availabilityService.save(availability5);
 				availabilityService.save(availability6);
 				availabilityService.save(availability7);
-			}
-			
-			if (reserveService.findAll().size() == 0) {
-
+				
+				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, TypeReserveStatus.PENDING);
+				reserve1.setHousing(housing1);
+				reserve1.setUser(userService.loadUserByUsername("user2"));
+				reserveService.save(reserve1);
 			}
 		};
 	}

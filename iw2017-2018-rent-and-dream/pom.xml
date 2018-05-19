@@ -25,8 +25,42 @@
 		<vaadin.version>8.0.7</vaadin.version>
 	</properties>
 
-	<dependencies>
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+        
+        <repository>
+           <!-- Many Vaadin add-ons are only available from 
+                vaadin-addons repository (aka vaadin.com/directory).
+           -->
+           <id>vaadin-addons</id>
+           <url>http://maven.vaadin.com/vaadin-addons</url>
+       	</repository>
+    </repositories>
+   
+    <pluginRepositories>
+        <pluginRepository>
+            <!-- Repository for Vaadin prerelease versions -->
+            <id>vaadin-prereleases</id>
+            <url>http://maven.vaadin.com/vaadin-prereleases</url>
+        </pluginRepository>
+    </pluginRepositories>
 
+	<dependencies>
+		
+		<dependency>
+		   <groupId>org.vaadin.addons</groupId>
+		   <artifactId>tuning-datefield</artifactId>
+		   <version>0.20.0-vaadin8</version>
+		</dependency>
+		
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-java8</artifactId>
@@ -64,8 +98,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
+		
 	</dependencies>
-
+    
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -77,12 +112,35 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			          <!-- Vaadin maven plugin for client-side compilation -->
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>update-widgetset</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- The widgetset compilation mode (local / fetch from CDN
+                         / CDN only). The allowed values are "local", "fetch" 
+                         and "cdn".
+                    -->
+                    <widgetsetMode>cdn</widgetsetMode>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

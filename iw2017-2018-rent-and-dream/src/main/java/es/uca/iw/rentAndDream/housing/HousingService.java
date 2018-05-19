@@ -49,10 +49,7 @@ public class HousingService {
 	@Transactional
 	public List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, LocalDate endDate, Integer guests)
 	{
-		List<Housing> ret = repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
+		return repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
 		
-		ret.forEach(e -> e.getReserve());
-		
-		return ret;
 	}
 }

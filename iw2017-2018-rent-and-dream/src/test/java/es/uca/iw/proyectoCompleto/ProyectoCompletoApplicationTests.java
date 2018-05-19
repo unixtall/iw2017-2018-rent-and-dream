@@ -1,4 +1,4 @@
-package es.uca.iw.proyectoCompleto;
+/*package es.uca.iw.proyectoCompleto;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,4 +13,4 @@ public class ProyectoCompletoApplicationTests {
 	public void contextLoads() {
 	}
 
-}
+}*/

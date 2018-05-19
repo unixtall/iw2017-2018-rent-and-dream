@@ -1,11 +1,14 @@
 package es.uca.iw.rentAndDream.reserves;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import es.uca.iw.rentAndDream.housing.Housing;
 
 @Service
 public class ReserveService {
@@ -41,5 +44,9 @@ public class ReserveService {
 
 	public List<Reserve> findAll() {
 		return repo.findAll();
+	}
+	
+	public List<Reserve> findByHousingBetweenDates(Housing housing, LocalDate entryDate, LocalDate departureDate){
+		return repo.findByHousingBetweenDates();
 	}
 }

@@ -2,7 +2,7 @@ package es.uca.iw.rentAndDream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.server.Responsive;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
