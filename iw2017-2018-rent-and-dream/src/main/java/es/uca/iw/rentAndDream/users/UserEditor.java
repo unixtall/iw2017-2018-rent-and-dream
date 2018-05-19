@@ -171,7 +171,8 @@ public class UserEditor extends FormLayout {
 	              event -> {
 	            	  try {
 	            		  service.save(binder.getBean());
-	            	      Notification.show("User Create");
+	            	      Notification.show("\r\n" + 
+	            	      		"The user has successfully registered");
 	            	      setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
