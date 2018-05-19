@@ -1,5 +1,5 @@
 ### Archivos ignorados del proyecto de RENT & DREAM ###
-src/main/resources/application_properties
+src/main/resources/application.properties
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
