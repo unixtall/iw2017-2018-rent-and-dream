@@ -23,6 +23,7 @@ import es.uca.iw.rentAndDream.reserves.ReserveRequestView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
+import es.uca.iw.rentAndDream.users.User;
 import es.uca.iw.rentAndDream.users.UserEditProfileView;
 import es.uca.iw.rentAndDream.users.UserManagementView;
 import es.uca.iw.rentAndDream.users.UserRegisterView;
@@ -130,6 +131,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 
 		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
+		
+		navigationBar.addComponent(new Label(getUI().getSession().getAttribute(User.class).toString()));
 
 		
 		Button logoutButton = new Button("Logout", event -> logout());
@@ -140,6 +143,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	public void addManagerMenu(CssLayout navigationBar)
 	{
 		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);

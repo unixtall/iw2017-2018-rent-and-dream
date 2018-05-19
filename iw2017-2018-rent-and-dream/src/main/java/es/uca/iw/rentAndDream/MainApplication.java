@@ -62,18 +62,15 @@ public class MainApplication {
 				userService.save(user2);
 				userService.save(manager);
 				userService.save(root);	
-			}
-			
-			if (housingService.findAll().size() == 0) {
 				
 				Housing housing1 = new Housing("House 1", "address", 0f, "description", 2, 2, false);
 				Housing housing2 = new Housing("House 2", "address", 0f, "description", 4, 4, false);
 				Housing housing3 = new Housing("House 3", "address", 0f, "description", 4, 8, false);
 				Housing housing4 = new Housing("House 4", "address", 0f, "description", 1, 1, false);
-				housing1.setUser(userService.loadUserByUsername("user1"));
-				housing2.setUser(userService.loadUserByUsername("user2"));
-				housing3.setUser(userService.loadUserByUsername("user1"));
-				housing4.setUser(userService.loadUserByUsername("user2"));
+				housing1.setUser(userService.findByUsername("user1"));
+				housing2.setUser(userService.findByUsername("user2"));
+				housing3.setUser(userService.findByUsername("user1"));
+				housing4.setUser(userService.findByUsername("user2"));
 				//Asignadas a la ciudad de campano
 				housing1.setCity(cityService.findOne(700044L));
 				housing2.setCity(cityService.findOne(700044L));
@@ -110,7 +107,7 @@ public class MainApplication {
 				
 				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, TypeReserveStatus.PENDING);
 				reserve1.setHousing(housing1);
-				reserve1.setUser(userService.loadUserByUsername("user2"));
+				reserve1.setUser(userService.findByUsername("user2"));
 				reserveService.save(reserve1);
 			}
 		};
