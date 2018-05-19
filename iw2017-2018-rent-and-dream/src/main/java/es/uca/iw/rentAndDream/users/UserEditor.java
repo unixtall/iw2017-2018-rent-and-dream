@@ -179,9 +179,6 @@ public class UserEditor extends FormLayout {
  
         binder.addStatusChangeListener(
                 event -> save.setEnabled(binder.isValid()));		
-		
-		
-		
 
 		// wire action buttons to delete and reset	
 		delete.addClickListener(e -> service.delete(user));
