@@ -17,7 +17,7 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 	@Query("select r from Reserve r")
 	public List<Reserve> findByHousingBetweenDates();
 	
-	@Query("select h from Housing h "
+	@Query("select DISTINCT h from Housing h "
 			+ "JOIN FETCH h.reserve r "
 			+ "where h.user = ?1 and r.status = ?2")
 			

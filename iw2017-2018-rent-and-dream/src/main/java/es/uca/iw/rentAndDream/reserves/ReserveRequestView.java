@@ -20,12 +20,16 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.grid.Editor;
 
+import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
+import es.uca.iw.rentAndDream.Utils.HousingPreview;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.users.UserService;
 
 @SpringView(name = ReserveRequestView.VIEW_NAME)
 public class ReserveRequestView extends CssLayout implements View {
 	public static final String VIEW_NAME = "reserveRequestView";
+	
+	private HorizontalItemLayout horizontalItemLayout;
 	
 	private final ReserveService reserveService;
 	private final UserService userService;
@@ -34,15 +38,14 @@ public class ReserveRequestView extends CssLayout implements View {
 	public ReserveRequestView(ReserveService reserveService, UserService userService) {
 		this.reserveService = reserveService;
 		this.userService = userService;
+		this.horizontalItemLayout = new HorizontalItemLayout();
 	}
 	
 	@PostConstruct
 	void init() {
 		
-		// build layout
-		CssLayout requestList = new CssLayout();
-		
-		addComponents(requestList);
+		// build layout		
+		addComponent(horizontalItemLayout);
 
 		// Hook logic to components
 
@@ -71,8 +74,8 @@ public class ReserveRequestView extends CssLayout implements View {
 
 	private void listReserve(Long filterText) {
 		if (StringUtils.isEmpty(filterText)) {
-			//grid.setItems(reserveService.findByUserAndStatus(userService.findOne(1L), TypeReserveStatus.PENDING));
-			reserveService.findByUserAndStatus(userService.findOne(1L), TypeReserveStatus.PENDING).forEach(e -> System.out.println(e.getId() + " " +  e.getReserve()));
+			reserveService.findByUserAndStatus(userService.findOne(1L), TypeReserveStatus.PENDING)
+				.forEach(e -> horizontalItemLayout.addComponent(new HousingPreview(e)));
 		} else {
 			//grid.setItems(service.findByIdStartsWithIgnoreCase(filterText));
 		}
