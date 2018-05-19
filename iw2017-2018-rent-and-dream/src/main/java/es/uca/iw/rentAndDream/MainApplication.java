@@ -107,8 +107,21 @@ public class MainApplication {
 				
 				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, TypeReserveStatus.PENDING);
 				reserve1.setHousing(housing1);
+
 				reserve1.setUser(userService.findByUsername("user2"));
+
+				Reserve reserve2 = new Reserve(2, LocalDate.of(2018, 5, 30), LocalDate.of(2018, 6, 10), 3f, TypeReserveStatus.PENDING);
+				reserve2.setHousing(housing2);
+				reserve2.setUser(userService.loadUserByUsername("user2"));
+				
+				Reserve reserve3 = new Reserve(2, LocalDate.of(2018, 7, 25), LocalDate.of(2018, 7, 28), 3f, TypeReserveStatus.PENDING);
+				reserve3.setHousing(housing3);
+				reserve3.setUser(userService.loadUserByUsername("user2"));
+				
 				reserveService.save(reserve1);
+				reserveService.save(reserve2);
+				reserveService.save(reserve3);
+
 			}
 		};
 	}
