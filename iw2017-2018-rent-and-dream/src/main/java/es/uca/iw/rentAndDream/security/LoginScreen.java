@@ -15,13 +15,13 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import es.uca.iw.rentAndDream.WelcomeView;
+import es.uca.iw.rentAndDream.users.User;
+import es.uca.iw.rentAndDream.users.UserService;
 
 @SpringView(name = LoginScreen.VIEW_NAME)
 public class LoginScreen extends VerticalLayout implements View  {
@@ -29,6 +29,9 @@ public class LoginScreen extends VerticalLayout implements View  {
   
 	@Autowired
 	AuthenticationManager authenticationManager;
+	
+	@Autowired
+	UserService userService;
 	
 	@PostConstruct
 	void init() {
@@ -59,30 +62,7 @@ public class LoginScreen extends VerticalLayout implements View  {
 		// TODO Auto-generated method stub
 
 	}
-	
-	/*
-	public LoginScreen(LoginCallback callback) {
-        setMargin(true);
-        setSpacing(true);
 
-        TextField username = new TextField("Username");
-        addComponent(username);
-
-        PasswordField password = new PasswordField("Password");
-        addComponent(password);
-
-        Button login = new Button("Login", evt -> {
-            String pword = password.getValue();
-            password.setValue("");
-            if (!callback.login(username.getValue(), pword)) {
-                Notification.show("Login failed");
-                username.focus();
-            }
-        });
-        login.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        addComponent(login);
-    }
-*/
     @FunctionalInterface
     public interface LoginCallback {
 
@@ -95,11 +75,16 @@ public class LoginScreen extends VerticalLayout implements View  {
 					.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 			// Reinitialize the session to protect against session fixation
 			// attacks. This does not work with websocket communication.
+			
 			VaadinService.reinitializeSession(VaadinService.getCurrentRequest());
+
 			SecurityContextHolder.getContext().setAuthentication(token);
 			
 			// Show the main view
 			//getUI().getNavigator().navigateTo(WelcomeView.VIEW_NAME);
+			
+			getUI().getSession().setAttribute(User.class, userService.loadUserByUsername(username));
+			
 			getUI().getPage().reload();
 			return true;
 		} catch (AuthenticationException ex) {

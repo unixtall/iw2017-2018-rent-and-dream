@@ -39,10 +39,5 @@ public class UserEditProfileView extends CssLayout implements View {
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	
-	
-	
-	
+	}	
 }
