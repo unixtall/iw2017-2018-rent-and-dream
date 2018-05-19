@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -122,28 +123,32 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserves requests", ReserveRequestView.VIEW_NAME));
+		
 
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
 	{
+		//System.out.println(VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName()).toString());
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 
-		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton(VaadinService.getCurrentRequest()
+				.getWrappedSession().getAttribute(User.class.getName()).toString(), UserEditProfileView.VIEW_NAME));
 		
-		navigationBar.addComponent(new Label(getUI().getSession().getAttribute(User.class).toString()));
+		//navigationBar.addComponent(new Label(getUI().getSession().getAttribute(User.class).toString()));
 
-		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
 		navigationBar.addComponent(logoutButton);
+		
 	}
 	
 	public void addManagerMenu(CssLayout navigationBar)
 	{
 		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Edit profile", UserEditProfileView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton(VaadinService.getCurrentRequest().
+				getWrappedSession().getAttribute(User.class.getName()).toString(), UserEditProfileView.VIEW_NAME));
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);

@@ -2,7 +2,6 @@ package es.uca.iw.rentAndDream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -10,6 +9,7 @@ import com.vaadin.ui.UI;
 
 import es.uca.iw.rentAndDream.security.AccessDeniedView;
 import es.uca.iw.rentAndDream.security.ErrorView;
+import es.uca.iw.rentAndDream.users.User;
 
 @SpringUI
 public class VaadinUI extends UI {
@@ -24,6 +24,8 @@ public class VaadinUI extends UI {
 
 	@Autowired
     MainScreen mainScreen;
+	
+	User user;
 	
 	@Override
 	protected void init(VaadinRequest request) {

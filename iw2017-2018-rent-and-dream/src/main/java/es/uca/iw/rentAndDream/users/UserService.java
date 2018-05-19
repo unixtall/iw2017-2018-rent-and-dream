@@ -3,18 +3,15 @@
  */
 package es.uca.iw.rentAndDream.users;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import es.uca.iw.rentAndDream.housing.Housing;
+import com.vaadin.ui.Notification;
 
 /**
  * @author ruizrube
@@ -53,7 +50,23 @@ public class UserService implements UserDetailsService {
 	}
 	
 	public User save(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword() != null ? user.getPassword() : "default"));
+
+		if(user.getId() == null)
+		{
+
+			if(user.getPassword() == null)
+				user.setPassword(passwordEncoder.encode("default"));
+			else
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+		}
+		else
+		{
+			String pass = repo.findOne(user.getId()).getPassword();
+			if(!pass.equals(user.getPassword()))
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+			else
+				user.setPassword(pass);
+		}
 		return repo.save(user);
 	}
 

@@ -81,9 +81,20 @@ public class LoginScreen extends VerticalLayout implements View  {
 			SecurityContextHolder.getContext().setAuthentication(token);
 			
 			// Show the main view
-			//getUI().getNavigator().navigateTo(WelcomeView.VIEW_NAME);
+			/*if(SecurityUtils.hasRole(RoleType.ADMIN))
+	        	this.getUI().getNavigator().navigateTo("userManagementView");
+	        else
+	        if(SecurityUtils.hasRole(RoleType.MANAGER))
+	        	this.getUI().getNavigator().navigateTo("reserveManagementView");
+	        else 
+	        	this.getUI().getNavigator().navigateTo("housingSearchView");
+			*/
+			//UI.getCurrent().setAttribute(User.class, userService.loadUserByUsername(username));
+			VaadinService.getCurrentRequest().getWrappedSession().setAttribute(User.class.getName(), userService.findByUsername(username));
 			
-			getUI().getSession().setAttribute(User.class, userService.loadUserByUsername(username));
+			//Notification.show(username);
+			
+			//getUI().getSession().set
 			
 			getUI().getPage().reload();
 			return true;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
@@ -25,7 +26,7 @@ public class UserEditProfileView extends CssLayout implements View {
 	@Autowired
 	public UserEditProfileView(UserEditor editor, UserService userService) {
 		this.editor = editor;
-		editor.editUser(userService.findOne(1L));
+		editor.editUser((User)(VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName())));
 	}
 	
 	@PostConstruct

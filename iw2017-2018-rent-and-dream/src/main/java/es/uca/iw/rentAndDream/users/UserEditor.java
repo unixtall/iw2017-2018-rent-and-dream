@@ -157,7 +157,7 @@ public class UserEditor extends FormLayout {
 
 		//binder.bindInstanceFields(this);
 		
-		binder.setBean(user);
+		//binder.setBean(user);
  
         save.setEnabled(false);
         
@@ -170,10 +170,10 @@ public class UserEditor extends FormLayout {
 		save.addClickListener(
 	              event -> {
 	            	  try {
-	            		  service.save(binder.getBean());
+	            		  service.save(user);
 	            	      Notification.show("\r\n" + 
-	            	      		"The user has successfully registered");
-	            	      setVisible(false);
+	            	      		"The Change is successfull");
+	            	      //setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");
@@ -188,9 +188,13 @@ public class UserEditor extends FormLayout {
 			
 			service.delete(user);
 			
-			/*getUI().getSession().close();
-			getUI().getPage().reload();*/
-		
+
+			
+			if(!SecurityUtils.hasRole(RoleType.ADMIN))
+			{
+				getUI().getSession().close();
+				
+			}
 		});
 		
 		//setVisible(false);
