@@ -171,10 +171,13 @@ public class UserEditor extends FormLayout {
 	              event -> {
 	            	  try {
 	            		  service.save(binder.getBean());
+	            	      Notification.show("User Create");
+	            	      setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");
 	            	  }
+
 	              });
  
         binder.addStatusChangeListener(
@@ -183,7 +186,7 @@ public class UserEditor extends FormLayout {
 		// wire action buttons to delete and reset	
 		delete.addClickListener(e -> service.delete(user));
 		
-		setVisible(false);
+		//setVisible(false);
 		
 		// Solo borra el admin
 		role.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
