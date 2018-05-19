@@ -72,7 +72,7 @@ public class HousingView extends VerticalLayout implements View{
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		
 		//reserveDatePicker.setRangeStart(startDate);
-		tuningDateField.
+		//tuningDateField.
 
 		addComponents(name, city, features, description, tuningDateField);
 		setSizeFull();
