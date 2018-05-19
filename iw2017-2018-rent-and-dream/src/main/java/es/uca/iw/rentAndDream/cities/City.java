@@ -16,6 +16,7 @@ import es.uca.iw.rentAndDream.regions.Region;
 
 @Entity
 public class City {
+	
 	@Id
 	@GeneratedValue
 	private Long id;
