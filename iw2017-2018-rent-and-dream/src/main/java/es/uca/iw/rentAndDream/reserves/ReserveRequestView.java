@@ -20,24 +20,20 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.grid.Editor;
 
+import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.users.UserService;
 
 @SpringView(name = ReserveRequestView.VIEW_NAME)
 public class ReserveRequestView extends CssLayout implements View {
 	public static final String VIEW_NAME = "reserveRequestView";
 	
-	private Grid<Reserve> grid;
-
 	private final ReserveService reserveService;
 	private final UserService userService;
-	private final ReserveEditor reserveEditor;
 
 	@Autowired
-	public ReserveRequestView(ReserveService reserveService, ReserveEditor reserveEditor, UserService userService) {
+	public ReserveRequestView(ReserveService reserveService, UserService userService) {
 		this.reserveService = reserveService;
-		this.reserveEditor = reserveEditor;
 		this.userService = userService;
-		this.grid = new Grid<>(Reserve.class);
 	}
 	
 	@PostConstruct
@@ -46,10 +42,7 @@ public class ReserveRequestView extends CssLayout implements View {
 		// build layout
 		CssLayout requestList = new CssLayout();
 		
-		addComponents(requestList, grid, reserveEditor);
-
-		grid.setSizeFull();
-		grid.setColumns("id", "numberGuests", "entryDate", "departureDate", "price", "status");
+		addComponents(requestList);
 
 		// Hook logic to components
 
@@ -58,9 +51,9 @@ public class ReserveRequestView extends CssLayout implements View {
 		//filter.addValueChangeListener(e -> listReserve(Long.getLong(e.getValue())));
 
 		// Connect selected User to editor or hide if none is selected
-		grid.asSingleSelect().addValueChangeListener(e -> {
-			reserveEditor.editReserve(e.getValue());
-		});
+		//grid.asSingleSelect().addValueChangeListener(e -> {
+			//reserveEditor.editReserve(e.getValue());
+		//});
 
 		// Instantiate and edit new User the new button is clicked
 		//addNewBtn.addClickListener(e -> editor.editReserve(new Reserve(0, null, null, 0f, null)));
@@ -78,7 +71,8 @@ public class ReserveRequestView extends CssLayout implements View {
 
 	private void listReserve(Long filterText) {
 		if (StringUtils.isEmpty(filterText)) {
-			//grid.setItems(userService.findOne(arg0));
+			//grid.setItems(reserveService.findByUserAndStatus(userService.findOne(1L), TypeReserveStatus.PENDING));
+			reserveService.findByUserAndStatus(userService.findOne(1L), TypeReserveStatus.PENDING).forEach(e -> System.out.println(e.getId() + " " +  e.getReserve()));
 		} else {
 			//grid.setItems(service.findByIdStartsWithIgnoreCase(filterText));
 		}

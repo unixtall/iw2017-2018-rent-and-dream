@@ -107,8 +107,7 @@ public class Reserve {
 
 	@Override
 	public String toString() {
-		return "Reserve [numberGuests=" + numberGuests + ", entryDate=" + entryDate + ", departureDate=" + departureDate
-				+ ", price=" + price + ", status=" + status + ", user=" + user + ", housing=" + housing + "]";
+		return id.toString();
 	}
 	
 	

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.users.User;
 
 @Service
 public class ReserveService {
@@ -46,7 +47,7 @@ public class ReserveService {
 		return repo.findAll();
 	}
 	
-	public List<Reserve> findByHousingBetweenDates(Housing housing, LocalDate entryDate, LocalDate departureDate){
-		return repo.findByHousingBetweenDates();
+	public List<Housing> findByUserAndStatus(User user, TypeReserveStatus status){
+		return repo.findByUserAndStatus(user, status);
 	}
 }
