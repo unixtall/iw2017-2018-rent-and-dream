@@ -27,7 +27,7 @@ import es.uca.iw.rentAndDream.regions.RegionService;
 
 @SpringComponent
 @UIScope
-public class HousingSearch extends CssLayout {
+public class HousingSearch extends VerticalLayout {
 	
 	private Binder<HousingSearch> binder = new Binder<HousingSearch>(HousingSearch.class);
 	
@@ -45,7 +45,6 @@ public class HousingSearch extends CssLayout {
 	private DateField endDate;
 	private ComboBox<Integer> guests;
 	public Button searchButton;
-	public CssLayout searchForm;
 	//Para mostrar el estado de validacion
 	Label validationStatus = new Label();
 	
@@ -69,8 +68,6 @@ public class HousingSearch extends CssLayout {
 		endDate.setValue(LocalDate.now().plusDays(1));
 		endDate.setPlaceholder("End date");
 		endDate.setRangeStart(LocalDate.now().plusDays(1));
-		 
-		this.searchForm = new CssLayout(new VerticalLayout(citySearch, startDate, endDate, guests, searchButton));
 
         //Realizamos las validaciones y bindeos
 		  
@@ -94,7 +91,7 @@ public class HousingSearch extends CssLayout {
         //mostramos el boton buscar si el binder está validado
   		binder.addStatusChangeListener(event -> searchButton.setEnabled(binder.isValid()));
         
-		addComponent(this.searchForm);
+		addComponents(citySearch, startDate, endDate, guests, searchButton);
 		
 		//Dandole funcionalidad al boton buscar
 		this.searchButton.addClickListener(event -> 
