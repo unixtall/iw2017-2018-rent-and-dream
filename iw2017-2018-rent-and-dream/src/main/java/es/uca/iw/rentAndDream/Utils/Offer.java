@@ -20,14 +20,12 @@ import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingView;
 
-public class Offer extends CssLayout {
+public class Offer extends VerticalLayout {
 	
-	CssLayout offer;
 	Housing housing;
 	
 	public Offer(Housing housing)
 	{
-		offer = new CssLayout();
 		this.housing =housing;
 		
 		// Image as a file resource
@@ -41,15 +39,15 @@ public class Offer extends CssLayout {
 			e1.printStackTrace();
 		}
 		
-		VerticalLayout verticalLayout = new VerticalLayout();
+
 		// Show the image in the application
 		Image image = new Image(null, resource);
 		image.setWidth("240px");
-		verticalLayout.setSpacing(true);
+		setSpacing(true);
 		//hay que añadir el atributo tipo
-		verticalLayout.addComponent(image);
-		verticalLayout.addComponent(new Label("Type: Private BedRoom · " + housing.getBeds() + " Beds"));
-		verticalLayout.addComponent(new Label(housing.getName()));
+		addComponent(image);
+		addComponent(new Label("Type: Private BedRoom · " + housing.getBeds() + " Beds"));
+		addComponent(new Label(housing.getName()));
 		
 		//Hay que calcular desde que precio se puede alquilar
 		
@@ -58,33 +56,16 @@ public class Offer extends CssLayout {
 			if(a.getPrice() < fromPrice)
 				fromPrice = a.getPrice();	
 
-		verticalLayout.addComponent(new Label("From " + fromPrice + "€ per Night, Rating: " + housing.getAssessment()));
-		verticalLayout.setSizeFull();
+		addComponent(new Label("From " + fromPrice + "€ per Night, Rating: " + housing.getAssessment()));
+		setSizeFull();
 		
 		//popup with a  resume of offer
 		this.addLayoutClickListener(event -> getOfferDescription(housing));
 
-		offer = new CssLayout(verticalLayout);
-		addComponent(offer);
-	}
-
-	public CssLayout getCssLayout() {
-		return offer;
-	}
-
-	public void setCssLayout(CssLayout cssLayout) {
-		this.offer = cssLayout;
 	}
 	
 	public void getOfferDescription(Housing housing)
-	{
-		/*
-		VerticalLayout subContent = new VerticalLayout();
-        final HousingView housingView = new HousingView(housing);
-        subContent.addComponent(new HousingView(housing));
-        addComponent(subContent);
-		*/
-		
+	{	
         final Window window = new Window(housing.getName() + " Description page");
         VerticalLayout subContent = new VerticalLayout();
         final HousingView housingView = new HousingView(housing);
