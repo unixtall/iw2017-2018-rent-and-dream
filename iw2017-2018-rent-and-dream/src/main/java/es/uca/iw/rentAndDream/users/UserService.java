@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,6 +71,14 @@ public class UserService implements UserDetailsService {
 
 	public List<User> findAll() {
 		return repo.findAll();
+	}
+	
+	public User findByUsername(String username) throws UsernameNotFoundException {
+		User user = repo.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		return user;
 	}
 
 }

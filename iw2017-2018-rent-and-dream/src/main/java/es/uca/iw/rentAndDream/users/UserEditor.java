@@ -178,21 +178,27 @@ public class UserEditor extends FormLayout {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");
 	            	  }
-
 	              });
  
         binder.addStatusChangeListener(
                 event -> save.setEnabled(binder.isValid()));		
 
 		// wire action buttons to delete and reset	
-		delete.addClickListener(e -> service.delete(user));
+		delete.addClickListener(e -> {
+			
+			service.delete(user);
+			
+			/*getUI().getSession().close();
+			getUI().getPage().reload();*/
+		
+		});
 		
 		//setVisible(false);
 		
 		// Solo borra el admin
 		role.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
 		registerDate.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
-		delete.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
+		delete.setVisible(SecurityUtils.isLoggedIn());
 	}
 
 	public interface ChangeHandler {
