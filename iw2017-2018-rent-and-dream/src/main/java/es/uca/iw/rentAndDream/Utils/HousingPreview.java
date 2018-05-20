@@ -18,7 +18,7 @@ import es.uca.iw.rentAndDream.housing.HousingEditor;
 
 public class HousingPreview extends VerticalLayout {
 	
-	Housing housing;
+	private Housing housing;
 	private HousingEditor housingEditor;
 	
 	private Button editButton = new Button("Edit");
@@ -52,10 +52,18 @@ public class HousingPreview extends VerticalLayout {
 		
 		setSizeFull();
 
-		editButton.addClickListener(e -> {
-			housingEditor.editHousing(housing);
-			new WindowManager("Titulo", this.housingEditor);
-		});
+		//damos funcionalidad al boton de editar creando una ventana al editor
 
+		
+		editButton.addClickListener(e -> {
+			Window window = new WindowManager("Titulo", this.housingEditor).getWindow();
+			housingEditor.editHousing(housing);
+			
+			//cerramos la ventana cuando haya un cambio
+			housingEditor.setChangeHandler(()-> {
+				window.close();	
+			});
+		});
+	
 	}
 }

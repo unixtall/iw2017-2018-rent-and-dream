@@ -55,7 +55,7 @@ public class HousingEditor extends VerticalLayout {
 	@Autowired
 	public HousingEditor(HousingService service) {
 		this.service = service;
-
+		this.housing = new Housing();
 		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
 
 		binder.forField(name)
@@ -106,14 +106,16 @@ public class HousingEditor extends VerticalLayout {
 		delete.addClickListener(e -> {
 			service.delete(housing);
 			Notification.show("Action successfull");
-			UI.getCurrent().getWindows().clear();
 		});
 	
 		binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
 		
 		//setVisible(false);
 		save.setEnabled(false);
+		delete.setVisible(false);
 		assessment.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
+		
+		//binder.setBean(housing);
 		
 		// Solo borra el admin
 		//delete.setEnabled(SecurityUtils.hasRole(RoleType.ADMIN));
@@ -125,10 +127,10 @@ public class HousingEditor extends VerticalLayout {
 	}
 
 	public final void editHousing(Housing c) {
-		if (c == null) {
+		/*if (c == null) {
 			setVisible(false);
 			return;
-		}
+		}*/
 		final boolean persisted = c.getId() != null;
 		if (persisted) {
 			// Find fresh entity for editing
@@ -144,6 +146,7 @@ public class HousingEditor extends VerticalLayout {
 		binder.setBean(housing);
 
 		setVisible(true);
+		delete.setVisible(true);
 		save.setEnabled(false);
 
 		// A hack to ensure the whole form is visible

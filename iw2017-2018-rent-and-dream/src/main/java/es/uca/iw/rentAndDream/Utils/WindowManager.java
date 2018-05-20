@@ -7,10 +7,13 @@ import com.vaadin.ui.Window;
 
 public class WindowManager extends VerticalLayout{
 	
+	Window window;
+	
 	public WindowManager(String caption, Component component)
 	{
-		Window window = new Window(caption);
 		//window.setCaption(caption);
+		window = new Window(caption);
+		window.setVisible(true);
 	    VerticalLayout subContent = new VerticalLayout();
 	    window.setModal(true);
 	    window.center();
@@ -23,4 +26,13 @@ public class WindowManager extends VerticalLayout{
 	    window.setContent(subContent);
 	    UI.getCurrent().addWindow(window);
 	}
+
+	public Window getWindow() {
+		return window;
+	}
+
+	public void setWindow(Window window) {
+		this.window = window;
+	}
+	
 }
