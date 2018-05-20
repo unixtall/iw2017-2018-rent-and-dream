@@ -46,10 +46,6 @@ public class CitySearch extends VerticalLayout {
 		
 		//Seteo para hacer mas facil el debug (BORRAR)
 		
-		country.setItems(countryService.findOne(62L));
-		country.setSelectedItem(countryService.findOne(62L));
-		region.setItems(regionService.findOne(965L));
-		region.setSelectedItem(regionService.findOne(965L));
 		city.setItems(cityService.findOne(700044L));
 		city.setSelectedItem(cityService.findOne(700044L));
 		
@@ -67,30 +63,21 @@ public class CitySearch extends VerticalLayout {
         binder.setStatusLabel(validationStatus);
 		
 		binder.bindInstanceFields(this);
-		binder.writeBean(this);
+		binder.setBean(this);
+	
 		
 		country.addValueChangeListener(
 				event -> {
 					if(!country.isEmpty())
 						region.setItems(countryService.findOne(event.getValue().getId()).getRegion());
-					try {
-						binder.writeBean(this);
-					} catch (ValidationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
 				});
 		
 		region.addValueChangeListener(
 			event -> {
 				if(!region.isEmpty())
 					city.setItems(regionService.findOne(event.getValue().getId()).getCities());
-				try {
-					binder.writeBean(this);
-				} catch (ValidationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 			});
 		
 		addComponents(country, region, city);
@@ -122,6 +109,14 @@ public class CitySearch extends VerticalLayout {
 		this._city = _city;
 	}
 
+
+	
+	public Boolean isValid()
+	{
+		return binder.isValid();
+	}
+	
+	
 	public interface ChangeHandler {
 		void onChange();
 	}

@@ -88,9 +88,17 @@ public class HousingSearch extends VerticalLayout {
         
         //Hacemos el autobind con todos los atributos de esta instancia
         binder.bindInstanceFields(this);
-        //mostramos el boton buscar si el binder está validado
-  		binder.addStatusChangeListener(event -> searchButton.setEnabled(binder.isValid()));
         
+        searchButton.setEnabled(binder.isValid());
+        
+        
+     
+        //comprobamos la validacion de los componentes del formulario para permitir enviar o no
+  		binder.addStatusChangeListener(event -> searchButton.setEnabled(binder.isValid() && citySearch.isValid()));
+		citySearch.setChangeHandler(() -> {
+			searchButton.setEnabled(citySearch.isValid() && binder.isValid());
+		});
+  		
 		addComponents(citySearch, startDate, endDate, guests, searchButton);
 		
 		//Dandole funcionalidad al boton buscar

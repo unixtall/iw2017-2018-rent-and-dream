@@ -73,25 +73,22 @@ public class CityManagementView extends VerticalLayout implements View {
 			editor.setVisible(false);
 			listCity(filter.getValue());
 		});
-
+		// escuchamos los cambios de city search para rellenar el grid
 		citysearch.setChangeHandler(() -> 
 		{
-			grid.setItems(citysearch.get_city());
+			listCity(null);
 		});
-		
-		// Initialize listing
-		//listCity(null);
-
 	}
 
 	private void listCity(String filterText) {
-		if (StringUtils.isEmpty(filterText)) {
-			//grid.setItems(service.findAll());
+		if (filterText == null) {
+			if(citysearch.get_city() != null)
+				grid.setItems(citysearch.get_city());
 		} else {
-			grid.setItems(citysearch.get_city());
+			if(filterText.length() > 3)
+				grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
 		}
 	}
-	
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
