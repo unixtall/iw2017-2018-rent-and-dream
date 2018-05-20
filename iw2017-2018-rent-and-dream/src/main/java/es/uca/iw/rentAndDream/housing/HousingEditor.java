@@ -13,7 +13,9 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -44,11 +46,10 @@ public class HousingEditor extends VerticalLayout {
 
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
-	Button cancel = new Button("Cancel");
 	Button delete = new Button("Delete", FontAwesome.TRASH_O);
 	
 	/* Layout for buttons */
-	CssLayout actions = new CssLayout(save, cancel, delete);
+	CssLayout actions = new CssLayout(save, delete);
 
 
 	@Autowired
@@ -57,19 +58,34 @@ public class HousingEditor extends VerticalLayout {
 
 		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
 
+		binder.forField(name)
+		.asRequired("Is required")
+	  	.bind(Housing::getName, Housing::setName);
+		
 		binder.forField(assessment)
 			.withConverter(
 				new StringToFloatConverter("Must enter a number"))
+			.asRequired("Is required")
 		  	.bind(Housing::getAssessment, Housing::setAssessment);
+		
+		binder.forField(address)
+		.asRequired("Is required")
+	  	.bind(Housing::getAddress, Housing::setAddress);
+		
+		binder.forField(description)
+		.asRequired("Is required")
+	  	.bind(Housing::getDescription, Housing::setDescription);
 		
 		binder.forField(bedrooms)
 		.withConverter(
 			new StringToIntegerConverter("Must enter a number"))
+		.asRequired("Is required")
 	  	.bind(Housing::getBedrooms, Housing::setBedrooms);
 		
 		binder.forField(beds)
 		.withConverter(
 			new StringToIntegerConverter("Must enter a number"))
+		.asRequired("Is required")
 	  	.bind(Housing::getBeds, Housing::setBeds);
 		
 		// bind using naming convention
@@ -82,13 +98,25 @@ public class HousingEditor extends VerticalLayout {
 		save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
 		// wire action buttons to save, delete and reset
-		save.addClickListener(e -> service.save(housing));
-		delete.addClickListener(e -> service.delete(housing));
-		cancel.addClickListener(e -> editHousing(housing));
-		setVisible(false);
+		save.addClickListener(e -> {
+			service.save(housing);
+			Notification.show("Action successfull");
+		});
+		
+		delete.addClickListener(e -> {
+			service.delete(housing);
+			Notification.show("Action successfull");
+			UI.getCurrent().getWindows().clear();
+		});
+	
+		binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
+		
+		//setVisible(false);
+		save.setEnabled(false);
+		assessment.setVisible(SecurityUtils.hasRole(RoleType.ADMIN));
 		
 		// Solo borra el admin
-		delete.setEnabled(SecurityUtils.hasRole(RoleType.ADMIN));
+		//delete.setEnabled(SecurityUtils.hasRole(RoleType.ADMIN));
 	}
 
 	public interface ChangeHandler {
@@ -109,7 +137,6 @@ public class HousingEditor extends VerticalLayout {
 		else {
 			housing = c;
 		}
-		cancel.setVisible(persisted);
 
 		// Bind user properties to similarly named fields
 		// Could also use annotation or "manual binding" or programmatically
@@ -117,6 +144,7 @@ public class HousingEditor extends VerticalLayout {
 		binder.setBean(housing);
 
 		setVisible(true);
+		save.setEnabled(false);
 
 		// A hack to ensure the whole form is visible
 		save.focus();

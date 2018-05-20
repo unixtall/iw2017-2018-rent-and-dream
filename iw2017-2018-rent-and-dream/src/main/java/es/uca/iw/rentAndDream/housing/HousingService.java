@@ -6,10 +6,12 @@ import java.util.List;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.uca.iw.rentAndDream.cities.City;
+import es.uca.iw.rentAndDream.users.User;
 
 @Service
 public class HousingService {
@@ -52,4 +54,17 @@ public class HousingService {
 		return repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
 		
 	}
+	
+	@Transactional
+	public List<Housing> findByUser(User user)
+	{
+		List<Housing> housing = repo.findByUser(user);
+		housing.forEach(e ->{
+			e.getReserve();
+			e.getAvailability();
+			
+		});
+		return housing;
+	}
+	
 }

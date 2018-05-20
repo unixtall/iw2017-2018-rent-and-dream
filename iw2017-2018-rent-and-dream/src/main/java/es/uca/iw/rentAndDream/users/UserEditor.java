@@ -16,6 +16,7 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
@@ -165,12 +166,13 @@ public class UserEditor extends FormLayout {
 		setSpacing(true);
 		actions.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-		save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+		//save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 		
 		save.addClickListener(
 	              event -> {
 	            	  try {
-	            		  service.save(user);
+	            		  service.save(binder.getBean());
+	            		  VaadinService.getCurrentRequest().getWrappedSession().setAttribute(User.class.getName(), binder.getBean());
 	            	      Notification.show("\r\n" + 
 	            	      		"The Change is successfull");
 	            	      //setVisible(false);
@@ -181,14 +183,12 @@ public class UserEditor extends FormLayout {
 	              });
  
         binder.addStatusChangeListener(
-                event -> save.setEnabled(binder.isValid()));		
+                event -> save.setEnabled(binder.isValid()));
 
 		// wire action buttons to delete and reset	
 		delete.addClickListener(e -> {
 			
 			service.delete(user);
-			
-
 			
 			if(!SecurityUtils.hasRole(RoleType.ADMIN))
 			{
@@ -227,7 +227,7 @@ public class UserEditor extends FormLayout {
 		// Bind user properties to similarly named fields
 		// Could also use annotation or "manual binding" or programmatically
 		// moving values from fields to entities before saving
-		binder.setBean(user);
+		binder.setBean(c);
 
 		setVisible(true);
 
@@ -242,5 +242,6 @@ public class UserEditor extends FormLayout {
 		// is clicked
 		save.addClickListener(e -> h.onChange());
 		delete.addClickListener(e -> h.onChange());
+		
 	}
 }

@@ -7,9 +7,9 @@ import com.vaadin.ui.UI;
 
 import es.uca.iw.rentAndDream.WelcomeView;
 import es.uca.iw.rentAndDream.housing.HousingSearchView;
+import es.uca.iw.rentAndDream.housing.HousingUserView;
 import es.uca.iw.rentAndDream.housing.HousingView;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
-import es.uca.iw.rentAndDream.reserves.ReserveRequestView;
 import es.uca.iw.rentAndDream.users.RoleType;
 import es.uca.iw.rentAndDream.users.UserEditProfileView;
 import es.uca.iw.rentAndDream.users.UserManagementView;
@@ -30,9 +30,9 @@ public class SampleViewAccessControl implements ViewAccessControl {
     	if(SecurityUtils.hasRole(RoleType.ADMIN)){
     		return true;
     	} else if (beanName.equals(WelcomeView.VIEW_NAME) || beanName.equals(LoginScreen.VIEW_NAME) || beanName.equals(UserRegisterView.VIEW_NAME) 
-    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingView.VIEW_NAME) || beanName.equals(ReserveRequestView.VIEW_NAME)) {
+    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingView.VIEW_NAME)) {
             return true;
-        } else if (beanName.equals(UserView.VIEW_NAME) || beanName.equals(UserEditProfileView.VIEW_NAME)) {
+        } else if (beanName.equals(UserView.VIEW_NAME) || beanName.equals(UserEditProfileView.VIEW_NAME) || beanName.equals(HousingUserView.VIEW_NAME)) {
             return SecurityUtils.hasRole(RoleType.USER) || SecurityUtils.hasRole(RoleType.MANAGER);
         } else if (beanName.equals(UserManagementView.VIEW_NAME) || beanName.equals(ReserveManagementView.VIEW_NAME)) {
             return SecurityUtils.hasRole(RoleType.MANAGER);

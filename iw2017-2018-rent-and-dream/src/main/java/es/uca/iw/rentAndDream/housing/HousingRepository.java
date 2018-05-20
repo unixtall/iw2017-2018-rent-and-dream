@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import es.uca.iw.rentAndDream.cities.City;
+import es.uca.iw.rentAndDream.users.User;
 
 public interface HousingRepository extends JpaRepository<Housing, Long> {
 
@@ -23,4 +24,9 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 			+ "where h.city = ?1 and h.beds >= ?4 and ?2 < a.endDate and ?3 >= a.startDate ")
 	List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, 
 			LocalDate endDate, Integer guests);
+	
+	@EntityGraph(attributePaths = {"reserve", "city"})
+	@Query("select distinct h from Housing h "
+			+ "where h.user = ?1")
+	List<Housing> findByUser(User user);
 }

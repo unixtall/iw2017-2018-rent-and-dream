@@ -1,32 +1,32 @@
 package es.uca.iw.rentAndDream.Utils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
 import com.vaadin.server.FileResource;
-import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.housing.Housing;
-import es.uca.iw.rentAndDream.housing.HousingView;
+import es.uca.iw.rentAndDream.housing.HousingEditor;
 
 public class HousingPreview extends VerticalLayout {
 	
 	Housing housing;
+	private HousingEditor housingEditor;
 	
-	public HousingPreview(Housing housing)
+	private Button editButton = new Button("Edit");
+	
+	public HousingPreview(Housing housing, HousingEditor housingEditor)
 	{
-		this.housing =housing;
+		this.housing = housing;
+		this.housingEditor = housingEditor;
 		
 		// Image as a file resource
 
@@ -47,13 +47,15 @@ public class HousingPreview extends VerticalLayout {
 		//hay que añadir el atributo tipo
 		addComponent(image);
 		addComponent(new Label("Name: " + housing.getName()));
+		addComponent(new CssLayout(editButton));
 		addComponent(new Label("Number of reserves: " + housing.getReserve().size()));
 		
 		setSizeFull();
-		
-		//popup with a  resume of offer
-		//this.addLayoutClickListener(event -> getHousingPreviewDescription(housing));
+
+		editButton.addClickListener(e -> {
+			housingEditor.editHousing(housing);
+			new WindowManager("Titulo", this.housingEditor);
+		});
 
 	}
-	
 }

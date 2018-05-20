@@ -60,15 +60,14 @@ public class Offer extends VerticalLayout {
 		setSizeFull();
 		
 		//popup with a  resume of offer
-		this.addLayoutClickListener(event -> getOfferDescription(housing));
+		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingView(housing)));
 
 	}
 	
 	public void getOfferDescription(Housing housing)
 	{	
-        final Window window = new Window(housing.getName() + " Description page");
+        Window window = new Window(housing.getName() + " Description page");
         VerticalLayout subContent = new VerticalLayout();
-        final HousingView housingView = new HousingView(housing);
         window.setModal(true);
         window.center();
         window.setResizable(false);
