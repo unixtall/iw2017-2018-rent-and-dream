@@ -3,19 +3,19 @@ package es.uca.iw.rentAndDream.cities;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.converter.StringToBooleanConverter;
 import com.vaadin.data.converter.StringToFloatConverter;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.Utils.CitySearch;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 
@@ -49,7 +49,6 @@ public class CityEditor extends VerticalLayout {
 	@Autowired
 	public CityEditor(CityService service) {
 		this.service = service;
-
 		addComponents(name, longitude, latitude, actions);
 
 		binder.forField(latitude)

@@ -1,8 +1,6 @@
 package es.uca.iw.rentAndDream.housing;
 
 
-import java.time.LocalDate;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +18,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.Utils.MultiSelectDateField;
 import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.reserves.ReserveService;
 
-@SpringView(name = HousingView.VIEW_NAME)
-public class HousingView extends VerticalLayout implements View{
+@SpringView(name = HousingInfo.VIEW_NAME)
+public class HousingInfo extends VerticalLayout implements View{
 	
-	public static final String VIEW_NAME = "housingView";
+	public static final String VIEW_NAME = "housingInfo";
 	
 	private Housing housing;
 	
@@ -34,10 +33,10 @@ public class HousingView extends VerticalLayout implements View{
 	private ReserveService reserveService;
 
 	final private InlineDateField reserveDatePicker = new InlineDateField();
-	final private TuningDateField tuningDateField = new TuningDateField("Calendario");
+	final private TuningDateField tuningDateField = new TuningDateField("Availability Calendar");
 
 	@Autowired
-	public HousingView(Housing housing) {
+	public HousingInfo(Housing housing) {
 		this.housing = housing;
 		this.reserveService = reserveService;
 	    this.reserveDatePicker.setResolution(DateResolution.DAY);
@@ -73,8 +72,8 @@ public class HousingView extends VerticalLayout implements View{
 		
 		//reserveDatePicker.setRangeStart(startDate);
 		//tuningDateField.
-
-		addComponents(name, city, features, description, tuningDateField);
+		MultiSelectDateField multiSelectDateField = new MultiSelectDateField();
+		addComponents(name, city, features, description, tuningDateField, multiSelectDateField);
 		setSizeFull();
 	}
 	

@@ -3,7 +3,6 @@ package es.uca.iw.rentAndDream.housing;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.converter.StringToBooleanConverter;
 import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
@@ -15,10 +14,10 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.Utils.CitySearch;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 
@@ -27,6 +26,7 @@ import es.uca.iw.rentAndDream.users.RoleType;
 public class HousingEditor extends VerticalLayout {
 	
 	private final HousingService service;
+	private final CitySearch citySearch;
 	
 	/**
 	 * The currently edited user
@@ -53,10 +53,13 @@ public class HousingEditor extends VerticalLayout {
 
 
 	@Autowired
-	public HousingEditor(HousingService service) {
+	public HousingEditor(HousingService service, CitySearch citySearch) {
 		this.service = service;
+		this.citySearch = citySearch;
+		
 		this.housing = new Housing();
-		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
+
+		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, citySearch, actions);
 
 		binder.forField(name)
 		.asRequired("Is required")
@@ -88,6 +91,10 @@ public class HousingEditor extends VerticalLayout {
 		.asRequired("Is required")
 	  	.bind(Housing::getBeds, Housing::setBeds);
 		
+		binder.forField(citySearch.getCity())
+		.asRequired("Is required")
+	  	.bind(Housing::getCity, Housing::setCity);
+		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
 		
@@ -110,6 +117,10 @@ public class HousingEditor extends VerticalLayout {
 	
 		binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
 		
+		/*citySearch.setChangeHandler(()->{
+			save.setEnabled(binder.isValid() && citySearch.isValid());
+		});*/
+		
 		//setVisible(false);
 		save.setEnabled(false);
 		delete.setVisible(false);
@@ -127,14 +138,15 @@ public class HousingEditor extends VerticalLayout {
 	}
 
 	public final void editHousing(Housing c) {
-		/*if (c == null) {
+		if (c == null) {
 			setVisible(false);
 			return;
-		}*/
+		}
 		final boolean persisted = c.getId() != null;
 		if (persisted) {
 			// Find fresh entity for editing
 			housing = service.findOne(c.getId());
+			delete.setVisible(true);
 		}
 		else {
 			housing = c;
@@ -146,7 +158,7 @@ public class HousingEditor extends VerticalLayout {
 		binder.setBean(housing);
 
 		setVisible(true);
-		delete.setVisible(true);
+
 		save.setEnabled(false);
 
 		// A hack to ensure the whole form is visible

@@ -20,7 +20,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import es.uca.iw.rentAndDream.cities.CitySearch;
+import es.uca.iw.rentAndDream.Utils.CitySearch;
 import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.countries.CountryService;
 import es.uca.iw.rentAndDream.regions.RegionService;

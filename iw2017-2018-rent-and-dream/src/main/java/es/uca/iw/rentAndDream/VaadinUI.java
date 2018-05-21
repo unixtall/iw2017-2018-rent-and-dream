@@ -2,6 +2,7 @@ package es.uca.iw.rentAndDream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -12,6 +13,7 @@ import es.uca.iw.rentAndDream.security.ErrorView;
 import es.uca.iw.rentAndDream.users.User;
 
 @SpringUI
+@StyleSheet("calendarStyle.css")
 public class VaadinUI extends UI {
 
 	/**

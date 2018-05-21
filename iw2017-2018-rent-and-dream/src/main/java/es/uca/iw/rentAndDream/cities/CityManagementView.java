@@ -17,6 +17,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import es.uca.iw.rentAndDream.Utils.CitySearch;
+
 @SpringView(name = CityManagementView.VIEW_NAME)
 public class CityManagementView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "cityManagementView";
@@ -73,6 +75,7 @@ public class CityManagementView extends VerticalLayout implements View {
 			editor.setVisible(false);
 			listCity(filter.getValue());
 		});
+		
 		// escuchamos los cambios de city search para rellenar el grid
 		citysearch.setChangeHandler(() -> 
 		{

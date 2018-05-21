@@ -15,6 +15,7 @@ import com.vaadin.ui.Window;
 import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.HousingPreview;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.availabilities.AvailabilityEditor;
 import es.uca.iw.rentAndDream.reserves.ReserveService;
 import es.uca.iw.rentAndDream.users.User;
 import es.uca.iw.rentAndDream.users.UserService;
@@ -29,15 +30,18 @@ public class HousingUserView extends CssLayout implements View {
 	private final UserService userService;
 	private final HousingService housingService;
 	private final HousingEditor housingEditor;
+	private final AvailabilityEditor availabilityEditor;
 	Button addNew = new Button("Add new housing");
 
 	@Autowired
-	public HousingUserView(ReserveService reserveService, UserService userService, HousingService housingService, HousingEditor housingEditor) {
+	public HousingUserView(ReserveService reserveService, UserService userService, HousingService housingService
+			, HousingEditor housingEditor, AvailabilityEditor availabilityEditor) {
 		this.reserveService = reserveService;
 		this.userService = userService;
 		this.horizontalItemLayout = new HorizontalItemLayout();
 		this.housingService = housingService;
 		this.housingEditor = housingEditor;
+		this.availabilityEditor = availabilityEditor;
 	}
 	
 	@PostConstruct
@@ -59,7 +63,7 @@ public class HousingUserView extends CssLayout implements View {
 		housingService.findByUser((User)VaadinService.getCurrentRequest()
 				.getWrappedSession().getAttribute(User.class.getName()))
 			.forEach(e -> {
-					HousingPreview housingPreview = new HousingPreview(e, housingEditor);
+					HousingPreview housingPreview = new HousingPreview(e, housingEditor, availabilityEditor);
 					horizontalItemLayout.addComponent(housingPreview);
 			});
 		
@@ -71,7 +75,7 @@ public class HousingUserView extends CssLayout implements View {
 			housingService.findByUser((User)VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName()))
 					.forEach(e -> {
-						HousingPreview housingPreview = new HousingPreview(e, housingEditor);
+						HousingPreview housingPreview = new HousingPreview(e, housingEditor, availabilityEditor);
 						horizontalItemLayout.addComponent(housingPreview);
 					});
 		});

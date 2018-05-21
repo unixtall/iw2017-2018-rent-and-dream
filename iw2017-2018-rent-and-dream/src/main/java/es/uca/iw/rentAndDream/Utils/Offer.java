@@ -18,7 +18,7 @@ import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.availabilities.Availability;
 import es.uca.iw.rentAndDream.housing.Housing;
-import es.uca.iw.rentAndDream.housing.HousingView;
+import es.uca.iw.rentAndDream.housing.HousingInfo;
 
 public class Offer extends VerticalLayout {
 	
@@ -60,7 +60,7 @@ public class Offer extends VerticalLayout {
 		setSizeFull();
 		
 		//popup with a  resume of offer
-		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingView(housing)));
+		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingInfo(housing)));
 
 	}
 	
@@ -75,7 +75,7 @@ public class Offer extends VerticalLayout {
         window.setWidth(95, Unit.PERCENTAGE);
         window.setHeight(85, Unit.PERCENTAGE);
         
-        subContent.addComponent(new HousingView(housing));
+        subContent.addComponent(new HousingInfo(housing));
         window.setContent(subContent);
 
         getUI().getUI().addWindow(window);

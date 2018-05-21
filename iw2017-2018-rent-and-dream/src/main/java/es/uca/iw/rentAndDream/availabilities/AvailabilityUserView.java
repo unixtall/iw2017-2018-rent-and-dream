@@ -1,7 +1,5 @@
 package es.uca.iw.rentAndDream.availabilities;
 
-import java.time.LocalDate;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,7 @@ import org.springframework.util.StringUtils;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
@@ -19,9 +17,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-@SpringView(name = AvailabilityManagementView.VIEW_NAME)
-public class AvailabilityManagementView extends VerticalLayout implements View {
-	public static final String VIEW_NAME = "availabilityManagementView";
+import es.uca.iw.rentAndDream.users.User;
+
+@SpringView(name = AvailabilityUserView.VIEW_NAME)
+public class AvailabilityUserView extends VerticalLayout implements View {
+	public static final String VIEW_NAME = "availabilityUserView";
 
 	private Grid<Availability> grid;
 	private TextField filter;
@@ -33,7 +33,7 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 	private final AvailabilityService service;
 
 	@Autowired
-	public AvailabilityManagementView(AvailabilityService service, AvailabilityEditor editor) {
+	public AvailabilityUserView(AvailabilityService service, AvailabilityEditor editor) {
 		this.service = service;
 		this.editor = editor;
 		this.grid = new Grid<>(Availability.class);
@@ -52,7 +52,7 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "startDate", "endDate", "price");
+		grid.setColumns("housing", "startDate", "endDate", "price");
 
 		filter.setPlaceholder("Filter by name");
 
@@ -83,13 +83,24 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 
 	private void listAvailability(String filterText) {
 		if (StringUtils.isEmpty(filterText)) {
-			grid.setItems(service.findAll());
+			grid.setItems(service.findByUser((User)VaadinService.getCurrentRequest()
+					.getWrappedSession().getAttribute(User.class.getName())));
 		} else {
-			//grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
+			grid.setItems(service.findByUserAndHousingName((User)VaadinService.getCurrentRequest()
+					.getWrappedSession().getAttribute(User.class.getName()), filterText));
 		}
 	}
 	
 	
+	
+	public TextField getFilter() {
+		return filter;
+	}
+
+	public void setFilter(TextField filter) {
+		this.filter = filter;
+	}
+
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub

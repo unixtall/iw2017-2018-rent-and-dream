@@ -77,21 +77,13 @@ public class MainApplication {
 				housing3.setCity(cityService.findOne(700044L));
 				housing4.setCity(cityService.findOne(700044L));
 				
-				Availability availability1 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
-				Availability availability2 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
-				Availability availability3 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
-				Availability availability4 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
-				Availability availability5 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
-				Availability availability6 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f);
-				Availability availability7 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f);
-				
-				availability1.setHousing(housing1);
-				availability2.setHousing(housing1);
-				availability3.setHousing(housing2);
-				availability4.setHousing(housing2);
-				availability5.setHousing(housing3);
-				availability6.setHousing(housing3);
-				availability7.setHousing(housing4);
+				Availability availability1 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f, housing1);
+				Availability availability2 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f, housing1);
+				Availability availability3 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f, housing2);
+				Availability availability4 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f, housing2);
+				Availability availability5 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f, housing3);
+				Availability availability6 = new Availability(LocalDate.of(2018, 6, 1), LocalDate.of(2018, 12, 31), 60f, housing3);
+				Availability availability7 = new Availability(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 5, 31), 30f, housing4);
 				
 				housingService.save(housing1);
 				housingService.save(housing2);

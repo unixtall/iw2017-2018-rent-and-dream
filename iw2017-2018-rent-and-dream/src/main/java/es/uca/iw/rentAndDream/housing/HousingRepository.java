@@ -12,6 +12,11 @@ import es.uca.iw.rentAndDream.users.User;
 
 public interface HousingRepository extends JpaRepository<Housing, Long> {
 
+	
+	@EntityGraph(attributePaths = {"city"})
+	public List<Housing> findAll();
+	
+	@EntityGraph(attributePaths = {"city"})
 	public List<Housing> findByNameStartsWithIgnoreCase(String name);
 	
 	public Housing findByName(String name);
@@ -29,4 +34,7 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	@Query("select distinct h from Housing h "
 			+ "where h.user = ?1")
 	List<Housing> findByUser(User user);
+	
+	@EntityGraph(attributePaths = {"city"})
+	public Housing findOne(Long id);
 }

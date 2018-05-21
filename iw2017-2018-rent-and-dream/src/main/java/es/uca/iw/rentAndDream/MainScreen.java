@@ -9,12 +9,12 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.availabilities.AvailabilityManagementView;
+import es.uca.iw.rentAndDream.availabilities.AvailabilityUserView;
 import es.uca.iw.rentAndDream.cities.CityManagementView;
 import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
@@ -140,6 +140,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
 		navigationBar.addComponent(logoutButton);
 		navigationBar.addComponent(createNavigationButton("HousingManagement", HousingUserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("AvailabilityManagement", AvailabilityUserView.VIEW_NAME));
 		
 	}
 	

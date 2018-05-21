@@ -141,6 +141,31 @@
                     <widgetsetMode>cdn</widgetsetMode>
                 </configuration>
             </plugin>
+                        <!-- Sass compiler -->
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>sass-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>update-stylesheets</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <!-- Set source and destination dirs -->
+                            <source>
+                                <directory>${project.basedir}/src/main/resources/css/sass</directory>
+                            </source>
+                            <destination>${project.basedir}/src/main/resources/css/sass_compiled</destination>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 </project>

@@ -7,6 +7,9 @@ import javax.naming.NameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.users.User;
+
 @Service
 public class AvailabilityService {
 
@@ -40,5 +43,19 @@ public class AvailabilityService {
 
 	public List<Availability> findAll() {
 		return repo.findAll();
+	}
+	
+	public List<Availability> findByUser(User user){
+		return repo.findByUser(user);
+	}
+	
+	public List<Availability> findByHousing(Housing housing)
+	{
+		return repo.findByHousing(housing);
+	}
+	
+	public List<Availability> findByUserAndHousingName(User user, String housingName)
+	{
+		return repo.findByUserAndHousingName(user, housingName);
 	}
 }

@@ -26,10 +26,11 @@ public class Availability {
 	@ManyToOne(fetch=FetchType.LAZY) 
 	private Housing housing;
 	
-	public Availability(LocalDate startDate, LocalDate endDate, Float price) {
+	public Availability(LocalDate startDate, LocalDate endDate, Float price, Housing housing) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
+		this.housing = housing;
 	}
 	public Availability() {}
 	public Housing getHousing() {
@@ -67,5 +68,14 @@ public class Availability {
 	public void setPrice(Float price) {
 		this.price = price;
 	}
+	public Availability(Long id, LocalDate startDate, LocalDate endDate, Float price, Housing housing) {
+		super();
+		this.id = id;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.price = price;
+		this.housing = housing;
+	}
+	
 	
 }

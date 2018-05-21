@@ -1,4 +1,4 @@
-package es.uca.iw.rentAndDream.cities;
+package es.uca.iw.rentAndDream.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,6 +11,8 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+import es.uca.iw.rentAndDream.cities.City;
+import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.countries.Country;
 import es.uca.iw.rentAndDream.countries.CountryService;
 import es.uca.iw.rentAndDream.housing.HousingSearch;
@@ -43,16 +45,7 @@ public class CitySearch extends VerticalLayout {
 		this.country = new ComboBox<Country>(null, countryService.findAll());
 		this.region = new ComboBox<Region>();
 		this.city = new ComboBox<City>();
-		
-		//Seteo para hacer mas facil el debug (BORRAR)
-		
-		city.setItems(cityService.findOne(700044L));
-		city.setSelectedItem(cityService.findOne(700044L));
-		
-		//Finseteo
-		
-		//
-		// Creamos los controles para el filtrado de los anuncios
+
 		country.setPlaceholder("Select a Country");
 		region.setPlaceholder("Select a Region");
 		city.setPlaceholder("Select a City");
@@ -108,9 +101,37 @@ public class CitySearch extends VerticalLayout {
 	public void set_city(City _city) {
 		this._city = _city;
 	}
-
-
 	
+	public ComboBox<Country> getCountry() {
+		return country;
+	}
+
+
+	public void setCountry(ComboBox<Country> country) {
+		this.country = country;
+	}
+
+
+	public ComboBox<Region> getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(ComboBox<Region> region) {
+		this.region = region;
+	}
+
+
+	public ComboBox<City> getCity() {
+		return city;
+	}
+
+
+	public void setCity(ComboBox<City> city) {
+		this.city = city;
+	}
+
+
 	public Boolean isValid()
 	{
 		return binder.isValid();

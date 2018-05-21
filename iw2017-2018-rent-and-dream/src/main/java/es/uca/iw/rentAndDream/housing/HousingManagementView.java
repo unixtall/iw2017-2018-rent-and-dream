@@ -52,7 +52,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "name", "address", "assessment", "description", "bedrooms", "beds", "airConditioner");
+		grid.setColumns("id", "city", "name", "address", "assessment", "description", "bedrooms", "beds", "airConditioner");
 
 		filter.setPlaceholder("Filter by name");
 
@@ -89,11 +89,9 @@ public class HousingManagementView extends VerticalLayout implements View {
 		}
 	}
 	
-	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

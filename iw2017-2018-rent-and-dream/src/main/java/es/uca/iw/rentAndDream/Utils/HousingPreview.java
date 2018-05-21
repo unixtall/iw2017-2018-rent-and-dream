@@ -2,7 +2,6 @@ package es.uca.iw.rentAndDream.Utils;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
 import com.vaadin.server.FileResource;
@@ -13,6 +12,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import es.uca.iw.rentAndDream.availabilities.Availability;
+import es.uca.iw.rentAndDream.availabilities.AvailabilityEditor;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.housing.HousingEditor;
 
@@ -20,13 +21,17 @@ public class HousingPreview extends VerticalLayout {
 	
 	private Housing housing;
 	private HousingEditor housingEditor;
+	private AvailabilityEditor availabilityEditor;
 	
 	private Button editButton = new Button("Edit");
+	private Button availabilityButton = new Button("Availabilities");
 	
-	public HousingPreview(Housing housing, HousingEditor housingEditor)
+	public HousingPreview(Housing housing, HousingEditor housingEditor, AvailabilityEditor availabilityEditor)
 	{
 		this.housing = housing;
 		this.housingEditor = housingEditor;
+		this.availabilityEditor = availabilityEditor;
+		this.availabilityButton = availabilityButton;
 		
 		// Image as a file resource
 
@@ -47,7 +52,7 @@ public class HousingPreview extends VerticalLayout {
 		//hay que añadir el atributo tipo
 		addComponent(image);
 		addComponent(new Label("Name: " + housing.getName()));
-		addComponent(new CssLayout(editButton));
+		addComponents(new CssLayout(editButton, availabilityButton));
 		addComponent(new Label("Number of reserves: " + housing.getReserve().size()));
 		
 		setSizeFull();
@@ -56,8 +61,21 @@ public class HousingPreview extends VerticalLayout {
 
 		
 		editButton.addClickListener(e -> {
-			Window window = new WindowManager("Titulo", this.housingEditor).getWindow();
+			Window window = new WindowManager("Housing management", this.housingEditor).getWindow();
 			housingEditor.editHousing(housing);
+			
+			//cerramos la ventana cuando haya un cambio
+			housingEditor.setChangeHandler(()-> {
+				window.close();	
+			});
+		});
+		
+		availabilityButton.addClickListener(e -> {
+			
+			Window window = new WindowManager("Availability management", new CssLayout(this.availabilityEditor)).getWindow();
+			availabilityEditor.editAvailability(new Availability(null, null, 0f, housing));
+			/*Window window = new WindowManager("Availability management", this.availabilityEditor).getWindow();
+			availabilityEditor.editAvailability(new Availability(null, null, 0f, housing));*/
 			
 			//cerramos la ventana cuando haya un cambio
 			housingEditor.setChangeHandler(()-> {

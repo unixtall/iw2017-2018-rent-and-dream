@@ -149,6 +149,6 @@ public class Housing {
 
 	@Override
 	public String toString() {
-		return id.toString();
+		return name;
 	}
 }

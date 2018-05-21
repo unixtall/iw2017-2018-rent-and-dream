@@ -1,30 +1,37 @@
 package es.uca.iw.rentAndDream.availabilities;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.converter.StringToBooleanConverter;
 import com.vaadin.data.converter.StringToFloatConverter;
-import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.housing.Housing;
+import es.uca.iw.rentAndDream.housing.HousingService;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
+import es.uca.iw.rentAndDream.users.User;
 
 @SpringComponent
 @UIScope
 public class AvailabilityEditor extends VerticalLayout {
 	
 	private final AvailabilityService service;
+	private final HousingService housingService;
 	
 	/**
 	 * The currently edited user
@@ -37,6 +44,7 @@ public class AvailabilityEditor extends VerticalLayout {
 	DateField startDate = new DateField("Start Date");
 	DateField endDate = new DateField("End Date");
 	TextField price = new TextField("Price");
+	ComboBox<Housing> housing = new ComboBox<Housing>("Select one housing");
 
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -48,15 +56,33 @@ public class AvailabilityEditor extends VerticalLayout {
 
 
 	@Autowired
-	public AvailabilityEditor(AvailabilityService service) {
+	public AvailabilityEditor(AvailabilityService service, HousingService housingService) {
 		this.service = service;
+		this.housingService = housingService;
 
-		addComponents(startDate, endDate, price, actions);
+		addComponents(housing, startDate, endDate, price, actions);
 
+		binder.forField(housing)
+		.asRequired("is Required")
+	  	.bind(Availability::getHousing, Availability::setHousing);
+		
 		binder.forField(price)
 			.withConverter(
 				new StringToFloatConverter("Must enter a number"))
+			.asRequired("is Required")
 		  	.bind(Availability::getPrice, Availability::setPrice);
+		
+		binder.forField(startDate)
+		.withValidator(new DateRangeValidator("The start date is invalid", LocalDate.now(), LocalDate.now().plusYears(1)))
+		.asRequired("is Required")
+	  	.bind(Availability::getStartDate, Availability::setStartDate);
+		
+		binder.forField(endDate)
+		.withValidator(new DateRangeValidator("The end date is invalid", LocalDate.now().plusDays(1), LocalDate.now().plusYears(1)))
+		.asRequired("is Required")
+	  	.bind(Availability::getEndDate, Availability::setEndDate);
+		
+		
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
@@ -75,6 +101,13 @@ public class AvailabilityEditor extends VerticalLayout {
 		
 		// Solo borra el admin
 		delete.setEnabled(SecurityUtils.hasRole(RoleType.ADMIN));
+		
+		if(SecurityUtils.hasRole(RoleType.ADMIN))
+			housing.setItems(housingService.findAll());
+		else
+			housing.setItems(housingService.findByUser((User)VaadinService.getCurrentRequest()
+				.getWrappedSession().getAttribute(User.class.getName())));
+			
 	}
 
 	public interface ChangeHandler {
