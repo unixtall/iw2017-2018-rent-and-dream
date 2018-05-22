@@ -18,7 +18,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
-import es.uca.iw.rentAndDream.components.HousingEditor;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.services.HousingService;
 

@@ -8,7 +8,7 @@ import com.vaadin.ui.UI;
 import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.views.AvailabilityUserView;
-import es.uca.iw.rentAndDream.views.HousingInfo;
+import es.uca.iw.rentAndDream.views.HousingInfoView;
 import es.uca.iw.rentAndDream.views.HousingSearchView;
 import es.uca.iw.rentAndDream.views.HousingUserView;
 import es.uca.iw.rentAndDream.views.ReserveManagementView;
@@ -31,7 +31,7 @@ public class SampleViewAccessControl implements ViewAccessControl {
     	if(SecurityUtils.hasRole(UserRoleType.ADMIN)){
     		return true;
     	} else if (beanName.equals(UserRegisterView.VIEW_NAME) 
-    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingInfo.VIEW_NAME)) {
+    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingInfoView.VIEW_NAME)) {
             return true;
         } else if (beanName.equals(UserView.VIEW_NAME) || beanName.equals(UserEditProfileView.VIEW_NAME) || beanName.equals(HousingUserView.VIEW_NAME)
         		|| beanName.equals(AvailabilityUserView.VIEW_NAME))

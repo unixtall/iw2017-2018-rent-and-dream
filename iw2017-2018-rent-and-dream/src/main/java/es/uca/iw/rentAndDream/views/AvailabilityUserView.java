@@ -18,11 +18,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import es.uca.iw.rentAndDream.Utils.HousingPreview;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
-import es.uca.iw.rentAndDream.components.AvailabilityEditor;
 import es.uca.iw.rentAndDream.entities.Availability;
-import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.AvailabilityService;
 
@@ -34,9 +31,6 @@ public class AvailabilityUserView extends VerticalLayout implements View {
 	private TextField filter;
 	private Button addNewBtn;
 
-	//private AvailabilityEditor editor;
-
-	
 	private final AvailabilityService availabilityService;
 
 	@Autowired

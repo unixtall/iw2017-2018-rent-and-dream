@@ -9,22 +9,16 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import es.uca.iw.rentAndDream.components.AvailabilityEditor;
-import es.uca.iw.rentAndDream.components.HousingEditor;
-import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.services.HousingService;
-import es.uca.iw.rentAndDream.templates.HousingEditForm;
 import es.uca.iw.rentAndDream.views.HousingUserView;
 
 public class HousingPreview extends VerticalLayout {
 	
 	private Housing housing;
-	private AvailabilityEditor availabilityEditor;
 	
 	private Button editButton = new Button("Edit");
 	private Button availabilityButton = new Button("Availabilities");
@@ -32,7 +26,6 @@ public class HousingPreview extends VerticalLayout {
 	public HousingPreview(Housing housing, HousingService housingService)
 	{
 		this.housing = housing;
-		this.availabilityEditor = availabilityEditor;
 		this.availabilityButton = availabilityButton;
 		
 		// Image as a file resource

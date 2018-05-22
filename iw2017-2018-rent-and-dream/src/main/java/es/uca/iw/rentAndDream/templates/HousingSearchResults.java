@@ -19,7 +19,7 @@ import com.vaadin.ui.Window;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
-import es.uca.iw.rentAndDream.views.HousingInfo;
+import es.uca.iw.rentAndDream.views.HousingInfoView;
 
 public class HousingSearchResults extends VerticalLayout {
 	
@@ -61,6 +61,6 @@ public class HousingSearchResults extends VerticalLayout {
 		setSizeFull();
 		
 		//popup with a  resume of offer
-		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingInfo(housing)));
+		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingInfoView(housing)));
 	}
 }

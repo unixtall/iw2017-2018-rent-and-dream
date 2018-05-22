@@ -10,23 +10,18 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.HousingPreview;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
-import es.uca.iw.rentAndDream.components.AvailabilityEditor;
-import es.uca.iw.rentAndDream.components.HousingEditor;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.CityService;
 import es.uca.iw.rentAndDream.services.HousingService;
 import es.uca.iw.rentAndDream.services.ReserveService;
 import es.uca.iw.rentAndDream.services.UserService;
-import es.uca.iw.rentAndDream.templates.CitySearchForm;
-import es.uca.iw.rentAndDream.templates.HousingEditForm;
 
 @SpringView(name = HousingUserView.VIEW_NAME)
 public class HousingUserView extends CssLayout implements View {
@@ -37,18 +32,16 @@ public class HousingUserView extends CssLayout implements View {
 	private final ReserveService reserveService;
 	private final UserService userService;
 	private final HousingService housingService;
-	private final AvailabilityEditor availabilityEditor;
 	private final CityService cityService;
 	Button addNew = new Button("Add new housing");
 
 	@Autowired
 	public HousingUserView(ReserveService reserveService, UserService userService, HousingService housingService
-			, AvailabilityEditor availabilityEditor, CityService cityService) {
+			, CityService cityService) {
 		this.reserveService = reserveService;
 		this.userService = userService;
 		this.horizontalItemLayout = new HorizontalItemLayout();
 		this.housingService = housingService;
-		this.availabilityEditor = availabilityEditor;
 		this.cityService = cityService;
 	}
 	

@@ -23,8 +23,8 @@ import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.services.ReserveService;
 
-@SpringView(name = HousingInfo.VIEW_NAME)
-public class HousingInfo extends VerticalLayout implements View{
+@SpringView(name = HousingInfoView.VIEW_NAME)
+public class HousingInfoView extends VerticalLayout implements View{
 	
 	public static final String VIEW_NAME = "housingInfo";
 	
@@ -37,7 +37,7 @@ public class HousingInfo extends VerticalLayout implements View{
 	final private TuningDateField tuningDateField = new TuningDateField("Availability Calendar");
 
 	@Autowired
-	public HousingInfo(Housing housing) {
+	public HousingInfoView(Housing housing) {
 		this.housing = housing;
 		this.reserveService = reserveService;
 	    this.reserveDatePicker.setResolution(DateResolution.DAY);
