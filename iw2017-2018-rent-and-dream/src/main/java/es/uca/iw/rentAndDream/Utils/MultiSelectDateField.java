@@ -7,7 +7,6 @@ import org.vaadin.addons.tuningdatefield.CellItemCustomizerAdapter;
 import org.vaadin.addons.tuningdatefield.InlineTuningDateField;
 import org.vaadin.addons.tuningdatefield.TuningDateField;
 
-import com.vaadin.annotations.StyleSheet;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Notification;
@@ -23,10 +22,14 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         addStyleName("multi-select-date-field");
 
         InlineTuningDateField inlineTuningDateField = new InlineTuningDateField();
-
-        value.add(LocalDate.of(2018, 05, 25));
+        inlineTuningDateField.setWeekendDisabled(false);
+        inlineTuningDateField.setDateRange(LocalDate.now(), LocalDate.now().plusYears(1), "Date not allow");
+        inlineTuningDateField.setLocalDate(LocalDate.now());
+        
+        value.add(LocalDate.now().plusDays(1));
         
         inlineTuningDateField.addDayClickListener(evt -> {
+ 
             Set<LocalDate> value = getValue();
             if (value == null) {
                 value = new HashSet<>();
@@ -50,7 +53,7 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
                 Notification.show("Selected dates: " + getValue());
             });
 
-        inlineTuningDateField.setCellItemCustomizer(new MultiSelectCalendarCustomizer(this));
+        	inlineTuningDateField.setCellItemCustomizer(new MultiSelectCalendarCustomizer(this));
 
         return inlineTuningDateField;
     }
@@ -83,6 +86,30 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
             }
             return style;
         }
+        
+        @Override
+        public String getTooltip(LocalDate date, TuningDateField tuningDateField) {
+            String style = null;
+            if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
+                style = "Dia dentro";
+            } else {
+                style = "Dia fuera";
+            }
+            return style;
+        }
+        
+        @Override
+        public boolean isEnabled(LocalDate date, TuningDateField tuningDateField) {
+            boolean result;
+            if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
+                result = false;
+            } else {
+                result = true;
+            }
+            return result;
+        }
+        
+        
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

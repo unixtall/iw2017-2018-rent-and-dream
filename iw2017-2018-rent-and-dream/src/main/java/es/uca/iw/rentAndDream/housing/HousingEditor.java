@@ -1,5 +1,7 @@
 package es.uca.iw.rentAndDream.housing;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Binder;
@@ -18,6 +20,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.Utils.CitySearch;
+import es.uca.iw.rentAndDream.cities.CityService;
+import es.uca.iw.rentAndDream.countries.CountryService;
+import es.uca.iw.rentAndDream.regions.RegionService;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.users.RoleType;
 
@@ -26,7 +31,7 @@ import es.uca.iw.rentAndDream.users.RoleType;
 public class HousingEditor extends VerticalLayout {
 	
 	private final HousingService service;
-	private final CitySearch citySearch;
+	private CitySearch citySearch;
 	
 	/**
 	 * The currently edited user
@@ -53,13 +58,11 @@ public class HousingEditor extends VerticalLayout {
 
 
 	@Autowired
-	public HousingEditor(HousingService service, CitySearch citySearch) {
+	public HousingEditor(HousingService service, CityService cityService, RegionService regionService, CountryService countryService) {
 		this.service = service;
-		this.citySearch = citySearch;
+		this.citySearch = new CitySearch(cityService, regionService, countryService);
 		
 		this.housing = new Housing();
-
-		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, citySearch, actions);
 
 		binder.forField(name)
 		.asRequired("Is required")
@@ -130,6 +133,13 @@ public class HousingEditor extends VerticalLayout {
 		
 		// Solo borra el admin
 		//delete.setEnabled(SecurityUtils.hasRole(RoleType.ADMIN));
+	}
+	
+	@PostConstruct
+	public void init()
+	{
+		addComponent(citySearch);
+		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
 	}
 
 	public interface ChangeHandler {

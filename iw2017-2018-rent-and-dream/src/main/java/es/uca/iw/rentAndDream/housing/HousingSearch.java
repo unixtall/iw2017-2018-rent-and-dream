@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
-import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -25,15 +26,12 @@ import es.uca.iw.rentAndDream.cities.CityService;
 import es.uca.iw.rentAndDream.countries.CountryService;
 import es.uca.iw.rentAndDream.regions.RegionService;
 
-@SpringComponent
-@UIScope
+
 public class HousingSearch extends VerticalLayout {
 	
 	private Binder<HousingSearch> binder = new Binder<HousingSearch>(HousingSearch.class);
 	
-	//dependencias a inyectar
-	private final HousingService housingService;
-	private final CitySearch citySearch;
+	private CitySearch citySearch;
 
 	
 	private Integer _guests;
@@ -48,11 +46,10 @@ public class HousingSearch extends VerticalLayout {
 	//Para mostrar el estado de validacion
 	Label validationStatus = new Label();
 	
-	@Autowired
-	public HousingSearch(HousingService housingService, CitySearch citySearch)
+	public HousingSearch(CityService cityService, RegionService regionService, CountryService countryService,
+			HousingService housingService)
 	{
-		this.housingService = housingService;
-		this.citySearch = citySearch;
+		this.citySearch = new CitySearch(cityService, regionService, countryService);
 		
 		this._results = new ArrayList<Housing>();
 		
@@ -99,7 +96,7 @@ public class HousingSearch extends VerticalLayout {
 			searchButton.setEnabled(citySearch.isValid() && binder.isValid());
 		});
   		
-		addComponents(citySearch, startDate, endDate, guests, searchButton);
+
 		
 		//Dandole funcionalidad al boton buscar
 		this.searchButton.addClickListener(event -> 
@@ -112,8 +109,17 @@ public class HousingSearch extends VerticalLayout {
 			}
 			this._results = housingService.findByCityidAndAvailabilityAndGuest(citySearch.get_city(), _startDate, _endDate, _guests);
 		});
+		addComponents(citySearch, startDate, endDate, guests, searchButton);
 	}
 
+	
+	@PostConstruct
+	public void init()
+	{
+		//addComponents(citySearch, startDate, endDate, guests, searchButton);
+	}
+	
+	
 	public List<Housing> getResults()
 	{
 		return this._results;

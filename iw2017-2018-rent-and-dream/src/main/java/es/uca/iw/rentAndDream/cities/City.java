@@ -7,14 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import es.uca.iw.rentAndDream.countries.Country;
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.regions.Region;
 
 @Entity
+@Table( indexes = {
+	    @Index(columnList = "name", unique = false)
+	})
 public class City {
 	
 	@Id

@@ -3,7 +3,6 @@ package es.uca.iw.rentAndDream.cities;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -13,11 +12,12 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import es.uca.iw.rentAndDream.Utils.CitySearch;
+import es.uca.iw.rentAndDream.countries.CountryService;
+import es.uca.iw.rentAndDream.regions.RegionService;
 
 @SpringView(name = CityManagementView.VIEW_NAME)
 public class CityManagementView extends VerticalLayout implements View {
@@ -29,13 +29,13 @@ public class CityManagementView extends VerticalLayout implements View {
 
 	private CityEditor editor;
 
-	private final CityService service;
+	private final CityService cityService;
 	private CitySearch citysearch;
 
 	@Autowired
-	public CityManagementView(CityService service, CityEditor editor, CitySearch citysearch) {
-		this.service = service;
-		this.citysearch = citysearch;
+	public CityManagementView(CityService cityService, CityEditor editor, CountryService countryService, RegionService regionService) {
+		this.cityService = cityService;
+		this.citysearch = new CitySearch(cityService, regionService, countryService);
 		this.editor = editor;
 		this.grid = new Grid<>(City.class);
 		this.filter = new TextField();
@@ -89,7 +89,7 @@ public class CityManagementView extends VerticalLayout implements View {
 				grid.setItems(citysearch.get_city());
 		} else {
 			if(filterText.length() > 3)
-				grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
+				grid.setItems(cityService.findByNameStartsWithIgnoreCase(filterText));
 		}
 	}
 	

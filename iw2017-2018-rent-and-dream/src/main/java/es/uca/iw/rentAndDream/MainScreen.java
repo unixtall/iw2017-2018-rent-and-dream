@@ -20,6 +20,7 @@ import es.uca.iw.rentAndDream.countries.CountryManagementView;
 import es.uca.iw.rentAndDream.housing.HousingManagementView;
 import es.uca.iw.rentAndDream.housing.HousingSearchView;
 import es.uca.iw.rentAndDream.housing.HousingUserView;
+import es.uca.iw.rentAndDream.pruebas.WelcomeView;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
 import es.uca.iw.rentAndDream.security.LoginScreen;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
@@ -115,6 +116,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	
 	public void addGuestMenu(CssLayout navigationBar)
 	{
+		//navigationBar.addComponent(createNavigationButton("test", WelcomeView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));

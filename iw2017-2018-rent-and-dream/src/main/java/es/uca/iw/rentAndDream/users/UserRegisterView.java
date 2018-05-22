@@ -39,7 +39,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.VaadinUI;
-import es.uca.iw.rentAndDream.WelcomeView;
+import es.uca.iw.rentAndDream.pruebas.WelcomeView;
 
 @SpringView(name = UserRegisterView.VIEW_NAME)
 public class UserRegisterView extends VerticalLayout implements View  {

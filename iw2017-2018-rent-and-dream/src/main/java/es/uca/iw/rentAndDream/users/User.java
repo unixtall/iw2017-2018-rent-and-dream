@@ -11,17 +11,19 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import es.uca.iw.rentAndDream.housing.Housing;
 import es.uca.iw.rentAndDream.reserves.Reserve;
 
 @Entity
+
 public class User implements UserDetails{
 	
 	@Id
@@ -31,6 +33,7 @@ public class User implements UserDetails{
 	private String firstName;
 
 	private String lastName;
+	
 	@Column(name="username", unique=true)
 	private String username;
 	

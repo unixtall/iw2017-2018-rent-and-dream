@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import com.vaadin.spring.access.ViewAccessControl;
 import com.vaadin.ui.UI;
 
-import es.uca.iw.rentAndDream.WelcomeView;
 import es.uca.iw.rentAndDream.availabilities.AvailabilityUserView;
 import es.uca.iw.rentAndDream.housing.HousingSearchView;
 import es.uca.iw.rentAndDream.housing.HousingUserView;
+import es.uca.iw.rentAndDream.pruebas.WelcomeView;
 import es.uca.iw.rentAndDream.housing.HousingInfo;
 import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
 import es.uca.iw.rentAndDream.users.RoleType;
