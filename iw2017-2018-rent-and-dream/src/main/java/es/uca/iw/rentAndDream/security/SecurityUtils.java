@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import es.uca.iw.rentAndDream.users.RoleType;;
+import es.uca.iw.rentAndDream.entities.UserRoleType;;
 
 public final class SecurityUtils {
 
@@ -22,11 +22,11 @@ public final class SecurityUtils {
         return authentication != null && authentication.isAuthenticated();
     }
 
-    public static boolean hasRole(RoleType role) {
+    public static boolean hasRole(UserRoleType role) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         if(authentication == null)
-        	return role == RoleType.GUEST;
+        	return role == UserRoleType.GUEST;
         else
         	return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role.toString()));
     }
@@ -35,7 +35,7 @@ public final class SecurityUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-		list.add(new SimpleGrantedAuthority(RoleType.GUEST.toString()));
+		list.add(new SimpleGrantedAuthority(UserRoleType.GUEST.toString()));
         
         if(authentication != null ){
         	return authentication.getAuthorities();

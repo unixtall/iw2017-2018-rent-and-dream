@@ -9,27 +9,29 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import es.uca.iw.rentAndDream.availabilities.Availability;
-import es.uca.iw.rentAndDream.availabilities.AvailabilityEditor;
-import es.uca.iw.rentAndDream.housing.Housing;
-import es.uca.iw.rentAndDream.housing.HousingEditor;
+import es.uca.iw.rentAndDream.components.AvailabilityEditor;
+import es.uca.iw.rentAndDream.components.HousingEditor;
+import es.uca.iw.rentAndDream.entities.Availability;
+import es.uca.iw.rentAndDream.entities.Housing;
+import es.uca.iw.rentAndDream.services.HousingService;
+import es.uca.iw.rentAndDream.templates.HousingEditForm;
+import es.uca.iw.rentAndDream.views.HousingUserView;
 
 public class HousingPreview extends VerticalLayout {
 	
 	private Housing housing;
-	private HousingEditor housingEditor;
 	private AvailabilityEditor availabilityEditor;
 	
 	private Button editButton = new Button("Edit");
 	private Button availabilityButton = new Button("Availabilities");
 	
-	public HousingPreview(Housing housing, HousingEditor housingEditor, AvailabilityEditor availabilityEditor)
+	public HousingPreview(Housing housing, HousingService housingService)
 	{
 		this.housing = housing;
-		this.housingEditor = housingEditor;
 		this.availabilityEditor = availabilityEditor;
 		this.availabilityButton = availabilityButton;
 		
@@ -61,27 +63,21 @@ public class HousingPreview extends VerticalLayout {
 
 		
 		editButton.addClickListener(e -> {
-			Window window = new WindowManager("Housing management", this.housingEditor).getWindow();
-			housingEditor.editHousing(housing);
 			
-			//cerramos la ventana cuando haya un cambio
-			housingEditor.setChangeHandler(()-> {
-				window.close();	
-			});
+			VerticalLayout editForm = housingService.getEditForm(housing);
+			
+			Window window = new WindowManager("Housing management", editForm).getWindow();
+			window.addCloseListener(event -> getUI().getNavigator().navigateTo(HousingUserView.VIEW_NAME));
 		});
 		
-		availabilityButton.addClickListener(e -> {
+		/*availabilityButton.addClickListener(e -> {
 			
 			Window window = new WindowManager("Availability management", new CssLayout(this.availabilityEditor)).getWindow();
 			availabilityEditor.editAvailability(new Availability(null, null, 0f, housing));
 			/*Window window = new WindowManager("Availability management", this.availabilityEditor).getWindow();
 			availabilityEditor.editAvailability(new Availability(null, null, 0f, housing));*/
-			
-			//cerramos la ventana cuando haya un cambio
-			housingEditor.setChangeHandler(()-> {
-				window.close();	
-			});
-		});
+		
+		//});
 	
 	}
 }

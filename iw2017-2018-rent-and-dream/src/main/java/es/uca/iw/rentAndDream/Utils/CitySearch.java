@@ -10,12 +10,12 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-import es.uca.iw.rentAndDream.cities.City;
-import es.uca.iw.rentAndDream.cities.CityService;
-import es.uca.iw.rentAndDream.countries.Country;
-import es.uca.iw.rentAndDream.countries.CountryService;
-import es.uca.iw.rentAndDream.regions.Region;
-import es.uca.iw.rentAndDream.regions.RegionService;
+import es.uca.iw.rentAndDream.entities.City;
+import es.uca.iw.rentAndDream.entities.Country;
+import es.uca.iw.rentAndDream.entities.Region;
+import es.uca.iw.rentAndDream.services.CityService;
+import es.uca.iw.rentAndDream.services.CountryService;
+import es.uca.iw.rentAndDream.services.RegionService;
 
 public class CitySearch extends VerticalLayout {
 

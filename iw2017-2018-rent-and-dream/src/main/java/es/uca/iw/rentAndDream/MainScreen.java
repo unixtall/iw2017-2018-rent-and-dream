@@ -2,6 +2,8 @@ package es.uca.iw.rentAndDream;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinService;
@@ -13,40 +15,49 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.uca.iw.rentAndDream.availabilities.AvailabilityManagementView;
-import es.uca.iw.rentAndDream.availabilities.AvailabilityUserView;
-import es.uca.iw.rentAndDream.cities.CityManagementView;
-import es.uca.iw.rentAndDream.countries.CountryManagementView;
-import es.uca.iw.rentAndDream.housing.HousingManagementView;
-import es.uca.iw.rentAndDream.housing.HousingSearchView;
-import es.uca.iw.rentAndDream.housing.HousingUserView;
-import es.uca.iw.rentAndDream.pruebas.WelcomeView;
-import es.uca.iw.rentAndDream.reserves.ReserveManagementView;
-import es.uca.iw.rentAndDream.security.LoginScreen;
+import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
+import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.entities.User;
+import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
-import es.uca.iw.rentAndDream.users.RoleType;
-import es.uca.iw.rentAndDream.users.User;
-import es.uca.iw.rentAndDream.users.UserEditProfileView;
-import es.uca.iw.rentAndDream.users.UserManagementView;
-import es.uca.iw.rentAndDream.users.UserRegisterView;
-import es.uca.iw.rentAndDream.users.UserView;
+import es.uca.iw.rentAndDream.services.LoginService;
+import es.uca.iw.rentAndDream.views.AvailabilityManagementView;
+import es.uca.iw.rentAndDream.views.AvailabilityUserView;
+import es.uca.iw.rentAndDream.views.CityManagementView;
+import es.uca.iw.rentAndDream.views.CountryManagementView;
+import es.uca.iw.rentAndDream.views.HousingManagementView;
+import es.uca.iw.rentAndDream.views.HousingSearchView;
+import es.uca.iw.rentAndDream.views.HousingUserView;
+import es.uca.iw.rentAndDream.views.ReserveManagementView;
+import es.uca.iw.rentAndDream.views.UserEditProfileView;
+import es.uca.iw.rentAndDream.views.UserManagementView;
+import es.uca.iw.rentAndDream.views.UserRegisterView;
+import es.uca.iw.rentAndDream.views.UserView;
 
 @SpringViewDisplay
 public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 	private Panel springViewDisplay;
 	
+	private LoginService loginService;
+	
 	@Override
     public void attach() {
         super.attach();
-        if(SecurityUtils.hasRole(RoleType.ADMIN))
+        if(SecurityUtils.hasRole(UserRoleType.ADMIN))
         	this.getUI().getNavigator().navigateTo("userManagementView");
         else
-        if(SecurityUtils.hasRole(RoleType.MANAGER))
+        if(SecurityUtils.hasRole(UserRoleType.MANAGER))
         	this.getUI().getNavigator().navigateTo("reserveManagementView");
         else 
         	this.getUI().getNavigator().navigateTo("housingSearchView");
     }
+	
+	@Autowired
+	public MainScreen(LoginService loginService)
+	{
+		this.loginService = loginService;
+	}
 	
 	@PostConstruct
 	void init() {		
@@ -60,16 +71,16 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
 		// añadimos elementos al menu segun los roles de usuario
-		if(SecurityUtils.hasRole(RoleType.GUEST)) 
+		if(SecurityUtils.hasRole(UserRoleType.GUEST)) 
 			addGuestMenu(navigationBar);
 		else
-		if(SecurityUtils.hasRole(RoleType.USER)) 
+		if(SecurityUtils.hasRole(UserRoleType.USER)) 
 			addRegisterUserMenu(navigationBar);
 		else
-		if(SecurityUtils.hasRole(RoleType.MANAGER)) 
+		if(SecurityUtils.hasRole(UserRoleType.MANAGER)) 
 			addManagerMenu(navigationBar);
 		else
-		if(SecurityUtils.hasRole(RoleType.ADMIN)) 
+		if(SecurityUtils.hasRole(UserRoleType.ADMIN)) 
 			addAdministrationMenu(navigationBar);
 	
 		root.addComponent(navigationBar);
@@ -121,7 +132,16 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
-		navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
+		//navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
+		HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
+		horizontalItemLayout.addComponent(loginService.getLoginLayout());
+		
+		Button loginButton = new Button("login", e -> 
+			new WindowManager("Housing management", horizontalItemLayout)
+		);
+		loginButton.setStyleName(ValoTheme.BUTTON_SMALL);
+		
+		navigationBar.addComponent(loginButton);
 
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		

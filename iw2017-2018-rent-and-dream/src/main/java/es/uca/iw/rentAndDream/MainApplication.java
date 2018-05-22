@@ -21,18 +21,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import es.uca.iw.rentAndDream.availabilities.Availability;
-import es.uca.iw.rentAndDream.availabilities.AvailabilityService;
-import es.uca.iw.rentAndDream.cities.CityService;
-import es.uca.iw.rentAndDream.housing.Housing;
-import es.uca.iw.rentAndDream.housing.HousingService;
-import es.uca.iw.rentAndDream.reserves.Reserve;
-import es.uca.iw.rentAndDream.reserves.ReserveService;
-import es.uca.iw.rentAndDream.reserves.TypeReserveStatus;
+import es.uca.iw.rentAndDream.entities.Availability;
+import es.uca.iw.rentAndDream.entities.Housing;
+import es.uca.iw.rentAndDream.entities.Reserve;
+import es.uca.iw.rentAndDream.entities.UserRoleType;
+import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
+import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.security.VaadinSessionSecurityContextHolderStrategy;
-import es.uca.iw.rentAndDream.users.RoleType;
-import es.uca.iw.rentAndDream.users.User;
-import es.uca.iw.rentAndDream.users.UserService;
+import es.uca.iw.rentAndDream.services.AvailabilityService;
+import es.uca.iw.rentAndDream.services.CityService;
+import es.uca.iw.rentAndDream.services.HousingService;
+import es.uca.iw.rentAndDream.services.ReserveService;
+import es.uca.iw.rentAndDream.services.UserService;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class MainApplication {
@@ -51,11 +51,11 @@ public class MainApplication {
 			if (userService.findAll().size() == 0) {
 				
 				// save users with default password: default
-				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, RoleType.USER);
-				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, RoleType.USER);
+				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, UserRoleType.USER);
+				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, UserRoleType.USER);
 
-				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678Q", 956403954, RoleType.MANAGER);
-				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321E", 678228328, RoleType.ADMIN);
+				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678Q", 956403954, UserRoleType.MANAGER);
+				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321E", 678228328, UserRoleType.ADMIN);
 
 				root.setPassword("root");
 				userService.save(user1);
@@ -97,20 +97,20 @@ public class MainApplication {
 				availabilityService.save(availability6);
 				availabilityService.save(availability7);
 				
-				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, TypeReserveStatus.PENDING);
+				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, ReserveTypeStatus.PENDING);
 				reserve1.setHousing(housing1);
 
 				reserve1.setUser(userService.findByUsername("user2"));
 
-				Reserve reserve2 = new Reserve(2, LocalDate.of(2018, 5, 30), LocalDate.of(2018, 6, 10), 3f, TypeReserveStatus.PENDING);
+				Reserve reserve2 = new Reserve(2, LocalDate.of(2018, 5, 30), LocalDate.of(2018, 6, 10), 3f, ReserveTypeStatus.PENDING);
 				reserve2.setHousing(housing2);
 				reserve2.setUser(userService.loadUserByUsername("user2"));
 				
-				Reserve reserve3 = new Reserve(4, LocalDate.of(2018, 7, 25), LocalDate.of(2018, 7, 28), 15f, TypeReserveStatus.PENDING);
+				Reserve reserve3 = new Reserve(4, LocalDate.of(2018, 7, 25), LocalDate.of(2018, 7, 28), 15f, ReserveTypeStatus.PENDING);
 				reserve3.setHousing(housing3);
 				reserve3.setUser(userService.loadUserByUsername("user2"));
 				
-				Reserve reserve4 = new Reserve(5, LocalDate.of(2018, 6, 12), LocalDate.of(2018, 6, 30), 40f, TypeReserveStatus.PENDING);
+				Reserve reserve4 = new Reserve(5, LocalDate.of(2018, 6, 12), LocalDate.of(2018, 6, 30), 40f, ReserveTypeStatus.PENDING);
 				reserve4.setHousing(housing3);
 				reserve4.setUser(userService.loadUserByUsername("user2"));
 				
