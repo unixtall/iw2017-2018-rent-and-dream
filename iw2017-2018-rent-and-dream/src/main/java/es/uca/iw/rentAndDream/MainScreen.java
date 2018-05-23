@@ -1,16 +1,23 @@
 package es.uca.iw.rentAndDream;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
+import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringViewDisplay;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -65,11 +72,41 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	void init() {		
         
 		final CssLayout root = new CssLayout();
+		//CssLayout logo = new CssLayout();
+		HorizontalLayout headerLayout = new HorizontalLayout();
+		headerLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+		headerLayout.setWidth("15%");
 		root.setSizeFull();
+		
+		
+		// Image as a file resource
+
+		FileResource resource = null;
+		ClassPathResource file = new ClassPathResource("images/logo.png");
+			try {
+				resource = new FileResource(file.getFile());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+				
+
+		// Show the image in the application
+		Image image = new Image(null, resource);
+		image.setWidthUndefined();
+		headerLayout.addComponent(image);
+		root.addComponent(headerLayout);
 		//root.setMargin(false);
 
 		// Creamos la barra de navegación
-		final CssLayout navigationBar = new CssLayout();
+		final CssLayout navigationBar = new CssLayout() {
+			
+				@Override
+				protected String getCss(final Component c) {
+					return "color: red";
+				}
+			
+		};
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
 		// añadimos elementos al menu segun los roles de usuario
@@ -157,6 +194,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//CssLayout welcome = new CssLayout();
 		//welcome.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
 		//		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
+		
 		navigationBar.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
 		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));

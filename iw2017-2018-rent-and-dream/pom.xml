@@ -53,7 +53,12 @@
     </pluginRepositories>
 
 	<dependencies>
-		
+		<dependency>
+        	<groupId>com.vaadin</groupId>
+        	<artifactId>vaadin-themes</artifactId>
+        	<version>${vaadin.version}</version>
+    	</dependency>
+    
 		<dependency>
 		   <groupId>org.vaadin.addons</groupId>
 		   <artifactId>tuning-datefield</artifactId>
