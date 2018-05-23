@@ -11,6 +11,7 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -129,7 +130,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	public void addGuestMenu(CssLayout navigationBar)
 	{
 		//navigationBar.addComponent(createNavigationButton("test", WelcomeView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
+		
 		
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
@@ -137,35 +138,34 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
 		horizontalItemLayout.addComponent(loginService.getLoginLayout());
 		
-		Button loginButton = new Button("login", e -> 
+		Button loginButton = new Button("Login", e -> 
 			new WindowManager("Housing management", horizontalItemLayout)
 		);
 		loginButton.setStyleName(ValoTheme.BUTTON_SMALL);
 		
 		navigationBar.addComponent(loginButton);
-
+		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		
 	}
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
 	{
-		//System.out.println(VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName()).toString());
-		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
-
-		navigationBar.addComponent(createNavigationButton(VaadinService.getCurrentRequest()
-				.getWrappedSession().getAttribute(User.class.getName()).toString(), UserEditProfileView.VIEW_NAME));
-		
-		//navigationBar.addComponent(new Label(getUI().getSession().getAttribute(User.class).toString()));
-
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
-		navigationBar.addComponent(logoutButton);
-		navigationBar.addComponent(createNavigationButton("HousingManagement", HousingUserView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("AvailabilityManagement", AvailabilityUserView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("ReserveHostManagement", ReserveHostView.VIEW_NAME));
 		
+		//CssLayout welcome = new CssLayout();
+		//welcome.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
+		//		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
+		navigationBar.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
+		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
+		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Edit Profile", UserEditProfileView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Housing Management", HousingUserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityUserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("ReserveHost Management", ReserveHostView.VIEW_NAME));
+		navigationBar.addComponent(logoutButton);
+
 	}
 	
 	public void addManagerMenu(CssLayout navigationBar)
