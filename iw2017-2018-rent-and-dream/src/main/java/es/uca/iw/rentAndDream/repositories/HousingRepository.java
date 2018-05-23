@@ -38,4 +38,7 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	
 	@EntityGraph(attributePaths = {"city"})
 	public Housing findOne(Long id);
+	
+	@Query("select h from Housing h left join fetch h.city left join fetch h.availability a where a.startDate >= CURDATE() and h.id = ?1 ")
+	public Housing findOneWithAvailabilityAndCity(Long id);
 }

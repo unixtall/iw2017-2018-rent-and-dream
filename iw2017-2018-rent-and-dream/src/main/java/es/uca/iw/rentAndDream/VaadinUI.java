@@ -8,9 +8,9 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.UI;
 
-import es.uca.iw.rentAndDream.components.AccessDeniedView;
-import es.uca.iw.rentAndDream.components.ErrorView;
 import es.uca.iw.rentAndDream.entities.User;
+import es.uca.iw.rentAndDream.security.AccessDeniedView;
+import es.uca.iw.rentAndDream.security.ErrorView;
 
 @SpringUI
 @StyleSheet("calendarStyle.css")

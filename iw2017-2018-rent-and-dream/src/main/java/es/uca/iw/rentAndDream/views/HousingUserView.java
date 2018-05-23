@@ -28,21 +28,14 @@ public class HousingUserView extends CssLayout implements View {
 	public static final String VIEW_NAME = "housingUserView";
 	
 	private HorizontalItemLayout horizontalItemLayout;
-	
-	private final ReserveService reserveService;
-	private final UserService userService;
 	private final HousingService housingService;
-	private final CityService cityService;
+
 	Button addNew = new Button("Add new housing");
 
 	@Autowired
-	public HousingUserView(ReserveService reserveService, UserService userService, HousingService housingService
-			, CityService cityService) {
-		this.reserveService = reserveService;
-		this.userService = userService;
+	public HousingUserView(HousingService housingService) {
 		this.horizontalItemLayout = new HorizontalItemLayout();
 		this.housingService = housingService;
-		this.cityService = cityService;
 	}
 	
 	@PostConstruct

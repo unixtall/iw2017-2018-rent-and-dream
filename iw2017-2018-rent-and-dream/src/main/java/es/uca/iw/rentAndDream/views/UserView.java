@@ -23,10 +23,6 @@ import es.uca.iw.rentAndDream.components.UserEditor;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.UserService;
 
-/**
- * @author ruizrube
- *
- */
 
 @SpringView(name = UserView.VIEW_NAME)
 public class UserView extends VerticalLayout implements View {

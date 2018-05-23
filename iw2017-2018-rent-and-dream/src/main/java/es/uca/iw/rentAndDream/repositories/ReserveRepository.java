@@ -25,5 +25,23 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			
 	List<Housing> findByUserAndStatus(User user, ReserveTypeStatus status);
 	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH h.user u "
+			+ "where h.name like ?1% and u = ?2")
+	public List<Reserve> findByHousingAndHost(String housing, User user);
+	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH r.user u "
+			+ "JOIN FETCH h.user uh "
+			+ "where uh = ?1")
+	public List<Reserve> findAsHost(User user);
+	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH r.user u "
+			+ "where u = ?1")
+	public List<Reserve> findAsGuest(User user);
 	
 }

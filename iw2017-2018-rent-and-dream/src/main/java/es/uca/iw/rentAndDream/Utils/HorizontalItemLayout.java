@@ -18,6 +18,11 @@ public class HorizontalItemLayout extends CustomComponent{
 		cssLayout.addComponent(new CssLayout(component));
 	}
 	
+	public void addComponent(Component... component)
+	{
+		cssLayout.addComponents(component);
+	}
+	
 	public void removeAllComponents()
 	{
 		cssLayout.removeAllComponents();

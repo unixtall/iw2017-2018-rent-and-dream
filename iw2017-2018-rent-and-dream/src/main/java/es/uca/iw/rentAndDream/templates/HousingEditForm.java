@@ -7,6 +7,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -23,7 +24,7 @@ public class HousingEditForm extends VerticalLayout {
 	TextField name = new TextField("Name");
 	TextField address = new TextField("Address");
 	TextField assessment = new TextField("Calification");
-	TextField description = new TextField("Description");
+	RichTextArea description = new RichTextArea("Description");
 	TextField bedrooms = new TextField("Bedrooms");
 	TextField beds = new TextField("Beds");
 	CheckBox airConditioner = new CheckBox("airConditioner");
@@ -127,10 +128,15 @@ public class HousingEditForm extends VerticalLayout {
 	}
  
 
-	public void setDescription(TextField description) {
+	public void setDescription(RichTextArea description) {
 		this.description = description;
 	}
 
+	/*
+	public RichTextArea getDescription() {
+		return description;
+	}
+*/
 	public TextField getBedrooms() {
 		return bedrooms;
 	}

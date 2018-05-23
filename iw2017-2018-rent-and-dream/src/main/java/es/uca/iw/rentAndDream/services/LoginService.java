@@ -9,18 +9,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.data.Binder;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinService;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import es.uca.iw.rentAndDream.entities.User;
+import es.uca.iw.rentAndDream.entities.UserRoleType;
+import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.templates.LoginForm;
+import es.uca.iw.rentAndDream.views.HousingSearchView;
+import es.uca.iw.rentAndDream.views.ReserveManagementView;
+import es.uca.iw.rentAndDream.views.UserManagementView;
 
 @Service
 public class LoginService {
@@ -72,7 +73,11 @@ public class LoginService {
 			//UI.getCurrent().setAttribute(User.class, userService.loadUserByUsername(username));
 			VaadinService.getCurrentRequest().getWrappedSession().setAttribute(User.class.getName(), userService.findByUsername(username));
 			
+
+			
 			Page.getCurrent().reload();
+			
+			
 			return true;
 		} catch (AuthenticationException ex) {
 			return false;

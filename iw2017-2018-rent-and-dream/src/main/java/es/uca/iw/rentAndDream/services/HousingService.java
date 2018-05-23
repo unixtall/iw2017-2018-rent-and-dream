@@ -61,6 +61,12 @@ public class HousingService {
 	public Housing findOne(Long arg0) {
 		return repo.findOne(arg0);
 	}
+	
+	public Housing findOneWithAvailability(Long id)
+	{
+		return repo.findOneWithAvailabilityAndCity(id);
+	}
+	
 
 	public void delete(Housing arg0) {
 		repo.delete(arg0);

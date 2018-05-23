@@ -9,39 +9,61 @@ import org.vaadin.addons.tuningdatefield.TuningDateField;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.datefield.DateResolution;
+import com.vaadin.server.Page;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.InlineDateField;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.MultiSelectDateField;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
-import es.uca.iw.rentAndDream.services.ReserveService;
+import es.uca.iw.rentAndDream.services.HousingService;
 
 @SpringView(name = HousingInfoView.VIEW_NAME)
 public class HousingInfoView extends VerticalLayout implements View{
 	
-	public static final String VIEW_NAME = "housingInfo";
+	public static final String VIEW_NAME = "housingInfoView";
 	
 	private Housing housing;
 	
-	@Autowired
-	private ReserveService reserveService;
-
-	final private InlineDateField reserveDatePicker = new InlineDateField();
-	final private TuningDateField tuningDateField = new TuningDateField("Availability Calendar");
-
-	@Autowired
-	public HousingInfoView(Housing housing) {
-		this.housing = housing;
-		this.reserveService = reserveService;
-	    this.reserveDatePicker.setResolution(DateResolution.DAY);
+	private HousingService housingService;
+	private String[] uriTokens;
 	
+	private TuningDateField availabilityDateField = new TuningDateField("Availability Calendar");
+	
+	
+	
+	@PostConstruct
+	public void init() {
+	
+	    
+	  }
+	
+	@Autowired
+	public HousingInfoView(HousingService housingService) {
+		this.housingService = housingService;
+
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		// TODO Auto-generated method stub
+		uriTokens = Page.getCurrent().getUriFragment().split("/");
+		
+
+		if(uriTokens.length != 2)
+			return;
+
+		Long idHousing = Long.parseLong(uriTokens[1]);
+		
+		housing = housingService.findOneWithAvailability(idHousing);
+
+		
 		HorizontalLayout features = new HorizontalLayout();
 		Label name = new Label(housing.getName() + " Rating: " + housing.getAssessment());
 		Label city = new Label(housing.getCity().getName());
@@ -60,7 +82,10 @@ public class HousingInfoView extends VerticalLayout implements View{
 		
 		Label fromPrice = new Label("From " + lowPrice + "€");
 		
-		Label description = new Label(housing.getDescription());
+		RichTextArea description = new RichTextArea();
+		description.setValue(housing.getDescription());
+		description.setReadOnly(true);
+		description.setWidthUndefined();
 		
         name.setStyleName(ValoTheme.LABEL_H3);
         city.setStyleName(ValoTheme.LABEL_H4);
@@ -74,17 +99,18 @@ public class HousingInfoView extends VerticalLayout implements View{
 		//reserveDatePicker.setRangeStart(startDate);
 		//tuningDateField.
 		MultiSelectDateField multiSelectDateField = new MultiSelectDateField();
-		addComponents(name, city, features, description, tuningDateField, multiSelectDateField);
+		HorizontalItemLayout splitLayout = new HorizontalItemLayout();
+		splitLayout.addComponent(description);
+		splitLayout.addComponent(multiSelectDateField);
+		//splitLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		splitLayout.setWidthUndefined();
+		addComponents(name, city, features, splitLayout);
 		setSizeFull();
 	}
 	
-	@PostConstruct
-	void init()
+	void getAvailabilityCalendar()
 	{
-		//this.setContent(layout);
+		
 	}
-	@Override
-	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-	}
+	
 }

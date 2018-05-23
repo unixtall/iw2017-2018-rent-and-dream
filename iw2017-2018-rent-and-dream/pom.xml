@@ -46,6 +46,10 @@
             <id>vaadin-prereleases</id>
             <url>http://maven.vaadin.com/vaadin-prereleases</url>
         </pluginRepository>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
     </pluginRepositories>
 
 	<dependencies>
@@ -156,13 +160,12 @@
                 </executions>
                 <configuration>
                     <resources>
-                        <resource>
-                            <!-- Set source and destination dirs -->
+                   <!--   <resource>
                             <source>
                                 <directory>${project.basedir}/src/main/resources/css/sass</directory>
                             </source>
                             <destination>${project.basedir}/src/main/resources/css/sass_compiled</destination>
-                        </resource>
+                        </resource> -->
                     </resources>
                 </configuration>
             </plugin>

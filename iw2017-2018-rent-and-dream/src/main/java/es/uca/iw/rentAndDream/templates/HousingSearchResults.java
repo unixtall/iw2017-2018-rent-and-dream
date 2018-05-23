@@ -7,12 +7,14 @@ import java.util.Collection;
 import org.springframework.core.io.ClassPathResource;
 
 import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -61,6 +63,8 @@ public class HousingSearchResults extends VerticalLayout {
 		setSizeFull();
 		
 		//popup with a  resume of offer
-		this.addLayoutClickListener(event -> new WindowManager("Offer Description", new HousingInfoView(housing)));
+		
+		this.addLayoutClickListener(event -> UI.getCurrent().getNavigator().navigateTo("housingInfoView/" + String.valueOf(housing.getId())));
+	
 	}
 }

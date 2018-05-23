@@ -1,4 +1,4 @@
-package es.uca.iw.rentAndDream.components;
+package es.uca.iw.rentAndDream.security;
 
 import org.springframework.stereotype.Component;
 
