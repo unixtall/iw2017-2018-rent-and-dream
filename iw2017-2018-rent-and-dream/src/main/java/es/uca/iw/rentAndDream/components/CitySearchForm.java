@@ -1,11 +1,11 @@
-package es.uca.iw.rentAndDream.templates;
+package es.uca.iw.rentAndDream.components;
 
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Scope;
 
 import com.vaadin.data.Binder;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -17,8 +17,15 @@ import es.uca.iw.rentAndDream.services.CityService;
 import es.uca.iw.rentAndDream.services.CountryService;
 import es.uca.iw.rentAndDream.services.RegionService;
 
-public class CitySearchForm extends VerticalLayout {
 
+@SpringComponent
+@Scope("prototype")
+public class CitySearchForm extends VerticalLayout {
+	
+	private CityService cityService;
+	private RegionService regionService;
+	private CountryService countryService;
+	
 	private Binder<CitySearchForm> binder = new Binder<CitySearchForm>(CitySearchForm.class);
 		
 	private Country _country;
@@ -28,8 +35,13 @@ public class CitySearchForm extends VerticalLayout {
 	private ComboBox<Region> region; 
 	private ComboBox<City> city; 
 	
-	public CitySearchForm()
+	@Autowired
+	public CitySearchForm(CityService cityService, RegionService regionService, CountryService countryService)
 	{
+		this.cityService = cityService;
+		this.regionService = regionService;
+		this.countryService = countryService;
+		
 		this.country = new ComboBox<Country>();
 		this.region = new ComboBox<Region>();
 		this.city = new ComboBox<City>();
@@ -48,6 +60,21 @@ public class CitySearchForm extends VerticalLayout {
         binder.setBean(this);
 		binder.bindInstanceFields(this);
 
+		
+		getCountry().setItems(countryService.findAll());
+		
+		getCountry().addValueChangeListener(
+				event -> {
+					if(!getCountry().isEmpty())
+						getRegion().setItems(countryService.findOne(event.getValue().getId()).getRegion());	
+				});
+		
+		getRegion().addValueChangeListener(
+			event -> {
+				if(!getRegion().isEmpty())
+					getCity().setItems(regionService.findOne(event.getValue().getId()).getCities());
+			});
+		
 		
 		addComponents(country, region, city);
 	}

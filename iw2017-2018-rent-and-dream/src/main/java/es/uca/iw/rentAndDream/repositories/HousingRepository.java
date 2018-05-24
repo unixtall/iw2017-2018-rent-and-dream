@@ -14,7 +14,7 @@ import es.uca.iw.rentAndDream.entities.User;
 public interface HousingRepository extends JpaRepository<Housing, Long> {
 
 	
-	@EntityGraph(attributePaths = {"city"})
+	@EntityGraph(attributePaths = {"city", "user"})
 	public List<Housing> findAll();
 	
 	@EntityGraph(attributePaths = {"city"})
@@ -31,12 +31,12 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, 
 			LocalDate endDate, Integer guests);
 	
-	@EntityGraph(attributePaths = {"reserve", "city"})
+	@EntityGraph(attributePaths = {"reserve", "city", "user"})
 	@Query("select distinct h from Housing h "
 			+ "where h.user = ?1")
 	List<Housing> findByUser(User user);
 	
-	@EntityGraph(attributePaths = {"city"})
+	@EntityGraph(attributePaths = {"user", "city"})
 	public Housing findOne(Long id);
 	
 	@Query("select h from Housing h left join fetch h.city left join fetch h.availability a where a.startDate >= CURDATE() and h.id = ?1 ")

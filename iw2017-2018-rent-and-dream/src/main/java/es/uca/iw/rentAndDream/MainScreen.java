@@ -25,10 +25,10 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.LoginForm;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
-import es.uca.iw.rentAndDream.services.LoginService;
 import es.uca.iw.rentAndDream.views.AvailabilityManagementView;
 import es.uca.iw.rentAndDream.views.AvailabilityUserView;
 import es.uca.iw.rentAndDream.views.CityManagementView;
@@ -48,7 +48,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 	private Panel springViewDisplay;
 	
-	private LoginService loginService;
+	@Autowired
+	private LoginForm loginForm;
 	
 	@Override
     public void attach() {
@@ -62,10 +63,9 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
         	this.getUI().getNavigator().navigateTo("housingSearchView");
     }
 	
-	@Autowired
-	public MainScreen(LoginService loginService)
+	public MainScreen()
 	{
-		this.loginService = loginService;
+
 	}
 	
 	@PostConstruct
@@ -173,7 +173,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	
 		//navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
 		HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
-		horizontalItemLayout.addComponent(loginService.getLoginLayout());
+		horizontalItemLayout.addComponent(loginForm);
 		
 		Button loginButton = new Button("Login", e -> 
 			new WindowManager("Housing management", horizontalItemLayout)

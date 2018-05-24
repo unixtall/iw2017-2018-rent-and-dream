@@ -10,12 +10,10 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.uca.iw.rentAndDream.Utils.CitySearch;
 import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
@@ -26,6 +24,7 @@ import es.uca.iw.rentAndDream.services.CityService;
 public class CityEditor extends VerticalLayout {
 	
 	private final CityService service;
+	private CitySearchForm citySearchForm;
 	
 	/**
 	 * The currently edited user
@@ -49,10 +48,20 @@ public class CityEditor extends VerticalLayout {
 
 
 	@Autowired
-	public CityEditor(CityService service) {
+	public CityEditor(CityService service, CitySearchForm citySearchForm) {
 		this.service = service;
-		addComponents(name, longitude, latitude, actions);
+		this.citySearchForm = citySearchForm;
+		
+		addComponents(citySearchForm, name, longitude, latitude, actions);
 
+		binder.forField(citySearchForm.getCountry())
+		.asRequired("Is required")
+	  	.bind(City::getCountry, City::setCountry);
+		
+		binder.forField(citySearchForm.getRegion())
+		.asRequired("Is required")
+	  	.bind(City::getRegion, City::setRegion);
+		
 		binder.forField(latitude)
 		.withConverter(
 			new StringToFloatConverter("Must enter a number"))

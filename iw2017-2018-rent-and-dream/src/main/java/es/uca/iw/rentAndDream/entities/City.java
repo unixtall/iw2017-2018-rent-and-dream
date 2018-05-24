@@ -89,6 +89,15 @@ public class City {
 		this.longitude = longitude;
 	}
 	
+	
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
 	@Override
 	public String toString() {
 		return name;

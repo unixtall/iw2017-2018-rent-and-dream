@@ -11,7 +11,6 @@ import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.repositories.CityRepository;
 import es.uca.iw.rentAndDream.repositories.CountryRepository;
 import es.uca.iw.rentAndDream.repositories.RegionRepository;
-import es.uca.iw.rentAndDream.templates.CitySearchForm;
 
 @Service
 public class CityService {
@@ -51,7 +50,8 @@ public class CityService {
 	public List<City> findAll() {
 		return cityRepo.findAll();
 	}
-	
+
+	/*
 	public CitySearchForm getCitySearchForm()
 	{
 		CitySearchForm citySearchForm = new CitySearchForm();
@@ -71,5 +71,6 @@ public class CityService {
 			});
 		
 		return citySearchForm;
-	}
+	}*/
+	
 }

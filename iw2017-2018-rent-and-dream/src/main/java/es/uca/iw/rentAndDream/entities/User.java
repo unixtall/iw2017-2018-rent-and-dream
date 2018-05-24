@@ -55,7 +55,7 @@ public class User implements UserDetails{
 	@OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
     private List<Reserve> reserve;
 
-	protected User() {
+	public User() {
 	}
 
 	public User(String firstName, String lastName, String username, String email, LocalDate birthday, String dni, Integer telephone, UserRoleType role) {

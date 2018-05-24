@@ -15,12 +15,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import es.uca.iw.rentAndDream.Utils.CitySearch;
 import es.uca.iw.rentAndDream.components.CityEditor;
+import es.uca.iw.rentAndDream.components.CitySearchForm;
 import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.services.CityService;
-import es.uca.iw.rentAndDream.services.CountryService;
-import es.uca.iw.rentAndDream.services.RegionService;
 
 @SpringView(name = CityManagementView.VIEW_NAME)
 public class CityManagementView extends VerticalLayout implements View {
@@ -30,16 +28,18 @@ public class CityManagementView extends VerticalLayout implements View {
 	private TextField filter;
 	private Button addNewBtn;
 
-	private CityEditor editor;
+	
+	private CityEditor cityEditor;
 
-	private final CityService cityService;
-	private CitySearch citysearch;
+	private CityService cityService;
+	private CitySearchForm citySearchForm;
+	
 
 	@Autowired
-	public CityManagementView(CityService cityService, CityEditor editor, CountryService countryService, RegionService regionService) {
+	public CityManagementView(CityService cityService, CitySearchForm citySearchForm, CityEditor cityEditor) {
+		this.citySearchForm = citySearchForm;
 		this.cityService = cityService;
-		this.citysearch = new CitySearch(cityService, regionService, countryService);
-		this.editor = editor;
+		this.cityEditor = cityEditor;
 		this.grid = new Grid<>(City.class);
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New City", FontAwesome.PLUS);
@@ -50,8 +50,8 @@ public class CityManagementView extends VerticalLayout implements View {
 		
 		// build layout
 		HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
-		addComponent(citysearch);
-		addComponents(actions, grid, editor);
+		addComponent(citySearchForm);
+		addComponents(actions, grid, cityEditor);
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
@@ -67,20 +67,20 @@ public class CityManagementView extends VerticalLayout implements View {
 
 		// Connect selected User to editor or hide if none is selected
 		grid.asSingleSelect().addValueChangeListener(e -> {
-			editor.editCity(e.getValue());
+			cityEditor.editCity(e.getValue());
 		});
 
 		// Instantiate and edit new User the new button is clicked
-		addNewBtn.addClickListener(e -> editor.editCity(new City("", 0f, 0f)));
+		addNewBtn.addClickListener(e -> cityEditor.editCity(new City("", 0f, 0f)));
 
 		// Listen changes made by the editor, refresh data from backend
-		editor.setChangeHandler(() -> {
-			editor.setVisible(false);
+		cityEditor.setChangeHandler(() -> {
+			cityEditor.setVisible(false);
 			listCity(filter.getValue());
 		});
 		
 		// escuchamos los cambios de city search para rellenar el grid
-		citysearch.setChangeHandler(() -> 
+		citySearchForm.getCity().addValueChangeListener(e -> 
 		{
 			listCity(null);
 		});
@@ -88,10 +88,10 @@ public class CityManagementView extends VerticalLayout implements View {
 
 	private void listCity(String filterText) {
 		if (filterText == null) {
-			if(citysearch.get_city() != null)
-				grid.setItems(citysearch.get_city());
+			if(citySearchForm.get_city() != null)
+				grid.setItems(cityService.findOne(citySearchForm.get_city().getId()));
 		} else {
-			if(filterText.length() > 3)
+			if(filterText.length() > 2)
 				grid.setItems(cityService.findByNameStartsWithIgnoreCase(filterText));
 		}
 	}

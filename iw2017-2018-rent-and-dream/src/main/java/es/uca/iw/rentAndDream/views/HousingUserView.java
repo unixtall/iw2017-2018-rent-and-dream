@@ -10,18 +10,15 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
-import es.uca.iw.rentAndDream.Utils.HousingPreview;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.HousingEditForm;
+import es.uca.iw.rentAndDream.components.HousingSearchPreview;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
-import es.uca.iw.rentAndDream.services.CityService;
 import es.uca.iw.rentAndDream.services.HousingService;
-import es.uca.iw.rentAndDream.services.ReserveService;
-import es.uca.iw.rentAndDream.services.UserService;
 
 @SpringView(name = HousingUserView.VIEW_NAME)
 public class HousingUserView extends CssLayout implements View {
@@ -29,13 +26,17 @@ public class HousingUserView extends CssLayout implements View {
 	
 	private HorizontalItemLayout horizontalItemLayout;
 	private final HousingService housingService;
+	private HousingEditForm housingEditForm;
+	private HousingSearchPreview housingPreview;
 
 	Button addNew = new Button("Add new housing");
 
 	@Autowired
-	public HousingUserView(HousingService housingService) {
+	public HousingUserView(HousingService housingService, HousingEditForm housingEditForm, HousingSearchPreview housingPreview) {
 		this.horizontalItemLayout = new HorizontalItemLayout();
 		this.housingService = housingService;
+		this.housingEditForm = housingEditForm;
+		this.housingPreview = housingPreview;
 	}
 	
 	@PostConstruct
@@ -49,37 +50,38 @@ public class HousingUserView extends CssLayout implements View {
 		
 		//listado inicial de casas housing preview de casas del usuario
 
-		housingService.findByUser((User)VaadinService.getCurrentRequest()
-				.getWrappedSession().getAttribute(User.class.getName()))
-				.forEach(e -> {
-					HousingPreview housingPreview = new HousingPreview(e, housingService);
-					horizontalItemLayout.addComponent(housingPreview);
-				});
-
+		housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+				.getWrappedSession().getAttribute(User.class.getName())));
+		
+		horizontalItemLayout.addComponent(housingPreview);
+		
+		housingPreview.setChangeHandler(() -> {
+			
+			//horizontalItemLayout.removeComponent(housingPreview);
+			housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+					.getWrappedSession().getAttribute(User.class.getName())));
+			horizontalItemLayout.addComponent(housingPreview);
+		});
+		
 		//Boton para añadir nuevo
 		addNew.addClickListener(e -> {
 			
-			VerticalLayout editForm = housingService.getEditForm(new Housing("", "", 0f, "", 0, 0, false
-					,(User)VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName()), null));
-			
-			Window window = new WindowManager("Housing management",editForm).getWindow();
-			
-			window.addCloseListener(event -> reloadOffers());
+			housingEditForm.setHousing(new Housing("", "", 0f, "", 0, 0, false ,null, null));
+			housingEditForm.setUser((User)VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName()));
+
+			Window window = new WindowManager("Housing management", housingEditForm).getWindow();
+
+			housingEditForm.getSave().addClickListener(event -> 
+			{
+				housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+						.getWrappedSession().getAttribute(User.class.getName())));
+				horizontalItemLayout.addComponent(housingPreview);
+				window.close();
+			});
+	
 		});
 
 		
-	}
-
-	private void reloadOffers()
-	{
-		horizontalItemLayout.removeAllComponents();
-		horizontalItemLayout.addComponent(addNew);
-		housingService.findByUser((User)VaadinService.getCurrentRequest()
-				.getWrappedSession().getAttribute(User.class.getName()))
-				.forEach(e -> {
-					HousingPreview housingPreview = new HousingPreview(e, housingService);
-					horizontalItemLayout.addComponent(housingPreview);
-				});
 	}
 	
 	@Override

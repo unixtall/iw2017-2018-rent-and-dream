@@ -6,23 +6,14 @@ import java.util.List;
 import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vaadin.server.VaadinService;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
-
-import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
-import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.repositories.HousingRepository;
-import es.uca.iw.rentAndDream.security.SecurityUtils;
-import es.uca.iw.rentAndDream.templates.AvailabilityEditForm;
-import es.uca.iw.rentAndDream.templates.CitySearchForm;
-import es.uca.iw.rentAndDream.templates.HousingEditForm;
 
 @Service
 public class HousingService {
@@ -53,7 +44,7 @@ public class HousingService {
 	public Housing save(Housing housing) {
 		return repo.save(housing);
 	}
-
+	@EntityGraph(attributePaths = {"user"})
 	public List<Housing> findByNameStartsWithIgnoreCase(String name) {
 		return repo.findByNameStartsWithIgnoreCase(name);
 	}
@@ -71,7 +62,7 @@ public class HousingService {
 	public void delete(Housing arg0) {
 		repo.delete(arg0);
 	}
-
+	@EntityGraph(attributePaths = {"user"})
 	public List<Housing> findAll() {
 		return repo.findAll();
 	}
@@ -109,7 +100,7 @@ public class HousingService {
 	}
 	*/
 	
-	
+	/*
 	public VerticalLayout getEditForm(Housing housing)
 	{
 		CitySearchForm citySearchForm = cityService.getCitySearchForm();
@@ -141,7 +132,7 @@ public class HousingService {
 			editForm.getDelete().setEnabled(false);
 		});
 		return citySearchForm;
-	}
+	}*/
 	
 	
 }

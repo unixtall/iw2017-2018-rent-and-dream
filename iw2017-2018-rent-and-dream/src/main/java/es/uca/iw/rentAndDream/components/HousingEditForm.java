@@ -1,26 +1,44 @@
-package es.uca.iw.rentAndDream.templates;
+package es.uca.iw.rentAndDream.components;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import es.uca.iw.rentAndDream.entities.Housing;
+import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
+import es.uca.iw.rentAndDream.services.HousingService;
+import es.uca.iw.rentAndDream.services.UserService;
 
+
+@SpringComponent
+@Scope("prototype")
 public class HousingEditForm extends VerticalLayout {
 
 	private Housing housing;
+	
+	private final UserService userService;
+	private final HousingService housingService;
+	private CitySearchForm citySearchForm;
+
 
 	private Binder<Housing> binder = new Binder<>(Housing.class);
 	
+	ComboBox<User> user = new ComboBox<User>("User");
 	TextField name = new TextField("Name");
 	TextField address = new TextField("Address");
 	TextField assessment = new TextField("Calification");
@@ -34,18 +52,39 @@ public class HousingEditForm extends VerticalLayout {
 	
 	/* Layout for buttons */
 	CssLayout actions = new CssLayout(save, delete);
-		
-	public HousingEditForm(Housing h)
+	
+	@Autowired
+	public HousingEditForm(UserService userService, HousingService housingService, CitySearchForm citySearchForm)
 	{
-		if(h == null)
-			return;
+		this.citySearchForm = citySearchForm;
+		this.userService = userService;
+		this.housingService = housingService;
+		
+		this.housing = new Housing("", "", 0f, "", 0, 0, false ,null, null);
 		
 		this.setMargin(false);
 		save.setEnabled(false);
-		delete.setEnabled(h.getId() != null);
+		user.setVisible(false);
+		user.setEnabled(false);
+		citySearchForm.setMargin(false);
+		
+		delete.setEnabled(housing.getId() != null);
+		
 		assessment.setEnabled(SecurityUtils.hasRole(UserRoleType.ADMIN));
 		
-
+		if(SecurityUtils.hasRole(UserRoleType.ADMIN))
+		{
+			user.setVisible(true);
+			user.setEnabled(true);
+			user.setItems(userService.findAll());
+		}
+		
+		binder.forField(citySearchForm.getCity())
+	  	.bind(Housing::getCity, Housing::setCity);
+		
+		binder.forField(user)
+		.asRequired("Is required")
+	  	.bind(Housing::getUser, Housing::setUser);
 		
 		binder.forField(name)
 		.asRequired("Is required")
@@ -79,11 +118,28 @@ public class HousingEditForm extends VerticalLayout {
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
-		binder.setBean(h);
-		addComponents(name, address, assessment, description, bedrooms, beds, airConditioner, actions);
+		binder.setBean(housing);
+		addComponents(user, citySearchForm, name, address, assessment, description, bedrooms, beds, airConditioner, actions);
 		
 		binder.addStatusChangeListener(e -> {
-			save.setEnabled(binder.isValid());
+			save.setEnabled(binder.isValid() && citySearchForm.getBinder().isValid());
+		});
+		
+		citySearchForm.getBinder().addValueChangeListener(e-> {
+			save.setEnabled(binder.isValid() && citySearchForm.getBinder().isValid());
+		});
+		
+		save.addClickListener(event-> {
+			housingService.save(binder.getBean());
+			Notification.show("Change sucessfull");
+			save.setEnabled(false);
+		});
+		
+		delete.addClickListener(event-> {
+			housingService.delete(binder.getBean());
+			Notification.show("Change sucessfull");
+			binder.removeBean();
+			delete.setEnabled(false);
 		});
 	}
 
@@ -92,7 +148,9 @@ public class HousingEditForm extends VerticalLayout {
 	}
 
 	public void setHousing(Housing housing) {
-		this.housing = housing;
+		binder.setBean(housing);
+		save.setEnabled(false);
+		delete.setEnabled(true);
 	}
 
 	public Binder<Housing> getBinder() {
@@ -132,11 +190,6 @@ public class HousingEditForm extends VerticalLayout {
 		this.description = description;
 	}
 
-	/*
-	public RichTextArea getDescription() {
-		return description;
-	}
-*/
 	public TextField getBedrooms() {
 		return bedrooms;
 	}
@@ -184,7 +237,14 @@ public class HousingEditForm extends VerticalLayout {
 	public void setActions(CssLayout actions) {
 		this.actions = actions;
 	}
-	
-	
 
+	public ComboBox<User> getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.housing.setUser(user);
+		this.user.setItems(user);
+		this.user.setSelectedItem(user);
+	}
 }

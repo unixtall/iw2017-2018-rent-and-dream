@@ -18,6 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.HousingEditForm;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.services.HousingService;
 
@@ -30,10 +31,12 @@ public class HousingManagementView extends VerticalLayout implements View {
 	private Button addNewBtn;
 
 	private final HousingService housingService;
+	private HousingEditForm housingEditForm;
 
 	@Autowired
-	public HousingManagementView(HousingService service) {
+	public HousingManagementView(HousingService service, HousingEditForm housingEditForm) {
 		this.housingService = service;
+		this.housingEditForm = housingEditForm;
 		this.grid = new Grid<>(Housing.class);
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New Housing", FontAwesome.PLUS);
@@ -65,15 +68,24 @@ public class HousingManagementView extends VerticalLayout implements View {
 			//editor.editHousing(e.getValue());
 			if(e.getValue() != null)
 			{
-				Window window = new WindowManager("Housing Edit", housingService.getEditForm(e.getValue())).getWindow();
+				housingEditForm.setHousing(e.getValue());
+				Window window = new WindowManager("Housing Edit", housingEditForm).getWindow();
 				window.addCloseListener(evt -> listHousing(null) );
+				
+				housingEditForm.getSave().addClickListener(event -> 
+				{
+						
+					 listHousing(this.filter.getValue());
+					 window.close();
+				});
 			}
 			
 		});
 
 		// Instantiate and edit new User the new button is clicked
 		addNewBtn.addClickListener(e ->{
-			Window window = new WindowManager("Housing Edit", housingService.getEditForm(new Housing("", "", 0f, "", 0, 0, false))).getWindow();
+			housingEditForm.setHousing(new Housing("", "", 0f, "", 0, 0, false));
+			Window window = new WindowManager("Housing Edit", housingEditForm).getWindow();
 			window.addCloseListener(evt -> listHousing(null) );
 		});
 
