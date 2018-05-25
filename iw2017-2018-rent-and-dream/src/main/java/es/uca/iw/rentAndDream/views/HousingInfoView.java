@@ -61,7 +61,14 @@ public class HousingInfoView extends VerticalLayout implements View{
 
 		Long idHousing = Long.parseLong(uriTokens[1]);
 		
-		housing = housingService.findOneWithAvailability(idHousing);
+		housing = housingService.findOneWithAvailabilityAndCity(idHousing);
+
+		
+		if(housing == null)
+		{
+			addComponent(new Label("Housing not found"));
+			return;
+		}
 
 		
 		HorizontalLayout features = new HorizontalLayout();
@@ -70,10 +77,21 @@ public class HousingInfoView extends VerticalLayout implements View{
 		Label beds = new Label(housing.getBeds().toString() + " Beds");
 		Label bedrooms = new Label(housing.getBedrooms().toString() + " Bedrooms");
 		Label airAconditioner = new Label();
+		RichTextArea description = new RichTextArea();
+		MultiSelectDateField multiSelectDateField = new MultiSelectDateField();
+		
+		
 		airAconditioner.setCaption(" Air Aconditioner");
 		airAconditioner.setIcon(housing.getAirConditioner()? VaadinIcons.CHECK_CIRCLE_O : VaadinIcons.CLOSE_CIRCLE_O);
 		airAconditioner.setStyleName(ValoTheme.BUTTON_ICON_ONLY);
-			
+		description.setValue(housing.getDescription());
+		description.setReadOnly(true);
+		multiSelectDateField.setWidth("50%");
+		multiSelectDateField.setHeight("50%");
+		
+		//description.setWidth("50%");
+		
+		
 		//Calculamos el precio mas bajo de entre las disponibilidades
 		Float lowPrice = Float.POSITIVE_INFINITY;
 		for(Availability a : housing.getAvailability())
@@ -81,29 +99,24 @@ public class HousingInfoView extends VerticalLayout implements View{
 				lowPrice = a.getPrice();	
 		
 		Label fromPrice = new Label("From " + lowPrice + "€");
-		
-		RichTextArea description = new RichTextArea();
-		description.setValue(housing.getDescription());
-		description.setReadOnly(true);
-		description.setWidthUndefined();
+
 		
         name.setStyleName(ValoTheme.LABEL_H3);
         city.setStyleName(ValoTheme.LABEL_H4);
 		
 		features.addComponents(beds, bedrooms, airAconditioner, fromPrice);
 
-		features.setWidth("50%");
+		features.setWidth("80%");
 		
 		setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		
-		//reserveDatePicker.setRangeStart(startDate);
-		//tuningDateField.
-		MultiSelectDateField multiSelectDateField = new MultiSelectDateField();
-		HorizontalItemLayout splitLayout = new HorizontalItemLayout();
+		HorizontalLayout splitLayout = new HorizontalLayout();
+		splitLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+		
 		splitLayout.addComponent(description);
 		splitLayout.addComponent(multiSelectDateField);
 		//splitLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		splitLayout.setWidthUndefined();
+		splitLayout.setSizeFull();
 		addComponents(name, city, features, splitLayout);
 		setSizeFull();
 	}

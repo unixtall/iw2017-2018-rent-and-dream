@@ -2,14 +2,27 @@
 .multi-select-date-field .multi-selected:hover,
 .multi-select-date-field .multi-selected:active {
   color: white;
-  background: purple;
+  background: green;
 }
-.multi-select-date-field .multi-unselected {
+.multi-select-date-field .day-unavailability {
   background: transparent;
 }
 .multi-select-date-field .selected {
   color: inherit;
 }
-.multi-select-date-field .selected.multi-selected {
+.multi-select-date-field .selected.day-availability {
   color: white;
+  background: greenyellow;
+}
+
+.multi-select-date-field .dayenable{
+  background: green;
+}
+
+.multi-select-date-field .daynotenable{
+  background: red;
+}
+
+.day-not-enabled {
+  background: red;
 }

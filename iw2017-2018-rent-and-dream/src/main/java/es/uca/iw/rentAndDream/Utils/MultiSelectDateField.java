@@ -23,10 +23,13 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
 
         InlineTuningDateField inlineTuningDateField = new InlineTuningDateField();
         inlineTuningDateField.setWeekendDisabled(false);
-        inlineTuningDateField.setDateRange(LocalDate.now(), LocalDate.now().plusYears(1), "Date not allow");
+        //inlineTuningDateField.setDateRange(LocalDate.now(), LocalDate.now().plusYears(1), "Date not allow");
         inlineTuningDateField.setLocalDate(LocalDate.now());
         
-        value.add(LocalDate.now().plusDays(1));
+        
+        
+        for(int i = 0; i < 5; i++)
+        	value.add(LocalDate.now().plusDays(i));
         
         inlineTuningDateField.addDayClickListener(evt -> {
  
@@ -80,9 +83,9 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         public String getStyle(LocalDate date, TuningDateField tuningDateField) {
             String style = null;
             if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
-                style = "multi-selected";
+                style = "day-availability";
             } else {
-                style = "multi-unselected";
+                style = "day-unavailability";
             }
             return style;
         }
@@ -91,9 +94,9 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         public String getTooltip(LocalDate date, TuningDateField tuningDateField) {
             String style = null;
             if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
-                style = "Dia dentro";
+                style = "dayenabled";
             } else {
-                style = "Dia fuera";
+                style = "daynotenabled";
             }
             return style;
         }
@@ -102,9 +105,9 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         public boolean isEnabled(LocalDate date, TuningDateField tuningDateField) {
             boolean result;
             if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
-                result = false;
-            } else {
                 result = true;
+            } else {
+                result = false;
             }
             return result;
         }

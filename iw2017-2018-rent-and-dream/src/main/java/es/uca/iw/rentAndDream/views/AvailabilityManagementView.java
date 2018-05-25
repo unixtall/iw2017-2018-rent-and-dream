@@ -18,8 +18,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.AvailabilityEditForm;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.services.AvailabilityService;
+import es.uca.iw.rentAndDream.services.HousingService;
 
 @SpringView(name = AvailabilityManagementView.VIEW_NAME)
 public class AvailabilityManagementView extends VerticalLayout implements View {
@@ -30,10 +32,14 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 	private Button addNewBtn;
 
 	private final AvailabilityService availabilityService;
+	private final HousingService housingService;
+	private AvailabilityEditForm availabilityEditForm;
 
 	@Autowired
-	public AvailabilityManagementView(AvailabilityService service) {
+	public AvailabilityManagementView(AvailabilityService service,HousingService housingService, AvailabilityEditForm availabilityEditForm) {
 		this.availabilityService = service;
+		this.availabilityEditForm = availabilityEditForm;
+		this.housingService = housingService;
 		this.grid = new Grid<>(Availability.class);
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New Availability", FontAwesome.PLUS);
@@ -50,7 +56,7 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("id", "startDate", "endDate", "price");
+		grid.setColumns("id", "housing", "startDate", "endDate", "price");
 
 		filter.setPlaceholder("Filter by name");
 
@@ -64,16 +70,31 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 		grid.asSingleSelect().addValueChangeListener(e -> {
 			if(e.getValue() != null)
 			{
-				Window window = new WindowManager("Availability Edit", availabilityService.getEditForm(e.getValue())).getWindow();
-				window.addCloseListener(evt -> listAvailability(filter.getValue()) );
+				availabilityEditForm.setAvailability(e.getValue());
+				
+				Window window = new WindowManager("Availability Edit", availabilityEditForm).getWindow();
+				availabilityEditForm.getSave().addClickListener(event -> 
+				{
+						
+					 listAvailability(this.filter.getValue());
+					 window.close();
+				});			
+				availabilityEditForm.getSave().addClickListener(event -> 
+				{
+					
+					 listAvailability(this.filter.getValue());
+					 window.close();
+				});
 			}
 		});
 
 		// Instantiate and edit new User the new button is clicked
 		// Instantiate and edit new User the new button is clicked
 		addNewBtn.addClickListener(e ->{
-			Window window = new WindowManager("Housing Edit"
-					, availabilityService.getEditForm(new Availability(null, null, 0f, null))).getWindow();
+			availabilityEditForm.setAvailability(new Availability(null, null, 0f, null));
+			
+			Window window = new WindowManager("Housing Edit", availabilityEditForm).getWindow();
+			
 			window.addCloseListener(evt -> listAvailability(filter.getValue()) );
 		});
 
@@ -86,7 +107,7 @@ public class AvailabilityManagementView extends VerticalLayout implements View {
 		if (StringUtils.isEmpty(filterText)) {
 			grid.setItems(availabilityService.findAllWithHousing());
 		} else {
-			//grid.setItems(service.findByNameStartsWithIgnoreCase(filterText));
+			grid.setItems(availabilityService.findByHousingNameStartsWithIgnoreCaseWithHousing(filterText));
 		}
 	}
 	

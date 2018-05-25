@@ -23,13 +23,11 @@ import es.uca.iw.rentAndDream.entities.Housing;
 
 @SpringComponent
 @Scope("prototype")
-public class HousingSearchPreview extends HorizontalItemLayout {
+public class HousingUserPreview extends HorizontalItemLayout {
 	
 	private HousingEditForm housingEditForm;
-	private List<Housing> housingList;
-	
 	@Autowired
-	public HousingSearchPreview(HousingEditForm housingEditForm)
+	public HousingUserPreview(HousingEditForm housingEditForm)
 	{
 		this.housingEditForm = housingEditForm;
 	}
@@ -37,9 +35,6 @@ public class HousingSearchPreview extends HorizontalItemLayout {
 	public void setHousingList(List<Housing> housingList) {
 		
 		this.removeAllComponents();
-		// Image as a file resource
-		this.housingList = housingList;
-		
 		housingList.forEach( h -> {
 		
 			VerticalLayout previewLayout = new VerticalLayout();

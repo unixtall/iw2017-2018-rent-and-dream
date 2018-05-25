@@ -148,6 +148,8 @@ public class HousingEditForm extends VerticalLayout {
 	}
 
 	public void setHousing(Housing housing) {
+		citySearchForm.getRegion().clear();
+		citySearchForm.getCountry().clear();
 		binder.setBean(housing);
 		save.setEnabled(false);
 		delete.setEnabled(true);

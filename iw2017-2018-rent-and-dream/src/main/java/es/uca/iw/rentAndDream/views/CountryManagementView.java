@@ -13,6 +13,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -23,6 +24,7 @@ import es.uca.iw.rentAndDream.components.CountryEditor;
 import es.uca.iw.rentAndDream.entities.Country;
 import es.uca.iw.rentAndDream.services.CountryService;
 
+@UIScope
 @SpringView(name = CountryManagementView.VIEW_NAME)
 public class CountryManagementView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "countryManagementView";

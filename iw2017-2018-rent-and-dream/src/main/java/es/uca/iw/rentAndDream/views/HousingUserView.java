@@ -8,6 +8,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Window;
@@ -15,10 +16,11 @@ import com.vaadin.ui.Window;
 import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
 import es.uca.iw.rentAndDream.components.HousingEditForm;
-import es.uca.iw.rentAndDream.components.HousingSearchPreview;
+import es.uca.iw.rentAndDream.components.HousingUserPreview;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.HousingService;
+
 
 @SpringView(name = HousingUserView.VIEW_NAME)
 public class HousingUserView extends CssLayout implements View {
@@ -27,16 +29,16 @@ public class HousingUserView extends CssLayout implements View {
 	private HorizontalItemLayout horizontalItemLayout;
 	private final HousingService housingService;
 	private HousingEditForm housingEditForm;
-	private HousingSearchPreview housingPreview;
+	private HousingUserPreview housingUserPreview;
 
 	Button addNew = new Button("Add new housing");
 
 	@Autowired
-	public HousingUserView(HousingService housingService, HousingEditForm housingEditForm, HousingSearchPreview housingPreview) {
+	public HousingUserView(HousingService housingService, HousingEditForm housingEditForm, HousingUserPreview housingPreview) {
 		this.horizontalItemLayout = new HorizontalItemLayout();
 		this.housingService = housingService;
 		this.housingEditForm = housingEditForm;
-		this.housingPreview = housingPreview;
+		this.housingUserPreview = housingPreview;
 	}
 	
 	@PostConstruct
@@ -50,17 +52,17 @@ public class HousingUserView extends CssLayout implements View {
 		
 		//listado inicial de casas housing preview de casas del usuario
 
-		housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+		housingUserPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
 				.getWrappedSession().getAttribute(User.class.getName())));
 		
-		horizontalItemLayout.addComponent(housingPreview);
+		horizontalItemLayout.addComponent(housingUserPreview);
 		
-		housingPreview.setChangeHandler(() -> {
+		housingUserPreview.setChangeHandler(() -> {
 			
 			//horizontalItemLayout.removeComponent(housingPreview);
-			housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+			housingUserPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName())));
-			horizontalItemLayout.addComponent(housingPreview);
+			horizontalItemLayout.addComponent(housingUserPreview);
 		});
 		
 		//Boton para añadir nuevo
@@ -73,9 +75,9 @@ public class HousingUserView extends CssLayout implements View {
 
 			housingEditForm.getSave().addClickListener(event -> 
 			{
-				housingPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
+				housingUserPreview.setHousingList(housingService.findByUser((User)VaadinService.getCurrentRequest()
 						.getWrappedSession().getAttribute(User.class.getName())));
-				horizontalItemLayout.addComponent(housingPreview);
+				horizontalItemLayout.addComponent(housingUserPreview);
 				window.close();
 			});
 	

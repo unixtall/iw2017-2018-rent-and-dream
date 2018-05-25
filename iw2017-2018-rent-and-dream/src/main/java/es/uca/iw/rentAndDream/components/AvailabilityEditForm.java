@@ -1,13 +1,15 @@
 package es.uca.iw.rentAndDream.components;
-
 import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringComponent;
-import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
@@ -19,13 +21,20 @@ import com.vaadin.ui.VerticalLayout;
 
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
-
+import es.uca.iw.rentAndDream.entities.User;
+import es.uca.iw.rentAndDream.entities.UserRoleType;
+import es.uca.iw.rentAndDream.security.SecurityUtils;
+import es.uca.iw.rentAndDream.services.AvailabilityService;
+import es.uca.iw.rentAndDream.services.HousingService;
 
 @SpringComponent
-@ViewScope
+@Scope("prototype")
 public class AvailabilityEditForm extends VerticalLayout{
 
 	private Availability availability;
+	
+	private final AvailabilityService availabilityService;
+	private final HousingService HousingService;
 
 	private Binder<Availability> binder = new Binder<>(Availability.class);
 	
@@ -41,17 +50,29 @@ public class AvailabilityEditForm extends VerticalLayout{
 	
 	/* Layout for buttons */
 	CssLayout actions = new CssLayout(save, delete);
-		
-	public AvailabilityEditForm(Availability a)
+	
+	@Autowired
+	public AvailabilityEditForm(AvailabilityService availabilityService, HousingService housingService)
 	{
-		if(a == null)
-			return;
+
 		
-		this.setMargin(false);
-		save.setEnabled(false);
-		delete.setEnabled(a.getId() != null);
-        binder.setStatusLabel(validationStatus);
+		this.availabilityService = availabilityService;
+		this.HousingService = housingService;
 		
+		this.availability = new Availability(null, null, 0f, null);
+	
+		delete.setEnabled(housing.getId() != null);
+		
+		if(SecurityUtils.hasRole(UserRoleType.ADMIN))
+		{
+			housing.setItems(housingService.findAll());
+		}
+		else
+		{
+			housing.setItems(housingService.findByUser((User)VaadinService.getCurrentRequest()
+					.getWrappedSession().getAttribute(User.class.getName())));
+		}
+
 		binder.forField(housing)
 		.asRequired("is Required")
 	  	.bind(Availability::getHousing, Availability::setHousing);
@@ -74,13 +95,28 @@ public class AvailabilityEditForm extends VerticalLayout{
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
-		binder.setBean(a);
+		binder.setBean(availability);
+		
+		binder.bindInstanceFields(this);
+		binder.setBean(availability);
 		
 		addComponents(housing, startDate, endDate, price, actions);
 		
 		binder.addStatusChangeListener(e -> {
 			save.setEnabled(binder.isValid());
-			Notification.show("entra " + binder.isValid());
+		});
+		
+		save.addClickListener(event-> {
+			availabilityService.save(binder.getBean());
+			Notification.show("Change sucessfull");
+			save.setEnabled(false);
+		});
+		
+		delete.addClickListener(event-> {
+			availabilityService.delete(binder.getBean());
+			Notification.show("Change sucessfull");
+			binder.removeBean();
+			delete.setEnabled(false);
 		});
 	}
 
@@ -89,7 +125,10 @@ public class AvailabilityEditForm extends VerticalLayout{
 	}
 
 	public void setAvailability(Availability availability) {
-		this.availability = availability;
+		
+		binder.setBean(availability);
+		save.setEnabled(false);
+		delete.setEnabled(true);
 	}
 
 	public Binder<Availability> getBinder() {

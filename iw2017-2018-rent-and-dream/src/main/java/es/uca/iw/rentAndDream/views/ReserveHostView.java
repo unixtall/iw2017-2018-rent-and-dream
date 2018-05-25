@@ -19,9 +19,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.ReserveEditForm;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.User;
+import es.uca.iw.rentAndDream.entities.UserRoleType;
+import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.services.ReserveService;
 
 @SpringView(name = ReserveHostView.VIEW_NAME)
@@ -32,13 +35,13 @@ public class ReserveHostView extends VerticalLayout implements View {
 	private TextField filter;
 	private Button addNewBtn;
 
-
-	
 	private final ReserveService reserveService;
+	private ReserveEditForm reserveEditForm;
 
 	@Autowired
-	public ReserveHostView(ReserveService reserveService) {
+	public ReserveHostView(ReserveService reserveService, ReserveEditForm reserveEditForm) {
 		this.reserveService = reserveService;
+		this.reserveEditForm = reserveEditForm;
 		this.grid = new Grid<>(Reserve.class);
 		this.filter = new TextField();  
 		this.addNewBtn = new Button("New Availability", FontAwesome.PLUS);
@@ -46,17 +49,18 @@ public class ReserveHostView extends VerticalLayout implements View {
 	
 	@PostConstruct
 	void init() {
-		
 		// build layout
-		HorizontalLayout actions = new HorizontalLayout(filter);
+		HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
 		
-		addComponents(actions, grid);
+		addNewBtn.setVisible(SecurityUtils.hasRole(UserRoleType.ADMIN) || SecurityUtils.hasRole(UserRoleType.MANAGER));
 
+		addComponents(actions, grid);
+		
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
-		grid.setColumns("housing", "entryDate", "departureDate", "price", "status");
+		grid.setColumns("user", "housing", "numberGuests", "entryDate", "departureDate", "price", "status");
 
-		filter.setPlaceholder("Filter by name");
+		filter.setPlaceholder("Filter by Guest user");
 
 		// Hook logic to components
 
@@ -68,8 +72,18 @@ public class ReserveHostView extends VerticalLayout implements View {
 		grid.asSingleSelect().addValueChangeListener(e -> {
 			if(e.getValue() != null)
 			{
-				Window window = new WindowManager("Availability Edit", reserveService.getEditForm(e.getValue())).getWindow();
-				window.addCloseListener(evt -> listReserve(filter.getValue()) );
+				reserveEditForm.setReserve(e.getValue());
+				Window window = new WindowManager("Availability Edit", reserveEditForm).getWindow();
+				
+				reserveEditForm.getSave().addClickListener(event->{
+					listReserve(filter.getValue());
+					window.close();
+				});
+
+				reserveEditForm.getDelete().addClickListener(event->{
+					listReserve(filter.getValue());
+					window.close();
+				});
 			}
 		});
 
@@ -77,6 +91,25 @@ public class ReserveHostView extends VerticalLayout implements View {
 
 		// Initialize listing
 		listReserve(null);
+		
+		// Instantiate and edit new User the new button is clicked
+		addNewBtn.addClickListener(e ->{
+			
+			reserveEditForm.setReserve(new Reserve(0, null, null, 0f, null));
+			
+			Window window = new WindowManager("Reserve Edit", reserveEditForm).getWindow();
+			
+			reserveEditForm.getSave().addClickListener(event->{
+				listReserve(filter.getValue());
+				window.close();
+			});
+
+			reserveEditForm.getDelete().addClickListener(event->{
+				listReserve(filter.getValue());
+				window.close();
+			});
+		});
+		
 
 	}
 
@@ -85,7 +118,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 			grid.setItems(reserveService.findAsHost((User)VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName())));
 		} else {
-			grid.setItems(reserveService.findByHousingAndHost(filterText, (User)VaadinService.getCurrentRequest()
+			grid.setItems(reserveService.findByHousingNameAndAsHost(filterText, (User)VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName())));
 		}
 	}

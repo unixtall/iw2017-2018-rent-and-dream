@@ -2,6 +2,7 @@ package es.uca.iw.rentAndDream.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,12 +25,14 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			+ "where h.user = ?1 and r.status = ?2")
 			
 	List<Housing> findByUserAndStatus(User user, ReserveTypeStatus status);
-	
+
 	@Query("Select r from Reserve r "
 			+ "JOIN FETCH r.housing h "
-			+ "JOIN FETCH h.user u "
-			+ "where h.name like ?1% and u = ?2")
-	public List<Reserve> findByHousingAndHost(String housing, User user);
+			+ "JOIN FETCH h.user hu "
+			+ "JOIN FETCH r.user "
+			+ "where h.name like %?1% and hu = ?2")
+	
+	public List<Reserve> findByHousingNameAndAsHost(String housing, User user);
 	
 	@Query("Select r from Reserve r "
 			+ "JOIN FETCH r.housing h "
@@ -42,6 +45,19 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			+ "JOIN FETCH r.housing h "
 			+ "JOIN FETCH r.user u "
 			+ "where u = ?1")
-	public List<Reserve> findAsGuest(User user);
+	public List<Reserve> findByUser(User user);
+	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH r.user u "
+			+ "where u.username like %?1%")
+	public List<Reserve> findByGuestUsername(String userName);
+	
+	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH r.user u")
+	public List<Reserve> findAllWithHousingAndUser();
+	
 	
 }

@@ -10,6 +10,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -22,6 +23,7 @@ import es.uca.iw.rentAndDream.components.HousingEditForm;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.services.HousingService;
 
+@UIScope
 @SpringView(name = HousingManagementView.VIEW_NAME)
 public class HousingManagementView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "housingManagementView";
@@ -73,6 +75,13 @@ public class HousingManagementView extends VerticalLayout implements View {
 				window.addCloseListener(evt -> listHousing(null) );
 				
 				housingEditForm.getSave().addClickListener(event -> 
+				{
+						
+					 listHousing(this.filter.getValue());
+					 window.close();
+				});
+				
+				housingEditForm.getDelete().addClickListener(event -> 
 				{
 						
 					 listHousing(this.filter.getValue());

@@ -11,6 +11,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -19,10 +20,12 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.AvailabilityEditForm;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.AvailabilityService;
 
+@UIScope
 @SpringView(name = AvailabilityUserView.VIEW_NAME)
 public class AvailabilityUserView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "availabilityUserView";
@@ -32,10 +35,13 @@ public class AvailabilityUserView extends VerticalLayout implements View {
 	private Button addNewBtn;
 
 	private final AvailabilityService availabilityService;
+	private final AvailabilityEditForm availabilityEditForm;
+
 
 	@Autowired
-	public AvailabilityUserView(AvailabilityService service) {
+	public AvailabilityUserView(AvailabilityService service, AvailabilityEditForm availabilityEditForm) {
 		this.availabilityService = service;
+		this.availabilityEditForm = availabilityEditForm;
 		this.grid = new Grid<>(Availability.class);
 		this.filter = new TextField();
 		this.addNewBtn = new Button("New Availability", FontAwesome.PLUS);
@@ -66,16 +72,36 @@ public class AvailabilityUserView extends VerticalLayout implements View {
 		grid.asSingleSelect().addValueChangeListener(e -> {
 			if(e.getValue() != null)
 			{
-				Window window = new WindowManager("Availability Edit", availabilityService.getEditForm(e.getValue())).getWindow();
-				window.addCloseListener(evt -> listAvailability(filter.getValue()) );
+				availabilityEditForm.setAvailability(e.getValue());
+				Window window = new WindowManager("Availability Edit", availabilityEditForm).getWindow();
+				
+				availabilityEditForm.getSave().addClickListener(event->{
+					listAvailability(filter.getValue());
+					window.close();
+				});
+
+				availabilityEditForm.getDelete().addClickListener(event->{
+					listAvailability(filter.getValue());
+					window.close();
+				});
 			}
 		});
 
 		// Instantiate and edit new User the new button is clicked
 		addNewBtn.addClickListener(e ->{
-			Window window = new WindowManager("Housing Edit"
-					, availabilityService.getEditForm(new Availability(null, null, 0f, null))).getWindow();
-			window.addCloseListener(evt -> listAvailability(null) );
+			
+			availabilityEditForm.setAvailability(new Availability(null, null, 0f, null));
+			Window window = new WindowManager("Housing Edit", availabilityEditForm).getWindow();
+			
+			availabilityEditForm.getSave().addClickListener(event->{
+				listAvailability(filter.getValue());
+				window.close();
+			});
+
+			availabilityEditForm.getDelete().addClickListener(event->{
+				listAvailability(filter.getValue());
+				window.close();
+			});
 		});
 
 		// Initialize listing

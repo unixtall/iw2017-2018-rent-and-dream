@@ -30,7 +30,7 @@ public class Reserve {
 	@ManyToOne(fetch=FetchType.LAZY) 
     public Housing housing;
 	
-	protected Reserve() {}
+	public Reserve() {}
 	
 	public Reserve(Integer number_guests, LocalDate entry_date, LocalDate departure_date, Float price,
 			ReserveTypeStatus status) {

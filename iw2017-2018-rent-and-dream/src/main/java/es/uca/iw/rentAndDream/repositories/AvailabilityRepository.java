@@ -40,4 +40,9 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
 	public List<Availability> findAllWithHousing();
 	
 	
+	@Query("select a from Availability a "
+			+ "join fetch a.housing ha "
+			+ "where ha.name = ?1")
+	public List<Availability> findByHousingNameStartsWithIgnoreCaseWithHousing(String name);
+	
 }

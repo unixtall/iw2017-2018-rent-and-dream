@@ -32,7 +32,7 @@ public class HousingService {
 	private AvailabilityEditor availabilityEditor;*/
 	
 
-	public Housing loadHousingByName(String name) throws NameNotFoundException {
+	public Housing findByName(String name) throws NameNotFoundException {
 
 		Housing housing = repo.findByName(name);
 		if (housing == null) {
@@ -44,7 +44,8 @@ public class HousingService {
 	public Housing save(Housing housing) {
 		return repo.save(housing);
 	}
-	@EntityGraph(attributePaths = {"user"})
+	
+
 	public List<Housing> findByNameStartsWithIgnoreCase(String name) {
 		return repo.findByNameStartsWithIgnoreCase(name);
 	}
@@ -52,8 +53,8 @@ public class HousingService {
 	public Housing findOne(Long arg0) {
 		return repo.findOne(arg0);
 	}
-	
-	public Housing findOneWithAvailability(Long id)
+
+	public Housing findOneWithAvailabilityAndCity(Long id)
 	{
 		return repo.findOneWithAvailabilityAndCity(id);
 	}
@@ -67,14 +68,13 @@ public class HousingService {
 		return repo.findAll();
 	}
 	
-	@Transactional
 	public List<Housing> findByCityidAndAvailabilityAndGuest(City city, LocalDate startDate, LocalDate endDate, Integer guests)
 	{
 		return repo.findByCityidAndAvailabilityAndGuest(city, startDate, endDate, guests);
 		
 	}
 	
-	@Transactional
+
 	public List<Housing> findByUser(User user)
 	{
 		List<Housing> housing = repo.findByUser(user);
@@ -85,54 +85,6 @@ public class HousingService {
 		});
 		return housing;
 	}
-	/*
-	public List<HousingPreview> getLoginUserListOfHousingPreview(User user)
-	{
-		List<HousingPreview> housingPreview = new ArrayList<HousingPreview>();
-		
-		findByUser(user)
-			.forEach(e -> {
-				//housingPreview.add(new HousingPreview(e, housingEditor, availabilityEditor));
-			}
-		);
-		
-		return housingPreview;
-	}
-	*/
-	
-	/*
-	public VerticalLayout getEditForm(Housing housing)
-	{
-		CitySearchForm citySearchForm = cityService.getCitySearchForm();
-		HousingEditForm editForm = new HousingEditForm(housing);
-		citySearchForm.addComponent(editForm);
-		
-		if(housing.getCity() != null)
-			citySearchForm.getCity().setValue(housing.getCity());
-		
-		citySearchForm.getBinder().addValueChangeListener(e-> {
-			editForm.getSave().setEnabled(editForm.getBinder().isValid() && citySearchForm.getBinder().isValid());
-			housing.setCity(citySearchForm.getCity().getValue());
-		});
-		
-		editForm.getBinder().addValueChangeListener(e-> 
-			editForm.getSave().setEnabled(editForm.getBinder().isValid() && citySearchForm.getBinder().isValid())
-		);
-		
-		
-		editForm.getSave().addClickListener(event-> {
-			save(editForm.getBinder().getBean());
-			Notification.show("Change sucessfull");
-		});
-		
-		editForm.getDelete().addClickListener(event-> {
-			delete(editForm.getBinder().getBean());
-			Notification.show("Change sucessfull");
-			editForm.getBinder().removeBean();
-			editForm.getDelete().setEnabled(false);
-		});
-		return citySearchForm;
-	}*/
 	
 	
 }
