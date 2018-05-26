@@ -147,11 +147,13 @@ public class UserEditor extends FormLayout {
     		.bind(User::getDni, User::setDni);
 		
 		binder.forField(telephone)
+			
+			.asRequired("Telephone may not be empty")
 			.withValidator(
 	    		    phone -> phone.length() >= 9,
 	    		    "Telephone must contain at least 9 characters")
-			.asRequired("Telephone may not be empty")
 			.withConverter(new StringToIntegerConverter("Must enter a number"))
+			
 			.bind(User::getTelephone, User::setTelephone);
 		
 		Label validationStatus = new Label();

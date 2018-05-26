@@ -236,8 +236,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//welcome.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
 		//		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
 		
-		navigationBar.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
-		.getWrappedSession().getAttribute(User.class.getName()).toString() + " !"));
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Edit Profile", UserEditProfileView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Housing Management", HousingUserView.VIEW_NAME));
