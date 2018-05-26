@@ -59,7 +59,7 @@ public class AvailabilityUserView extends VerticalLayout implements View {
 		//grid.setHeight(300, Unit.PIXELS);
 		grid.setSizeFull();
 		grid.setColumns("housing", "startDate", "endDate", "price");
-
+		grid.getColumn("price").setCaption("Price per day");
 		filter.setPlaceholder("Filter by name");
 
 		// Hook logic to components
