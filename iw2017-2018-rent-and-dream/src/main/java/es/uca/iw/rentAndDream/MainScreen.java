@@ -116,7 +116,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
 		
 		Button loginButton = new Button("Login", e -> 
-			new WindowManager("Housing management", loginForm)
+			new WindowManager("Enter to you account", loginForm)
 			);	
 		
 		if(SecurityUtils.isLoggedIn()) {

@@ -1,8 +1,8 @@
 package es.uca.iw.rentAndDream.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -58,6 +58,10 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			+ "JOIN FETCH r.housing h "
 			+ "JOIN FETCH r.user u")
 	public List<Reserve> findAllWithHousingAndUser();
+	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h where h = ?1 and r.entryDate >= ?2")
+	public List<Reserve> findByHousing(Housing housing, LocalDate entryDate);
 	
 	
 }
