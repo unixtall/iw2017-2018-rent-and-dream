@@ -18,9 +18,12 @@ public class WindowManager extends VerticalLayout{
 	    window.setModal(true);
 	    window.center();
 	    window.setResizable(false);
-	    window.setSizeFull();
-	    window.setWidth(95, Unit.PERCENTAGE);
-	    window.setHeight(85, Unit.PERCENTAGE);
+	    
+	    window.setWidthUndefined();
+	    //window.setSizeFull();
+	    //window.setWidth(95, Unit.PERCENTAGE);
+	    //window.setHeight(85, Unit.PERCENTAGE);
+	    
 	    
 	    subContent.addComponent(component);
 	    window.setContent(subContent);

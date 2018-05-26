@@ -25,6 +25,10 @@ import es.uca.iw.rentAndDream.entities.Housing;
 @Scope("prototype")
 public class HousingUserPreview extends HorizontalItemLayout {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HousingEditForm housingEditForm;
 	@Autowired
 	public HousingUserPreview(HousingEditForm housingEditForm)
@@ -40,7 +44,6 @@ public class HousingUserPreview extends HorizontalItemLayout {
 			VerticalLayout previewLayout = new VerticalLayout();
 			
 			Button editButton = new Button("Edit");
-			Button availabilityButton = new Button("Availabilities");
 			
 			FileResource resource = null;
 			ClassPathResource file = new ClassPathResource("images/foto1.jpg");
@@ -59,7 +62,7 @@ public class HousingUserPreview extends HorizontalItemLayout {
 			//hay que añadir el atributo tipo
 			previewLayout.addComponent(image);
 			previewLayout.addComponent(new Label("Name: " + h.getName()));
-			previewLayout.addComponent(new CssLayout(editButton, availabilityButton));
+			previewLayout.addComponent(new CssLayout(editButton));
 			previewLayout.addComponent(new Label("Number of reserves: " + h.getReserve().size()));
 			previewLayout.setSizeFull();
 			addComponent(previewLayout);
