@@ -235,7 +235,7 @@ public class UserEditor extends FormLayout {
 		setVisible(true);
 
 		// A hack to ensure the whole form is visible
-		save.focus();
+		//save.focus();
 		// Select all text in firstName field automatically
 		firstName.selectAll();
 	}

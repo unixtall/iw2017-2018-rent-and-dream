@@ -11,6 +11,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -48,8 +49,11 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 	private Panel springViewDisplay;
 	
+	
 	@Autowired
 	private LoginForm loginForm;
+	
+	HorizontalLayout headerLayout = new HorizontalLayout();
 	
 	@Override
     public void attach() {
@@ -71,12 +75,13 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	@PostConstruct
 	void init() {		
         
-		final CssLayout root = new CssLayout();
-		//CssLayout logo = new CssLayout();
-		HorizontalLayout headerLayout = new HorizontalLayout();
-		headerLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
-		headerLayout.setWidth("15%");
+		final VerticalLayout root = new VerticalLayout();
+		//CssLayout logo = new CssLayout();		
+		//headerLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
+		//headerLayout.setWidth("15%");
+		
 		root.setSizeFull();
+		root.setMargin(false);
 		
 		
 		// Image as a file resource
@@ -93,21 +98,59 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 		// Show the image in the application
 		Image image = new Image(null, resource);
-		image.setWidthUndefined();
-		headerLayout.addComponent(image);
-		root.addComponent(headerLayout);
+		image.setWidth("70%");
+		HorizontalLayout logoLayout = new HorizontalLayout(image);
+		logoLayout.setDefaultComponentAlignment(Alignment.TOP_LEFT);
+		logoLayout.setWidth("50%");
+		logoLayout.setMargin(false);
+		
+		headerLayout.addComponent(logoLayout);
+		
+		headerLayout.setSizeFull();
+		headerLayout.setMargin(false);
+		
+		//Boton Login/logout
+		HorizontalLayout loginLogoutLayout = new HorizontalLayout();
+		
+		Button logoutButton = new Button("Logout", event -> logout());
+		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
+		
+		Button loginButton = new Button("Login", e -> 
+			new WindowManager("Housing management", loginForm)
+			);	
+		
+		if(SecurityUtils.isLoggedIn()) {
+			Label username = new Label("Welcome " + VaadinService.getCurrentRequest()
+				    .getWrappedSession().getAttribute(User.class.getName()).toString());
+			
+			
+			username.setStyleName(ValoTheme.LABEL_COLORED);
+			
+			HorizontalLayout logoutLayout = new HorizontalLayout(username, logoutButton);
+			logoutLayout.setMargin(false);
+			loginLogoutLayout.addComponent(logoutLayout);
+		}else
+			loginLogoutLayout.addComponent(loginButton);
+		
+		loginLogoutLayout.setMargin(false);
+		
+		loginButton.setStyleName(ValoTheme.BUTTON_SMALL);
+		headerLayout.addComponent(loginLogoutLayout);
+		headerLayout.setComponentAlignment(loginLogoutLayout, Alignment.MIDDLE_RIGHT);
+		headerLayout.setMargin(false);
+		
+		
 		//root.setMargin(false);
 
 		// Creamos la barra de navegación
 		final CssLayout navigationBar = new CssLayout() {
 			
-				@Override
-				protected String getCss(final Component c) {
-					return "color: red";
-				}
 			
 		};
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+		
+		root.addComponent(headerLayout);
+		root.addComponent(navigationBar);
 
 		// añadimos elementos al menu segun los roles de usuario
 		if(SecurityUtils.hasRole(UserRoleType.GUEST)) 
@@ -121,8 +164,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		else
 		if(SecurityUtils.hasRole(UserRoleType.ADMIN)) 
 			addAdministrationMenu(navigationBar);
-	
-		root.addComponent(navigationBar);
+
 
 		// Creamos el panel
 		springViewDisplay = new Panel();
@@ -132,7 +174,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		//root.setExpandRatio(springViewDisplay, 1.0f);
 		
 		addComponent(root);
-		setMargin(false);
 	}
 
 	private Button createNavigationButton(String caption, final String viewName) {
@@ -161,18 +202,20 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
-		navigationBar.addComponent(logoutButton);
+		//navigationBar.addComponent(logoutButton);
 	}
 	
 	public void addGuestMenu(CssLayout navigationBar)
 	{
-		//navigationBar.addComponent(createNavigationButton("test", WelcomeView.VIEW_NAME));
 		
+		//navigationBar.addComponent(createNavigationButton("test", WelcomeView.VIEW_NAME));
 		
 		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
 	
-		//navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));	
-		HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
+		//navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));
+		
+		
+		/*HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
 		horizontalItemLayout.addComponent(loginForm);
 		
 		Button loginButton = new Button("Login", e -> 
@@ -180,7 +223,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		);
 		loginButton.setStyleName(ValoTheme.BUTTON_SMALL);
 		
-		navigationBar.addComponent(loginButton);
+		navigationBar.addComponent(loginButton);*/
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		
@@ -188,8 +231,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	
 	public void addRegisterUserMenu(CssLayout navigationBar)
 	{
-		Button logoutButton = new Button("Logout", event -> logout());
-		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
 		
 		//CssLayout welcome = new CssLayout();
 		//welcome.addComponent(new Label("Welcome " + VaadinService.getCurrentRequest()
@@ -202,7 +243,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Housing Management", HousingUserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityUserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("ReserveHost Management", ReserveHostView.VIEW_NAME));
-		navigationBar.addComponent(logoutButton);
+		//navigationBar.addComponent(logoutButton);
 
 	}
 	
@@ -214,7 +255,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
-		navigationBar.addComponent(logoutButton);
+		//navigationBar.addComponent(logoutButton);
 	}
 	
 	private void logout() {
