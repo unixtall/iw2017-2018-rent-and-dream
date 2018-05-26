@@ -1,5 +1,6 @@
 package es.uca.iw.rentAndDream.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
@@ -85,4 +86,9 @@ public class ReserveService {
 	public List<Reserve> findAllWithHousingAndUser(){
 		return repo.findAllWithHousingAndUser();
 	}
+	
+	public List<Reserve> findByHousing(Housing housing, LocalDate entryDate){
+		return repo.findByHousing(housing, entryDate);
+	}
+	
 }

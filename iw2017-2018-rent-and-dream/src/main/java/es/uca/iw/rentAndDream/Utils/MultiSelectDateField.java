@@ -15,7 +15,8 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
 
     private static final long serialVersionUID = -8898013458211900016L;
 
-	Set<LocalDate> value = new HashSet<>();
+	Set<LocalDate> availabilityDates = new HashSet<>();
+	Set<LocalDate> selectedDates = new HashSet<>();
     
     @Override
     protected Component initContent() {
@@ -25,35 +26,27 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         inlineTuningDateField.setWeekendDisabled(false);
         //inlineTuningDateField.setDateRange(LocalDate.now(), LocalDate.now().plusYears(1), "Date not allow");
         inlineTuningDateField.setLocalDate(LocalDate.now());
+       
         
-        
-        
-        for(int i = 0; i < 5; i++)
-        	value.add(LocalDate.now().plusDays(i));
+        /*for(int i = 0; i < 5; i++)
+        	availabilitiesDates.add(LocalDate.now().plusDays(i));*/
         
         inlineTuningDateField.addDayClickListener(evt -> {
- 
-            Set<LocalDate> value = getValue();
-            if (value == null) {
-                value = new HashSet<>();
-            }
-
-            if (!value.contains(evt.getLocalDate())) {
-                value.add(evt.getLocalDate());
-            } else {
-                value.remove(evt.getLocalDate());
-            }
-            setValue(value);
-            fireValueChange(false);
-
-            // Force repaint
-                inlineTuningDateField.markAsDirty();
-
-
-                //Notification.show("Selected dates: " + evt.getLocalDate());
-
-                
-                Notification.show("Selected dates: " + getValue());
+	            
+	            if (!selectedDates.contains(evt.getLocalDate())) {
+	                selectedDates.add(evt.getLocalDate());
+	            } else {
+	                selectedDates.remove(evt.getLocalDate());
+	            }
+	            
+	            setValue(selectedDates);
+	            fireValueChange(false);
+	
+	            // Force repaint
+	            inlineTuningDateField.markAsDirty();
+	
+	            Notification.show("Selected dates: " + selectedDates);
+	            
             });
 
         	inlineTuningDateField.setCellItemCustomizer(new MultiSelectCalendarCustomizer(this));
@@ -82,11 +75,18 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         @Override
         public String getStyle(LocalDate date, TuningDateField tuningDateField) {
             String style = null;
+            
             if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
                 style = "day-availability";
             } else {
                 style = "day-unavailability";
             }
+            
+            if (multiSelectDateField.getSelectedDates() != null && multiSelectDateField.getSelectedDates().contains(date))
+            {
+            	style += " day-selected";
+            }
+            
             return style;
         }
         
@@ -94,9 +94,9 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
         public String getTooltip(LocalDate date, TuningDateField tuningDateField) {
             String style = null;
             if (multiSelectDateField.getValue() != null && multiSelectDateField.getValue().contains(date)) {
-                style = "dayenabled";
+                style = "Day available";
             } else {
-                style = "daynotenabled";
+                style = "Day not available";
             }
             return style;
         }
@@ -123,13 +123,31 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
 	@Override
 	public Set<LocalDate> getValue() {
         
-		return value;
+		return availabilityDates;
 	}
 
 	@Override
 	protected void doSetValue(Set<LocalDate> value) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	
+	public Set<LocalDate> getAvailabilitiesDates() {
+		return availabilityDates;
+	}
+
+	public void setAvailabilyDates(Set<LocalDate> availabilitiesDates) {
+		this.availabilityDates = availabilitiesDates;
+	}
+
+	public void setSelectedDates(Set<LocalDate> selectedDates) {
+		this.selectedDates = selectedDates;
+	}
+
+	public Set<LocalDate> getSelectedDates()
+	{
+		return this.selectedDates;
 	}
 
 }

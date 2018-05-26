@@ -1,28 +1,24 @@
-.multi-select-date-field .multi-selected,
-.multi-select-date-field .multi-selected:hover,
-.multi-select-date-field .multi-selected:active {
-  color: white;
-  background: green;
-}
-.multi-select-date-field .day-unavailability {
-  background: transparent;
-}
-.multi-select-date-field .selected {
-  color: inherit;
-}
-.multi-select-date-field .selected.day-availability {
-  color: white;
-  background: greenyellow;
+
+.multi-select-date-field .week .day-availability:hover,
+.multi-select-date-field .week .day-availability:active {
+  color: black !important;
+  background: greenyellow !important;
 }
 
-.multi-select-date-field .dayenable{
-  background: green;
+.multi-select-date-field .week .day-availability{
+    background: green !important;
+    color: white !important;
 }
 
-.multi-select-date-field .daynotenable{
-  background: red;
+.multi-select-date-field .week .day-selected {
+    color: black !important;
+    background: greenyellow !important;
 }
+
+/*
+
+
 
 .day-not-enabled {
   background: red;
-}
+}*/

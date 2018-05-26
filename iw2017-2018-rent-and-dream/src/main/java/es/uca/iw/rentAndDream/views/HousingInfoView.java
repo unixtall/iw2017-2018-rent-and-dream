@@ -1,6 +1,11 @@
 package es.uca.iw.rentAndDream.views;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,6 @@ import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.MultiSelectDateField;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
@@ -80,17 +84,26 @@ public class HousingInfoView extends VerticalLayout implements View{
 		RichTextArea description = new RichTextArea();
 		MultiSelectDateField multiSelectDateField = new MultiSelectDateField();
 		
+		Set<LocalDate> availabilityDay = new HashSet<>();
+		Set<LocalDate> datesForAvailability = new HashSet<>();
+		
+		housing.getAvailability().forEach(e->{
+			//a.add(e)
+			LocalDate d;
+			for(d = e.getStartDate(); d.isBefore(e.getEndDate()) || d.isEqual(e.getEndDate()); d.plusDays(1))
+				datesForAvailability.add(e.getStartDate());
+
+		});
+		
+		multiSelectDateField.setAvailabilyDates(availabilityDay);
+		
 		
 		airAconditioner.setCaption(" Air Aconditioner");
 		airAconditioner.setIcon(housing.getAirConditioner()? VaadinIcons.CHECK_CIRCLE_O : VaadinIcons.CLOSE_CIRCLE_O);
 		airAconditioner.setStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		description.setValue(housing.getDescription());
 		description.setReadOnly(true);
-		multiSelectDateField.setWidth("50%");
-		multiSelectDateField.setHeight("50%");
-		
-		//description.setWidth("50%");
-		
+		multiSelectDateField.setWidth("50%");	
 		
 		//Calculamos el precio mas bajo de entre las disponibilidades
 		Float lowPrice = Float.POSITIVE_INFINITY;
