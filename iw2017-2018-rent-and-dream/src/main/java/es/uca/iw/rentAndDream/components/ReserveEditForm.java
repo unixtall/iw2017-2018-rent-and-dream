@@ -49,7 +49,7 @@ public class ReserveEditForm extends VerticalLayout {
 	
 	/* Fields to edit properties in Housing entity */
 	ComboBox<Housing> housing = new ComboBox<Housing>("Housing");
-	ComboBox<User> user = new ComboBox<User>("User");
+	ComboBox<User> user = new ComboBox<User>("Tenant");
 	TextField numberGuests = new TextField("Number Guest");
 	DateField entryDate = new DateField("Entry Date");
 	DateField departureDate = new DateField("Departure Date");

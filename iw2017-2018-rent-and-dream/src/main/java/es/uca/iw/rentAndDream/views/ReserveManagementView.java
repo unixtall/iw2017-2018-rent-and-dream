@@ -60,7 +60,9 @@ public class ReserveManagementView extends VerticalLayout implements View {
 		grid.setSizeFull();
 		grid.setColumns("id", "user", "housing", "numberGuests", "entryDate", "departureDate", "price", "status");
 
-		filter.setPlaceholder("Filter by user");
+		grid.getColumn("user").setCaption("Tenant");
+
+		filter.setPlaceholder("Filter by tenant");
 
 		// Hook logic to components
 
@@ -73,7 +75,7 @@ public class ReserveManagementView extends VerticalLayout implements View {
 			if(e.getValue() != null)
 			{
 				reserveEditForm.setReserve(e.getValue());
-				Window window = new WindowManager("Availability Edit", reserveEditForm).getWindow();
+				Window window = new WindowManager("Reserves Edit", reserveEditForm).getWindow();
 				
 				reserveEditForm.getSave().addClickListener(event->{
 					listReserve(filter.getValue());
