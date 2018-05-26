@@ -250,8 +250,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	public void addManagerMenu(CssLayout navigationBar)
 	{
 		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton(VaadinService.getCurrentRequest().
-				getWrappedSession().getAttribute(User.class.getName()).toString(), UserEditProfileView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Edit Profile", UserEditProfileView.VIEW_NAME));
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);
