@@ -102,4 +102,8 @@ public class HousingService {
 		return repo.isReservedWithUserPendingReserve(date, housing, user);
 	}
 	
+	public Float getVat(Housing h)
+	{
+		return repo.getVat(h);
+	}
 }

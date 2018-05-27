@@ -56,4 +56,7 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 			+ "and (r.status = 0 or (r.status = 1 and r.user = ?3))")
 	public Boolean isReservedWithUserPendingReserve(LocalDate date, Housing housing, User user);
 	
+	
+	@Query("select co.vat from Housing h, City c, Country co Where c = h.city and c.country = co and h = ?1 ")
+	public Float getVat(Housing h);
 }

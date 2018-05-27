@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.addons.tuningdatefield.TuningDateField;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -170,14 +171,25 @@ public class HousingInfoView extends VerticalLayout implements View{
 		reserveButton.addClickListener(e->{
 			if(SecurityUtils.isLoggedIn())
 			{
-				Reserve r = new Reserve(guests.getValue()
-						, LocalDate.parse(entryDate.getValue())
-						, LocalDate.parse(departureDate.getValue()), null, ReserveTypeStatus.PENDING);
-				r.setUser((User)(VaadinService.getCurrentRequest()
-					    .getWrappedSession().getAttribute(User.class.getName())));
-				r.setHousing(housing);
-				reserveService.save(r);
-				Notification.show("Reserve Request SucessFull");
+				ConfirmDialog.show(getUI().getCurrent(), "You are Sure?", new ConfirmDialog.Listener() {
+					
+		            public void onClose(ConfirmDialog dialog) {
+		            	
+						if(dialog.isConfirmed())
+						{
+							Reserve r = new Reserve(guests.getValue()
+									, LocalDate.parse(entryDate.getValue())
+									, LocalDate.parse(departureDate.getValue()), null, ReserveTypeStatus.PENDING);
+							r.setUser((User)(VaadinService.getCurrentRequest()
+								    .getWrappedSession().getAttribute(User.class.getName())));
+							r.setHousing(housing);
+							reserveService.save(r);
+							Notification.show("Reserve Request SucessFull");
+						}
+		            }
+		        });
+				
+
 			}
 			else
 			{
@@ -229,7 +241,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 				    .getWrappedSession().getAttribute(User.class.getName()));
 			
 			reserveLayout.setEnabled(loggedUser.getId() != housing.getUser().getId());
-			Notification.show("User logged: " + loggedUser.getId()  + " Housing own: " + housing.getUser().getId());
+			//Notification.show("User logged: " + loggedUser.getId()  + " Housing own: " + housing.getUser().getId());
 		}
 		
 		

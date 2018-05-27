@@ -22,6 +22,7 @@ import es.uca.iw.rentAndDream.Utils.WindowManager;
 import es.uca.iw.rentAndDream.components.ReserveEditForm;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Reserve;
+import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
@@ -73,17 +74,52 @@ public class ReserveUserView extends VerticalLayout implements View {
 			if(e.getValue() != null)
 			{
 				reserveEditForm.setReserve(e.getValue());
-				Window window = new WindowManager("ReserveHost Edit", reserveEditForm).getWindow();
 				
-				reserveEditForm.getSave().addClickListener(event->{
-					listReserve(filter.getValue());
-					window.close();
-				});
+				if(e.getValue().getStatus() == ReserveTypeStatus.PENDING)
+				{
+					Button canceledButton = new Button("Cancel reserve");
+					
+					Window window = new WindowManager("ReserveHost Edit", new HorizontalLayout(reserveEditForm, canceledButton)).getWindow();					
+				
+					canceledButton.addClickListener(event-> {
+						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);
+						reserveService.save(e.getValue());
+						listReserve(filter.getValue());
+						window.close();
+					});
+				
+	
+					reserveEditForm.getSave().addClickListener(event->{
+						listReserve(filter.getValue());
+						window.close();
+					});
+					reserveEditForm.getDelete().addClickListener(event->{
+						listReserve(filter.getValue());
+						window.close();
+					});
+				}
 
-				reserveEditForm.getDelete().addClickListener(event->{
-					listReserve(filter.getValue());
-					window.close();
-				});
+				if(e.getValue().getStatus() == ReserveTypeStatus.CONFIRMED)
+				{	
+					Button canceledButton = new Button("Cancel reserve");
+					Window window = new WindowManager("ReserveHost Edit", new HorizontalLayout(reserveEditForm, canceledButton)).getWindow();
+					
+					canceledButton.addClickListener(event-> {
+						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);
+						reserveService.save(e.getValue());
+						listReserve(filter.getValue());
+						window.close();
+					});
+				
+					reserveEditForm.getSave().addClickListener(event->{
+						listReserve(filter.getValue());
+						window.close();
+					});
+					reserveEditForm.getDelete().addClickListener(event->{
+						listReserve(filter.getValue());
+						window.close();
+					});
+				}
 			}
 		});
 

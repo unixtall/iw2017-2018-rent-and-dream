@@ -104,6 +104,6 @@ public class ReserveService {
 			sum += housingService.getPrice(d, housing);
 		}
 		
-		return sum;
+		return sum * housingService.getVat(housing);
 	}
 }

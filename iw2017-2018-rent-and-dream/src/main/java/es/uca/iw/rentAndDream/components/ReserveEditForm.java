@@ -75,7 +75,7 @@ public class ReserveEditForm extends VerticalLayout {
 		this.setMargin(false);
 		save.setEnabled(false);
 		
-		delete.setEnabled(reserve.getId() != null);
+		delete.setVisible(false);
 		user.setEnabled(false);
 		price.setEnabled(false);
 		status.setEnabled(false);
@@ -89,6 +89,8 @@ public class ReserveEditForm extends VerticalLayout {
 			housing.setEnabled(true);
 			status.setEnabled(true);
 			price.setEnabled(true);
+			delete.setVisible(true);
+			
 			
 			user.setItems(userService.findAll());
 			housing.setItems(housingService.findAll());
@@ -160,7 +162,7 @@ public class ReserveEditForm extends VerticalLayout {
 	public void setReserve(Reserve reserve) {
 		binder.setBean(reserve);
 		save.setEnabled(false);
-		delete.setEnabled(true);
+		delete.setEnabled(SecurityUtils.hasRole(UserRoleType.ADMIN) || SecurityUtils.hasRole(UserRoleType.MANAGER));
 	}
 
 	public ComboBox<Housing> getHousing() {
