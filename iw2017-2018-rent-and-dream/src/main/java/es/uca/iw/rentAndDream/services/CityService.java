@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.rentAndDream.entities.City;
+import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.repositories.CityRepository;
-import es.uca.iw.rentAndDream.repositories.CountryRepository;
-import es.uca.iw.rentAndDream.repositories.RegionRepository;
 
 @Service
 public class CityService {
@@ -49,6 +48,11 @@ public class CityService {
 
 	public List<City> findAll() {
 		return cityRepo.findAll();
+	}
+	
+	public City findByHousing(Housing h)
+	{
+		return cityRepo.findByHousing(h);
 	}
 
 	/*

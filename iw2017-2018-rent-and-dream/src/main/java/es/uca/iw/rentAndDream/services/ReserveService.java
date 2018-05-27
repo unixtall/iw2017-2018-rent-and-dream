@@ -1,18 +1,22 @@
 package es.uca.iw.rentAndDream.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
+import es.uca.iw.rentAndDream.entities.Transaction;
+import es.uca.iw.rentAndDream.entities.TransactionType;
 import es.uca.iw.rentAndDream.entities.User;
-import es.uca.iw.rentAndDream.repositories.HousingRepository;
 import es.uca.iw.rentAndDream.repositories.ReserveRepository;
 
 @Service
@@ -23,6 +27,12 @@ public class ReserveService {
 	
 	@Autowired
 	private HousingService housingService;
+	
+	@Autowired
+	private CityService cityService;
+	
+	@Autowired
+	private TransactionService transactionService;
 	
 	@Autowired
 	private UserService userService;
@@ -38,7 +48,7 @@ public class ReserveService {
 
 	public Reserve save(Reserve reserve) {
 		
-		reserve.setPrice(calculatePrice(reserve.getEntryDate(), reserve.getDepartureDate(), reserve.getHousing()));
+		reserve.setPrice(calculatePrice(reserve.getEntryDate(), reserve.getDepartureDate(), reserve.getHousing()) * (1 + housingService.getVat(reserve.getHousing())));
 	
 		return reserveRepo.save(reserve);
 	}
@@ -104,6 +114,38 @@ public class ReserveService {
 			sum += housingService.getPrice(d, housing);
 		}
 		
-		return sum * housingService.getVat(housing);
+		return sum ;
+	}
+	
+	@Transactional
+	public void confirm(Reserve reserve)
+	{
+		User host = userService.findByHousing(reserve.getHousing());
+		City city = cityService.findByHousing(reserve.getHousing());
+		
+		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
+		transaction.setDateTime(LocalDateTime.now());
+		transaction.setType(TransactionType.GUESTTOHOST);
+		transaction.setAmount(reserve.getPrice());
+		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has been accepted by "
+				+ host.getFirstName() + " " + host.getLastName() + " (" + host.getUsername() + ")" 
+				+ " at " + transaction.getDateTime() + "\r\n" + 
+				"\r\n" + 
+				"Here is a summary of your reservation:\r\n" + 
+				"Name of the house: " + reserve.getHousing() + "\r\n" + 
+				"City: " + city.getName()  + "\r\n" + 
+				" Region: " + city.getRegion().getName()  + "\r\n" + 
+				" Country: " + city.getCountry().getName() + "\r\n" +
+				"Address: " + reserve.getHousing().getAddress() + "\r\n" + 
+				"Entry date: " + reserve.getEntryDate() + " \r\n" + 
+				"Departure date: " + reserve.getDepartureDate() + " \r\n" + 
+				"Price: " + transaction.getAmount() + " vat incluyed");
+		
+		reserve.setStatus(ReserveTypeStatus.CONFIRMED);
+		
+		reserveRepo.save(reserve);
+		transactionService.save(transaction);
+		
+		
 	}
 }

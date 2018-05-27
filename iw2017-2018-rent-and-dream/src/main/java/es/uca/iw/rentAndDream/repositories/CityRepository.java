@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import es.uca.iw.rentAndDream.entities.City;
+import es.uca.iw.rentAndDream.entities.Housing;
 
 
 public interface CityRepository extends JpaRepository<City, Long> {
@@ -17,4 +18,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
 	
 	@EntityGraph(attributePaths = {"region", "country"})
 	public City findOne(Long id);
+	
+	@EntityGraph(attributePaths = {"region", "country"})
+	public City findByHousing(Housing h);
 }

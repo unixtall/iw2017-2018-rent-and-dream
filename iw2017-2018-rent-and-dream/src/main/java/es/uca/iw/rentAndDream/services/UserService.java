@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.ui.Notification;
-
-import es.uca.iw.rentAndDream.entities.Reserve;
+import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.repositories.UserRepository;
 
@@ -88,6 +86,11 @@ public class UserService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 		}
 		return user;
+	}
+	
+	public User findByHousing(Housing h)
+	{
+		return repo.findByHousing(h);
 	}
 
 

@@ -2,6 +2,7 @@ package es.uca.iw.rentAndDream.entities;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,13 @@ public class Reserve {
 	private LocalDate departureDate;
 	
 	private Float price;
+	
+	@Column(length=500)
+	private String guestReport;
+	
+	@Column(length=500)
+	private String hostReport;
+	
 	
 	private ReserveTypeStatus status;
 	

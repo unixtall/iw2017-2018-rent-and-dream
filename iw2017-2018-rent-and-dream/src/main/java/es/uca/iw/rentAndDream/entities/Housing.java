@@ -3,6 +3,7 @@ package es.uca.iw.rentAndDream.entities;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class Housing {
 	private String name;
 	private String address;
 	private Float assessment;	
+	@Column(length=500)
 	private String description;	
 	private Integer bedrooms;	
 	private Integer beds;	

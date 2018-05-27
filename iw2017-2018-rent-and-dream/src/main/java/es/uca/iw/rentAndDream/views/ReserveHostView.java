@@ -84,7 +84,8 @@ public class ReserveHostView extends VerticalLayout implements View {
 					
 					confirmButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CONFIRMED);
-						reserveService.save(e.getValue());
+						//reserveService.save(e.getValue());
+						reserveService.confirm(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
 					});

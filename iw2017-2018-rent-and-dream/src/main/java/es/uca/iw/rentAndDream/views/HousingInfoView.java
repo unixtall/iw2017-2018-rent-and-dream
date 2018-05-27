@@ -39,6 +39,7 @@ import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
+import es.uca.iw.rentAndDream.services.CityService;
 import es.uca.iw.rentAndDream.services.HousingService;
 import es.uca.iw.rentAndDream.services.ReserveService;
 
@@ -51,6 +52,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 	
 	private HousingService housingService;
 	private ReserveService reserveService;
+	private CityService cityService;
 	
 	@Autowired
 	private LoginForm loginForm;
@@ -59,7 +61,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 	
 	Label entryDate = new Label();
 	Label departureDate = new Label();
-	ComboBox<Integer> guests = new ComboBox<>();
+	ComboBox<Integer> guests = new ComboBox<>("Guests");
 	Label price = new Label();
 	Button reserveButton = new Button("Reserve Now");
 	
@@ -76,15 +78,15 @@ public class HousingInfoView extends VerticalLayout implements View{
 	    entryDate.setCaption("Entry Date:");
 	    departureDate.setCaption("Departure Date:");
 	    price.setCaption("Price:");
-	    this.guests.setCaption("Guests");
 	    this.guests.setEmptySelectionAllowed(false);
 
 	  }
 	
 	@Autowired
-	public HousingInfoView(HousingService housingService, ReserveService reserveService, RangeSelectDateField rangeSelectDateField) {
+	public HousingInfoView(HousingService housingService, ReserveService reserveService, CityService cityService, RangeSelectDateField rangeSelectDateField) {
 		this.housingService = housingService;
 		this.reserveService = reserveService;
+		this.cityService = cityService;
 		//this.loginForm = loginForm;
 		this.rangeSelectDateField = rangeSelectDateField;
 		this.guests.setSizeUndefined();
@@ -158,12 +160,16 @@ public class HousingInfoView extends VerticalLayout implements View{
 				else
 					this.departureDate.setValue(rangeSelectDateField.getEndDate().toString());
 				
-				price.setValue(reserveService.calculatePrice(rangeSelectDateField.getStartDate()
-						, rangeSelectDateField.getEndDate() == null ? rangeSelectDateField.getStartDate().plusDays(1) : rangeSelectDateField.getEndDate()
-						, housing).toString());
+				Float housingPrice = reserveService.calculatePrice(rangeSelectDateField.getStartDate()
+						, rangeSelectDateField.getEndDate() == null ? rangeSelectDateField.getStartDate().plusDays(1) 
+						: rangeSelectDateField.getEndDate(), housing);
+				
+				Float totalPrice = housingPrice + (housingPrice * cityService.findByHousing(housing).getCountry().getVat());
+				Float vatAmount = totalPrice - housingPrice ;
+				
+				price.setValue(housingPrice.toString() + " + " + String.format("%.2f", vatAmount) + "(VAT) = " + totalPrice );
 				reserveButton.setEnabled(rangeSelectDateField.getStartDate() != null);
 			}
-
 		});
 		
 		

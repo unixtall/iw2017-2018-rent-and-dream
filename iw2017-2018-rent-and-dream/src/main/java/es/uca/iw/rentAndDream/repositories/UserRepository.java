@@ -16,5 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("SELECT u FROM User u LEFT JOIN FETCH u.housing WHERE u.id = ?1")
 	public User findByUserIdWithJoinFetch(Long id);
+	
+	public User findByHousing(Housing h);
 }
 
