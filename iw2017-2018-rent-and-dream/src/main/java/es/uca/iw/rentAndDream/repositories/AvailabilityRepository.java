@@ -1,5 +1,6 @@
 package es.uca.iw.rentAndDream.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -44,5 +45,6 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
 			+ "join fetch a.housing ha "
 			+ "where ha.name = ?1")
 	public List<Availability> findByHousingNameStartsWithIgnoreCaseWithHousing(String name);
+
 	
 }

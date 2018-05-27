@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.vaadin.ui.Notification;
 
+import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.repositories.UserRepository;
 
@@ -38,15 +39,7 @@ public class UserService implements UserDetailsService {
 		}
 		return user;
 	}
-/*
-	public List<Housing> loadHousingByUserId(Long userId)
-	{
-		List<Housing> houses = new ArrayList<Housing>();
-		
-		houses.addAll(findOne(userId).getHousing());
-		return houses;
-	}
-*/
+	
 	public User findByUserId(Long userId)
 	{
 		return repo.findByUserIdWithJoinFetch(userId);
@@ -97,4 +90,6 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
+
+	
 }

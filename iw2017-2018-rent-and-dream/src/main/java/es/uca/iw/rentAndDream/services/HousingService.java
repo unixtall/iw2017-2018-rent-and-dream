@@ -7,6 +7,7 @@ import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,5 +87,14 @@ public class HousingService {
 		return housing;
 	}
 	
+	public Float getPrice(LocalDate entryDate, Housing housing)
+	{
+		return repo.getPrice(entryDate, housing);
+	}
+	
+	public Boolean isReserved(LocalDate date, Housing housing)
+	{
+		return repo.isReserved(date, housing);
+	}
 	
 }

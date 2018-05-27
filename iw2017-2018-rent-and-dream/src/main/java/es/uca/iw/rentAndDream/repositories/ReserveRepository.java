@@ -63,5 +63,7 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			+ "JOIN FETCH r.housing h where h = ?1 and r.entryDate >= ?2")
 	public List<Reserve> findByHousing(Housing housing, LocalDate entryDate);
 	
+
+	
 	
 }

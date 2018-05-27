@@ -50,7 +50,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	private Panel springViewDisplay;
 	
 	
-	@Autowired
 	private LoginForm loginForm;
 	
 	HorizontalLayout headerLayout = new HorizontalLayout();
@@ -67,9 +66,11 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
         	this.getUI().getNavigator().navigateTo("housingSearchView");
     }
 	
-	public MainScreen()
+	
+	@Autowired
+	public MainScreen(LoginForm loginForm)
 	{
-
+		this.loginForm = loginForm;
 	}
 	
 	@PostConstruct

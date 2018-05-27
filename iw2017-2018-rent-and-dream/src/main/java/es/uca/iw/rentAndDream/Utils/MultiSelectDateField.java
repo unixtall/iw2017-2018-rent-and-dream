@@ -24,7 +24,6 @@ public class MultiSelectDateField extends CustomField<Set<LocalDate>> {
 
         InlineTuningDateField inlineTuningDateField = new InlineTuningDateField();
         inlineTuningDateField.setWeekendDisabled(false);
-        //inlineTuningDateField.setDateRange(LocalDate.now(), LocalDate.now().plusYears(1), "Date not allow");
         inlineTuningDateField.setLocalDate(LocalDate.now());
        
         
