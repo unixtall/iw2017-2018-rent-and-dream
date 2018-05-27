@@ -182,7 +182,7 @@ public class UserEditor extends FormLayout {
 	            		  VaadinService.getCurrentRequest().getWrappedSession().setAttribute(User.class.getName(), binder.getBean());
 	            	      Notification.show("\r\n" + 
 	            	      		"The Change is successfull");
-	            	      //setVisible(false);
+	            	      setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");
