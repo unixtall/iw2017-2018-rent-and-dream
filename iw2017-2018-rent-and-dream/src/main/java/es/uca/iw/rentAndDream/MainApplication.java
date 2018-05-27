@@ -97,12 +97,12 @@ public class MainApplication {
 				availabilityService.save(availability6);
 				availabilityService.save(availability7);
 				
-				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 5, 25), LocalDate.of(2018, 5, 26), 30f, ReserveTypeStatus.PENDING);
+				Reserve reserve1 = new Reserve(1, LocalDate.of(2018, 6, 1), LocalDate.of(2018, 6, 10), 30f, ReserveTypeStatus.PENDING);
 				reserve1.setHousing(housing1);
 
 				reserve1.setUser(userService.findByUsername("user2"));
 
-				Reserve reserve2 = new Reserve(2, LocalDate.of(2018, 5, 30), LocalDate.of(2018, 6, 10), 3f, ReserveTypeStatus.PENDING);
+				Reserve reserve2 = new Reserve(2, LocalDate.of(2018, 6, 1), LocalDate.of(2018, 6, 10), 3f, ReserveTypeStatus.CONFIRMED);
 				reserve2.setHousing(housing2);
 				reserve2.setUser(userService.loadUserByUsername("user2"));
 				
@@ -110,7 +110,7 @@ public class MainApplication {
 				reserve3.setHousing(housing3);
 				reserve3.setUser(userService.loadUserByUsername("user2"));
 				
-				Reserve reserve4 = new Reserve(5, LocalDate.of(2018, 6, 12), LocalDate.of(2018, 6, 30), 40f, ReserveTypeStatus.PENDING);
+				Reserve reserve4 = new Reserve(5, LocalDate.of(2018, 6, 12), LocalDate.of(2018, 6, 30), 40f, ReserveTypeStatus.CONFIRMED);
 				reserve4.setHousing(housing3);
 				reserve4.setUser(userService.loadUserByUsername("user2"));
 				

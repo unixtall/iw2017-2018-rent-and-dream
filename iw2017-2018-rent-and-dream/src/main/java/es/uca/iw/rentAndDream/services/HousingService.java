@@ -55,9 +55,9 @@ public class HousingService {
 		return repo.findOne(arg0);
 	}
 
-	public Housing findOneWithAvailabilityAndCity(Long id)
+	public Housing findOneWithAvailabilityAndCityAndUser(Long id)
 	{
-		return repo.findOneWithAvailabilityAndCity(id);
+		return repo.findOneWithAvailabilityAndCityAndUser(id);
 	}
 	
 
@@ -95,6 +95,11 @@ public class HousingService {
 	public Boolean isReserved(LocalDate date, Housing housing)
 	{
 		return repo.isReserved(date, housing);
+	}
+	
+	public Boolean isReservedWithUserPendingReserve(LocalDate date, Housing housing, User user)
+	{
+		return repo.isReservedWithUserPendingReserve(date, housing, user);
 	}
 	
 }

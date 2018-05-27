@@ -23,7 +23,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
@@ -31,6 +30,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.LoginForm;
 import es.uca.iw.rentAndDream.components.RangeSelectDateField;
 import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Housing;
@@ -50,6 +50,10 @@ public class HousingInfoView extends VerticalLayout implements View{
 	
 	private HousingService housingService;
 	private ReserveService reserveService;
+	
+	@Autowired
+	private LoginForm loginForm;
+	
 	RangeSelectDateField rangeSelectDateField;
 	
 	Label entryDate = new Label();
@@ -98,7 +102,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 
 		Long idHousing = Long.parseLong(uriTokens[1]);
 		
-		housing = housingService.findOneWithAvailabilityAndCity(idHousing);
+		housing = housingService.findOneWithAvailabilityAndCityAndUser(idHousing);
 
 		
 		if(housing == null)
@@ -125,8 +129,18 @@ public class HousingInfoView extends VerticalLayout implements View{
 			LocalDate d;
 			for(d = e.getStartDate(); !d.isEqual(e.getEndDate().plusDays(1)); d = d.plusDays(1) )
 			{
-				if(d.isAfter(LocalDate.now().minusDays(1)) && !housingService.isReserved(d, housing))
-					datesForAvailability.add(d);
+				if(d.isAfter(LocalDate.now().minusDays(1)))
+					if(SecurityUtils.isLoggedIn())
+					{
+						if(!housingService.isReservedWithUserPendingReserve(d, housing, (User)(VaadinService.getCurrentRequest()
+							    .getWrappedSession().getAttribute(User.class.getName()))))
+							datesForAvailability.add(d);
+					}
+					else {
+						if(!housingService.isReserved(d, housing))
+							datesForAvailability.add(d);
+					}
+				
 			}
 		});
 		
@@ -167,10 +181,9 @@ public class HousingInfoView extends VerticalLayout implements View{
 			}
 			else
 			{
-				//Window window = new WindowManager("Enter to you account", loginForm).getWindow();
+				Window window = new WindowManager("Enter to you account", loginForm).getWindow();
 			}
-			
-			
+
 		});
 		
 		
@@ -209,6 +222,17 @@ public class HousingInfoView extends VerticalLayout implements View{
 		VerticalLayout reserveInfoLayout = new VerticalLayout(guests, price);
 		reserveInfoLayout.setMargin(false);
 		VerticalLayout reserveLayout = new VerticalLayout(rangeSelectDateField, new HorizontalLayout(datesLayout, reserveInfoLayout), reserveButton);
+		
+		if(SecurityUtils.isLoggedIn())
+		{
+			User loggedUser = (User)(VaadinService.getCurrentRequest()
+				    .getWrappedSession().getAttribute(User.class.getName()));
+			
+			reserveLayout.setEnabled(loggedUser.getId() != housing.getUser().getId());
+			Notification.show("User logged: " + loggedUser.getId()  + " Housing own: " + housing.getUser().getId());
+		}
+		
+		
 		reserveLayout.setSizeUndefined();
 
 		splitLayout.addComponent(reserveLayout);

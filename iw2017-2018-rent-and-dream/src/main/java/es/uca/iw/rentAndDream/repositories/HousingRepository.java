@@ -39,8 +39,8 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	@EntityGraph(attributePaths = {"user", "city"})
 	public Housing findOne(Long id);
 	
-	@Query("select h from Housing h join fetch h.city join fetch h.availability a where h.id = ?1 ")
-	public Housing findOneWithAvailabilityAndCity(Long id);
+	@Query("select h from Housing h join fetch h.city join fetch h.availability join fetch h.user a where h.id = ?1 ")
+	public Housing findOneWithAvailabilityAndCityAndUser(Long id);
 	
 	@Query("Select a.price from Housing h, Availability a "
 			+ "where h = ?2 and a.housing = h and ?1 between a.startDate and a.endDate")
@@ -50,5 +50,10 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 			+ "where h = ?2 and a.housing = h and r.housing = h and ?1 >= r.entryDate and ?1 < r.departureDate "
 			+ "and r.status = 0")
 	public Boolean isReserved(LocalDate date, Housing housing);
+	
+	@Query("select case when (count(h) > 0) then true else false end from Availability a, Housing h, Reserve r "
+			+ "where h = ?2 and a.housing = h and r.housing = h and ?1 >= r.entryDate and ?1 < r.departureDate "
+			+ "and (r.status = 0 or (r.status = 1 and r.user = ?3))")
+	public Boolean isReservedWithUserPendingReserve(LocalDate date, Housing housing, User user);
 	
 }

@@ -12,6 +12,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
@@ -119,7 +120,8 @@ public class HousingEditForm extends VerticalLayout {
 		// bind using naming convention
 		binder.bindInstanceFields(this);
 		binder.setBean(housing);
-		addComponents(user, citySearchForm, name, address, assessment, description, bedrooms, beds, airConditioner, actions);
+		addComponent(new HorizontalLayout(new VerticalLayout(user, citySearchForm, name, address, assessment)
+				, new VerticalLayout(description, bedrooms, beds, airConditioner, actions)));
 		
 		binder.addStatusChangeListener(e -> {
 			save.setEnabled(binder.isValid() && citySearchForm.getBinder().isValid());

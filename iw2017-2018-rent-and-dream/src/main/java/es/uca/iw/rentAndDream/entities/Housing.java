@@ -65,10 +65,6 @@ public class Housing {
 		return id;
 	}
 
-	public User getIdUser() {
-		return user;
-	}
-
 	public String getName() {
 		return name;
 	}
