@@ -38,6 +38,7 @@ import es.uca.iw.rentAndDream.views.HousingManagementView;
 import es.uca.iw.rentAndDream.views.HousingSearchView;
 import es.uca.iw.rentAndDream.views.HousingUserView;
 import es.uca.iw.rentAndDream.views.ReserveHostView;
+import es.uca.iw.rentAndDream.views.ReserveUserView;
 import es.uca.iw.rentAndDream.views.ReserveManagementView;
 import es.uca.iw.rentAndDream.views.UserEditProfileView;
 import es.uca.iw.rentAndDream.views.UserManagementView;
@@ -209,22 +210,6 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 	public void addGuestMenu(CssLayout navigationBar)
 	{
 		
-		//navigationBar.addComponent(createNavigationButton("test", WelcomeView.VIEW_NAME));
-		
-		//navigationBar.addComponent(createNavigationButton("Welcome", WelcomeView.VIEW_NAME));
-	
-		//navigationBar.addComponent(createNavigationButton("Login", LoginScreen.VIEW_NAME));
-		
-		
-		/*HorizontalItemLayout horizontalItemLayout = new HorizontalItemLayout();
-		horizontalItemLayout.addComponent(loginForm);
-		
-		Button loginButton = new Button("Login", e -> 
-			new WindowManager("Housing management", horizontalItemLayout)
-		);
-		loginButton.setStyleName(ValoTheme.BUTTON_SMALL);
-		
-		navigationBar.addComponent(loginButton);*/
 		navigationBar.addComponent(createNavigationButton("Search homes", HousingSearchView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("User Registration", UserRegisterView.VIEW_NAME));
 		
@@ -241,7 +226,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Edit Profile", UserEditProfileView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Housing Management", HousingUserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityUserView.VIEW_NAME));
-		navigationBar.addComponent(createNavigationButton("ReserveHost Management", ReserveHostView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("My reserves", ReserveUserView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Reserves of my houses", ReserveHostView.VIEW_NAME));
 		//navigationBar.addComponent(logoutButton);
 
 	}
