@@ -90,7 +90,7 @@ public class UserEditor extends FormLayout {
         		    name -> name.length() >= 2,
         		    "First name must contain at least two characters")
         	.withValidator(new RegexpValidator("First name can consist of alphabetical characters and only one space between them",
-        			"^[a-zA-Z_]+( [a-zA-Z_]+)*$"))
+        			"^[a-zA-ZñÑáéíóúÁÉÍÓÚ_]+( [a-zA-ZñÑáéíóúÁÉÍÓÚ_]+)*$"))
 
         	.bind(User::getFirstName, User::setFirstName);
 		
@@ -100,7 +100,7 @@ public class UserEditor extends FormLayout {
         		    name -> name.length() >= 2,
         		    "Last name must contain at least two characters")
     		.withValidator(new RegexpValidator("Last name can consist of alphabetical characters and only one space between them",
-        			"^[a-zA-Z_]+( [a-zA-Z_]+)*$"))
+        			"^[a-zA-ZñÑáéíóúÁÉÍÓÚ_]+( [a-zA-ZñÑáéíóúÁÉÍÓÚ_]+)*$"))
     		.bind(User::getLastName, User::setLastName);
 		
 		binder.forField(username)
@@ -144,6 +144,8 @@ public class UserEditor extends FormLayout {
     		.asRequired("DNI name may not be empty")
     		.withValidator(new RegexpValidator("Username can consist of alphanumerical characters without spaces",
         			"^[a-zA-Z0-9_]*$"))
+    		.withValidator(new RegexpValidator("DNI must be composed of 8 numbers followed by 1 uppercase letter",
+    				"^(([KLM]\\d{7})|(\\d{8}))([A-Z])$"))
     		.bind(User::getDni, User::setDni);
 		
 		binder.forField(telephone)
@@ -180,7 +182,7 @@ public class UserEditor extends FormLayout {
 	            		  VaadinService.getCurrentRequest().getWrappedSession().setAttribute(User.class.getName(), binder.getBean());
 	            	      Notification.show("\r\n" + 
 	            	      		"The Change is successfull");
-	            	      //setVisible(false);
+	            	      setVisible(false);
 	            	  } catch (DataIntegrityViolationException e) {
 	            	      Notification.show("Username or DNI already used, " +
 	            	    	        "please use another username/dni");

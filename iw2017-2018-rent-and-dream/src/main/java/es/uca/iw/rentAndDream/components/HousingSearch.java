@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.DateRangeValidator;
@@ -170,12 +171,19 @@ final class HousingSearchResults extends VerticalLayout {
 			if(a.getPrice() < fromPrice)
 				fromPrice = a.getPrice();	
 
-		addComponent(new Label("From " + fromPrice + "€ per Night, Rating: " + housing.getAssessment()));
+		addComponent(new Label("From " + fromPrice + "€ per Night"));
+		
+		addComponent(new RatingStars());
 		setSizeFull();
 		
 		//popup with a  resume of offer
 		
 		this.addLayoutClickListener(event -> UI.getCurrent().getNavigator().navigateTo("housingInfoView/" + String.valueOf(housing.getId())));
 	
+	}
+
+	private void addComponent(Object setValue) {
+		// TODO Auto-generated method stub
+		
 	}
 }
