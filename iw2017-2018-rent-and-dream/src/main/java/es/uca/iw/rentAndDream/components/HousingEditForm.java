@@ -2,6 +2,7 @@ package es.uca.iw.rentAndDream.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.vaadin.teemu.ratingstars.RatingStars;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
@@ -43,7 +44,7 @@ public class HousingEditForm extends VerticalLayout {
 	ComboBox<User> user = new ComboBox<User>("User");
 	TextField name = new TextField("Name");
 	TextField address = new TextField("Address");
-	TextField assessment = new TextField("Calification");
+	RatingStars assessment = new RatingStars();
 	RichTextArea description = new RichTextArea("Description");
 	TextField bedrooms = new TextField("Bedrooms");
 	TextField beds = new TextField("Beds");
@@ -73,6 +74,7 @@ public class HousingEditForm extends VerticalLayout {
 		delete.setEnabled(housing.getId() != null);
 		
 		assessment.setEnabled(SecurityUtils.hasRole(UserRoleType.ADMIN));
+		assessment.setCaption("Calification");
 		
 		if(SecurityUtils.hasRole(UserRoleType.ADMIN))
 		{
@@ -93,9 +95,8 @@ public class HousingEditForm extends VerticalLayout {
 	  	.bind(Housing::getName, Housing::setName);
 		
 		binder.forField(assessment)
-			.withConverter(
-				new StringToDoubleConverter("Must enter a number"))
-			.asRequired("Is required")
+			/*.withConverter(
+				new StringToDoubleConverter("Must enter a number"))*/
 		  	.bind(Housing::getAssessment, Housing::setAssessment);
 		
 		binder.forField(address)
@@ -182,14 +183,13 @@ public class HousingEditForm extends VerticalLayout {
 		this.address = address;
 	}
 
-	public TextField getAssessment() {
+	/*public TextField getAssessment() {
 		return assessment;
 	}
 
 	public void setAssessment(TextField assessment) {
 		this.assessment = assessment;
-	}
- 
+	}*/
 
 	public void setDescription(RichTextArea description) {
 		this.description = description;
