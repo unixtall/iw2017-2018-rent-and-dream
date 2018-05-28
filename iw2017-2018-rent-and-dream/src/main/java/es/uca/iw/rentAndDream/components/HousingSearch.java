@@ -20,6 +20,7 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -173,7 +174,12 @@ final class HousingSearchResults extends VerticalLayout {
 
 		addComponent(new Label("From " + fromPrice + "€ per Night"));
 		
-		addComponent(new RatingStars());
+		RatingStars calification = new RatingStars();
+		calification.setValue(housing.getAssessment());
+		calification.setReadOnly(true);
+		
+		addComponent(calification);
+		
 		setSizeFull();
 		
 		//popup with a  resume of offer

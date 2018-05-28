@@ -93,7 +93,7 @@ public class HousingManagementView extends VerticalLayout implements View {
 
 		// Instantiate and edit new User the new button is clicked
 		addNewBtn.addClickListener(e ->{
-			housingEditForm.setHousing(new Housing("", "", 0f, "", 0, 0, false));
+			housingEditForm.setHousing(new Housing("", "", 0d, "", 0, 0, false));
 			Window window = new WindowManager("Housing Edit", housingEditForm).getWindow();
 			window.addCloseListener(evt -> listHousing(null) );
 		});

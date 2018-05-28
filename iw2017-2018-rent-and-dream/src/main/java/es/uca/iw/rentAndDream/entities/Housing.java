@@ -19,7 +19,7 @@ public class Housing {
 	private Long id;	
 	private String name;
 	private String address;
-	private Float assessment;	
+	private Double assessment;	
 	@Column(length=500)
 	private String description;	
 	private Integer bedrooms;	
@@ -37,7 +37,7 @@ public class Housing {
 	
 	public Housing(){}
 	
-	public Housing(String name, String address, Float assessment, String description,
+	public Housing(String name, String address, Double assessment, String description,
 			Integer bedrooms, Integer beds, Boolean airConditioner) {
 		this.name = name;
 		this.address = address;
@@ -48,7 +48,7 @@ public class Housing {
 		this.airConditioner = airConditioner;
 	}
 
-	public Housing(String name, String address, Float assessment, String description, Integer bedrooms,
+	public Housing(String name, String address, Double assessment, String description, Integer bedrooms,
 			Integer beds, Boolean airConditioner, User user, City city) {
 		super();
 
@@ -91,11 +91,11 @@ public class Housing {
 		this.city = city;
 	}
 	
-	public Float getAssessment() {
+	public Double getAssessment() {
 		return assessment;
 	}
 
-	public void setAssessment(Float assessment) {
+	public void setAssessment(Double assessment) {
 		this.assessment = assessment;
 	}
 

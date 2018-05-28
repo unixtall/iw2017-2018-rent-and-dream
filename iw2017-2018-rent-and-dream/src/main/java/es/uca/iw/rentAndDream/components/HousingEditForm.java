@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.FontAwesome;
@@ -61,7 +62,7 @@ public class HousingEditForm extends VerticalLayout {
 		this.userService = userService;
 		this.housingService = housingService;
 		
-		this.housing = new Housing("", "", 0f, "", 0, 0, false ,null, null);
+		this.housing = new Housing("", "", 0d, "", 0, 0, false ,null, null);
 		
 		this.setMargin(false);
 		save.setEnabled(false);
@@ -93,7 +94,7 @@ public class HousingEditForm extends VerticalLayout {
 		
 		binder.forField(assessment)
 			.withConverter(
-				new StringToFloatConverter("Must enter a number"))
+				new StringToDoubleConverter("Must enter a number"))
 			.asRequired("Is required")
 		  	.bind(Housing::getAssessment, Housing::setAssessment);
 		
