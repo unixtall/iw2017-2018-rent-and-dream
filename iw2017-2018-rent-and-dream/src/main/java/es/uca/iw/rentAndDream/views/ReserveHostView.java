@@ -167,8 +167,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 			grid.setItems(reserveService.findAsHost((User)VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName())));
 		} else {
-			grid.setItems(reserveService.findByHousingNameAndAsHost(filterText, (User)VaadinService.getCurrentRequest()
-					.getWrappedSession().getAttribute(User.class.getName())));
+			grid.setItems(reserveService.findByGuestUsername(filterText));
 		}
 	}
 	
