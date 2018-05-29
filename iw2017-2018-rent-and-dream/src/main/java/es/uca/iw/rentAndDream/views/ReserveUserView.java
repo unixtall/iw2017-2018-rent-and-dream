@@ -61,7 +61,7 @@ public class ReserveUserView extends VerticalLayout implements View {
 		grid.setSizeFull();
 		grid.setColumns("user", "housing", "numberGuests", "entryDate", "departureDate", "price", "status");
 		grid.getColumn("user").setCaption("Tenant");
-		filter.setPlaceholder("Filter by tenant");
+		filter.setPlaceholder("Filter by housing");
 
 		// Hook logic to components
 
@@ -154,8 +154,8 @@ public class ReserveUserView extends VerticalLayout implements View {
 			grid.setItems(reserveService.findByGuestUsername(   (VaadinService.getCurrentRequest()
 					.getWrappedSession().getAttribute(User.class.getName())).toString()    ));
 		} else {
-			grid.setItems(reserveService.findByHousingNameAndAsHost(filterText, (User)VaadinService.getCurrentRequest()
-					.getWrappedSession().getAttribute(User.class.getName())));
+			grid.setItems(reserveService.findByGuestUsernameByHousingName((VaadinService.getCurrentRequest()
+					.getWrappedSession().getAttribute(User.class.getName())).toString(), filterText));
 		}
 	}
 	

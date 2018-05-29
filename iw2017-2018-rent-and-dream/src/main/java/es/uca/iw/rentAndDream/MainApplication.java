@@ -112,7 +112,7 @@ public class MainApplication {
 				
 				Reserve reserve4 = new Reserve(5, LocalDate.of(2018, 6, 12), LocalDate.of(2018, 6, 30), 40f, ReserveTypeStatus.CONFIRMED);
 				reserve4.setHousing(housing3);
-				reserve4.setUser(userService.loadUserByUsername("user1"));
+				reserve4.setUser(userService.loadUserByUsername("user2"));
 				
 				reserveService.save(reserve1);
 				reserveService.save(reserve2);
