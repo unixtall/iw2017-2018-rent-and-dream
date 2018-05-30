@@ -131,6 +131,37 @@ public class ReserveService {
 		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
 		transaction.setDateTime(LocalDateTime.now());
 		transaction.setType(TransactionType.GUESTTOHOST);
+		transaction.setAmount(reserve.getPrice() - reserve.getPrice() * 0.05f);
+		transaction.setTransactionProfit(reserve.getPrice() * 0.05f);
+		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has been accepted by "
+				+ host.getFirstName() + " " + host.getLastName() + " (" + host.getUsername() + ")" 
+				+ " at " + transaction.getDateTime() + "\r\n" + 
+				"\r\n" + 
+				"Here is a summary of your reservation:\r\n" + 
+				"Name of the house: " + reserve.getHousing() + "\r\n" + 
+				"City: " + city.getName()  + "\r\n" + 
+				" Region: " + city.getRegion().getName()  + "\r\n" + 
+				" Country: " + city.getCountry().getName() + "\r\n" +
+				"Address: " + reserve.getHousing().getAddress() + "\r\n" + 
+				"Entry date: " + reserve.getEntryDate() + " \r\n" + 
+				"Departure date: " + reserve.getDepartureDate() + " \r\n" + 
+				"Price: " + reserve.getPrice() + " vat incluyed");
+		
+		reserve.setStatus(ReserveTypeStatus.CONFIRMED);
+		
+		reserveRepo.save(reserve);
+		transactionService.save(transaction);
+	}
+	/*
+	@Transactional
+	public void cancel(Reserve reserve)
+	{
+		User host = userService.findByHousing(reserve.getHousing());
+		City city = cityService.findByHousing(reserve.getHousing());
+		
+		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
+		transaction.setDateTime(LocalDateTime.now());
+		transaction.setType(TransactionType.);
 		transaction.setAmount(reserve.getPrice());
 		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has been accepted by "
 				+ host.getFirstName() + " " + host.getLastName() + " (" + host.getUsername() + ")" 
@@ -150,7 +181,6 @@ public class ReserveService {
 		
 		reserveRepo.save(reserve);
 		transactionService.save(transaction);
-		
-		
-	}
+	}*/
+	
 }
