@@ -79,7 +79,7 @@ public class ReserveUserView extends VerticalLayout implements View {
 				{
 					Button canceledButton = new Button("Cancel reserve");
 					
-					Window window = new WindowManager("ReserveHost Edit", new HorizontalLayout(reserveEditForm, canceledButton)).getWindow();					
+					Window window = new WindowManager("ReserveHost Edit",  canceledButton).getWindow();					
 				
 					canceledButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);
@@ -102,7 +102,7 @@ public class ReserveUserView extends VerticalLayout implements View {
 				if(e.getValue().getStatus() == ReserveTypeStatus.CONFIRMED)
 				{	
 					Button canceledButton = new Button("Cancel reserve");
-					Window window = new WindowManager("ReserveHost Edit", new HorizontalLayout(reserveEditForm, canceledButton)).getWindow();
+					Window window = new WindowManager("ReserveHost Edit", canceledButton).getWindow();
 					
 					canceledButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);

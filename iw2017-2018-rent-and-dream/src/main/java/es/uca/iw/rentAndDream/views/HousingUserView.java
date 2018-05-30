@@ -68,7 +68,10 @@ public class HousingUserView extends CssLayout implements View {
 		//Boton para añadir nuevo
 		addNew.addClickListener(e -> {
 			
-			housingEditForm.setHousing(new Housing("", "", 0d, "", 0, 0, false ,null, null));
+			Housing housing = new Housing("", "", 0d, "", 0, 0, false ,null, null);
+			housing.setAssessmentNumber(0);
+			housingEditForm.setHousing(housing);
+	
 			housingEditForm.setUser((User)VaadinService.getCurrentRequest().getWrappedSession().getAttribute(User.class.getName()));
 
 			Window window = new WindowManager("Housing management", housingEditForm).getWindow();

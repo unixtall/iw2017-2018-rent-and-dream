@@ -1,5 +1,8 @@
 package es.uca.iw.rentAndDream.components;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.vaadin.teemu.ratingstars.RatingStars;
@@ -46,8 +49,8 @@ public class HousingEditForm extends VerticalLayout {
 	TextField address = new TextField("Address");
 	RatingStars assessment = new RatingStars();
 	RichTextArea description = new RichTextArea("Description");
-	TextField bedrooms = new TextField("Bedrooms");
-	TextField beds = new TextField("Beds");
+	ComboBox<Integer> bedrooms = new ComboBox<Integer>("Bedrooms");
+	ComboBox<Integer> beds = new ComboBox<Integer>("Beds");
 	CheckBox airConditioner = new CheckBox("airConditioner");
 	/* Action buttons */
 	Button save = new Button("Save", FontAwesome.SAVE);
@@ -55,6 +58,10 @@ public class HousingEditForm extends VerticalLayout {
 	
 	/* Layout for buttons */
 	CssLayout actions = new CssLayout(save, delete);
+
+	private Integer _bedrooms;
+
+	private Integer _beds;
 	
 	@Autowired
 	public HousingEditForm(UserService userService, HousingService housingService, CitySearchForm citySearchForm)
@@ -63,8 +70,11 @@ public class HousingEditForm extends VerticalLayout {
 		this.userService = userService;
 		this.housingService = housingService;
 		
-		this.housing = new Housing("", "", 0d, "", 0, 0, false ,null, null);
+		this.bedrooms = new ComboBox<>("Bedrooms", IntStream.range(1, 31).mapToObj(i -> i).collect(Collectors.toList()));
+		this.beds = new ComboBox<>("Beds", IntStream.range(1, 31).mapToObj(i -> i).collect(Collectors.toList()));
 		
+		this.housing = new Housing("", "", 0d, "", 0, 0, false ,null, null);
+
 		this.setMargin(false);
 		save.setEnabled(false);
 		user.setVisible(false);
@@ -108,16 +118,18 @@ public class HousingEditForm extends VerticalLayout {
 	  	.bind(Housing::getDescription, Housing::setDescription);
 		
 		binder.forField(bedrooms)
-		.withConverter(
-			new StringToIntegerConverter("Must enter a number"))
+		/*.withConverter(
+			new StringToIntegerConverter("Must enter a number"))*/
 		.asRequired("Is required")
-	  	.bind(Housing::getBedrooms, Housing::setBedrooms);
+		.withValidator(bedroom -> bedroom.intValue() > 0, "Bedrooms must be greater than 0")
+		.bind(Housing::getBedrooms, Housing::setBedrooms);
 		
 		binder.forField(beds)
-		.withConverter(
-			new StringToIntegerConverter("Must enter a number"))
+		/*.withConverter(
+			new StringToIntegerConver
+			ter("Must enter a number"))*/
 		.asRequired("Is required")
-	  	.bind(Housing::getBeds, Housing::setBeds);
+		.bind(Housing::getBeds, Housing::setBeds);
 		
 		// bind using naming convention
 		binder.bindInstanceFields(this);
@@ -195,7 +207,7 @@ public class HousingEditForm extends VerticalLayout {
 		this.description = description;
 	}
 
-	public TextField getBedrooms() {
+	/*public TextField getBedrooms() {
 		return bedrooms;
 	}
 
@@ -209,7 +221,7 @@ public class HousingEditForm extends VerticalLayout {
 
 	public void setBeds(TextField beds) {
 		this.beds = beds;
-	}
+	}*/
 
 	public CheckBox getAirConditioner() {
 		return airConditioner;
