@@ -8,6 +8,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 import es.uca.iw.rentAndDream.entities.City;

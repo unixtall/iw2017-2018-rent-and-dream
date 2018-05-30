@@ -54,27 +54,5 @@ public class CityService {
 	{
 		return cityRepo.findByHousing(h);
 	}
-
-	/*
-	public CitySearchForm getCitySearchForm()
-	{
-		CitySearchForm citySearchForm = new CitySearchForm();
-		
-		citySearchForm.getCountry().setItems(countryService.findAll());
-		
-		citySearchForm.getCountry().addValueChangeListener(
-				event -> {
-					if(!citySearchForm.getCountry().isEmpty())
-						citySearchForm.getRegion().setItems(countryService.findOne(event.getValue().getId()).getRegion());	
-				});
-		
-		citySearchForm.getRegion().addValueChangeListener(
-			event -> {
-				if(!citySearchForm.getRegion().isEmpty())
-					citySearchForm.getCity().setItems(regionService.findOne(event.getValue().getId()).getCities());
-			});
-		
-		return citySearchForm;
-	}*/
 	
 }
