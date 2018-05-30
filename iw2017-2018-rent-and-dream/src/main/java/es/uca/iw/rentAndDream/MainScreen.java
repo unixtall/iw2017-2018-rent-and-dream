@@ -11,7 +11,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -24,7 +23,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.uca.iw.rentAndDream.Utils.HorizontalItemLayout;
 import es.uca.iw.rentAndDream.Utils.WindowManager;
 import es.uca.iw.rentAndDream.components.LoginForm;
 import es.uca.iw.rentAndDream.entities.User;
@@ -38,8 +36,9 @@ import es.uca.iw.rentAndDream.views.HousingManagementView;
 import es.uca.iw.rentAndDream.views.HousingSearchView;
 import es.uca.iw.rentAndDream.views.HousingUserView;
 import es.uca.iw.rentAndDream.views.ReserveHostView;
-import es.uca.iw.rentAndDream.views.ReserveUserView;
 import es.uca.iw.rentAndDream.views.ReserveManagementView;
+import es.uca.iw.rentAndDream.views.ReserveUserView;
+import es.uca.iw.rentAndDream.views.TransactionManagementView;
 import es.uca.iw.rentAndDream.views.UserEditProfileView;
 import es.uca.iw.rentAndDream.views.UserManagementView;
 import es.uca.iw.rentAndDream.views.UserRegisterView;
@@ -200,6 +199,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("City Management", CityManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityManagementView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Transaction Management", TransactionManagementView.VIEW_NAME));
 
 
 		Button logoutButton = new Button("Logout", event -> logout());
@@ -237,6 +237,8 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Users", UserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserve Management", ReserveManagementView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Edit Profile", UserEditProfileView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("Transaction Management", TransactionManagementView.VIEW_NAME));
+
 		
 		Button logoutButton = new Button("Logout", event -> logout());
 		logoutButton.addStyleName(ValoTheme.BUTTON_SMALL);

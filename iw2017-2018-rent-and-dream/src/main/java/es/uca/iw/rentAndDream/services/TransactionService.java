@@ -28,4 +28,21 @@ public class TransactionService {
 	{
 		transactionRepo.save(transaction);
 	}
+	
+	public List<Transaction> findAllWithGuestAndHostAndReserve()
+	{
+		return transactionRepo.findAllWithGuestAndHostAndReserve();
+	}
+	
+	public Transaction findOneWithGuestAndHostAndReserve(Long id) 
+	{
+		return transactionRepo.findOneWithGuestAndHostAndReserve(id);
+	}
+
+	public float addTransactionTotal() {
+		return transactionRepo.addTransactionTotal();
+		
+	}
 }
+
+
