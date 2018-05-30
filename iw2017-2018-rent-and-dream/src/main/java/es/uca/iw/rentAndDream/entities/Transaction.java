@@ -21,6 +21,7 @@ public class Transaction {
 		@Column(length=500)
 		private String invoice;
 		private Float amount;
+		private Float transactionProfit;
 		
 	    @ManyToOne(fetch=FetchType.LAZY)
 		private User host;
@@ -128,6 +129,14 @@ public class Transaction {
 
 		public void setAmount(Float amount) {
 			this.amount = amount;
+		}
+
+		public Float getTransactionProfit() {
+			return transactionProfit;
+		}
+
+		public void setTransactionProfit(Float transactionProfit) {
+			this.transactionProfit = transactionProfit;
 		}
 
 		@Override
