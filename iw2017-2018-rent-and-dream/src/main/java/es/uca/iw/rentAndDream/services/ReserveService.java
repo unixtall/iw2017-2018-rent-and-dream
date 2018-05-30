@@ -81,6 +81,11 @@ public class ReserveService {
 		return reserveRepo.findByGuestUsername(userName);
 	}
 	
+	public List<Reserve> findByGuestUsernameByHousingName(String userName, String string)
+	{
+		return reserveRepo.findByGuestUsernameByHousingName(userName, string);
+	}
+	
 	public Reserve findOne(Long arg0) {
 		return reserveRepo.findOne(arg0);
 	}

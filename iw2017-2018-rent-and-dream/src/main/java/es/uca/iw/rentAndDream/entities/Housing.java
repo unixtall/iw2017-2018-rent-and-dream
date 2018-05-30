@@ -20,6 +20,7 @@ public class Housing {
 	private String name;
 	private String address;
 	private Double assessment;	
+	private Integer assessmentNumber;
 	@Column(length=500)
 	private String description;	
 	private Integer bedrooms;	
@@ -155,6 +156,14 @@ public class Housing {
 		this.reserve = reserve;
 	}
 	
+
+	public Integer getAssessmentNumber() {
+		return assessmentNumber;
+	}
+
+	public void setAssessmentNumber(Integer assessmentNumber) {
+		this.assessmentNumber = assessmentNumber;
+	}
 
 	@Override
 	public String toString() {

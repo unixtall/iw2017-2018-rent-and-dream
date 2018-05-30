@@ -53,6 +53,12 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 			+ "where u.username like %?1%")
 	public List<Reserve> findByGuestUsername(String userName);
 	
+	@Query("Select r from Reserve r "
+			+ "JOIN FETCH r.housing h "
+			+ "JOIN FETCH r.user u "
+			+ "where u.username like %?1% and h.name like %?2%")
+	public List<Reserve> findByGuestUsernameByHousingName(String userName, String string);
+	
 	
 	@Query("Select r from Reserve r "
 			+ "JOIN FETCH r.housing h "

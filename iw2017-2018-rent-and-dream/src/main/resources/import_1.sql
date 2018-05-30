@@ -1,40 +1,23 @@
--- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 10-05-2018 a las 16:33:44
--- Versión del servidor: 5.7.14
--- Versión de PHP: 5.6.25
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de datos: `rent_and_dream_db`
---
 
---
--- Volcado de datos para la tabla `country`
---
-
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(1, 'ad', 'Andorra', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(1, 'ad', 'Andorra', 0.45);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(2, 'ae', 'United Arab Emirates', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(3, 'af', 'Afghanistan', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(4, 'ag', 'Antigua and Barbuda', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(5, 'ai', 'Anguilla', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(6, 'al', 'Albania', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(6, 'al', 'Albania', 0.2);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(7, 'am', 'Armenia', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(8, 'an', 'Netherlands Antilles', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(9, 'ao', 'Angola', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(10, 'ar', 'Argentina', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(11, 'at', 'Austria', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(11, 'at', 'Austria', 0.2);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(12, 'au', 'Australia', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(13, 'aw', 'Aruba', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(14, 'az', 'Azerbaijan', 0);
@@ -50,7 +33,7 @@ INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(23, 'bj', 'Benin', 0)
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(24, 'bm', 'Bermuda', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(25, 'bn', 'Brunei Darussalam', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(26, 'bo', 'Bolivia', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(27, 'br', 'Brazil', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(27, 'br', 'Brazil', 0.18);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(28, 'bs', 'Bahamas', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(29, 'bt', 'Bhutan', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(30, 'bw', 'Botswana', 0);
@@ -61,7 +44,7 @@ INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(34, 'cc', 'Cocos (Kee
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(35, 'cd', 'Democratic Republic of the Congo', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(36, 'cf', 'Central African Republic', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(37, 'cg', 'Congo', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(38, 'ch', 'Switzerland', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(38, 'ch', 'Switzerland', 0.08);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(39, 'ci', 'Cote D\'Ivoire (Ivory Coast)', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(40, 'ck', 'Cook Islands', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(41, 'cl', 'Chile', 0);
@@ -74,7 +57,7 @@ INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(47, 'cv', 'Cape Verde
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(48, 'cx', 'Christmas Island', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(49, 'cy', 'Cyprus', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(50, 'cz', 'Czech Republic', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(51, 'de', 'Germany', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(51, 'de', 'Germany', 0.19);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(52, 'dj', 'Djibouti', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(53, 'dk', 'Denmark', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(54, 'dm', 'Dominica', 0);
@@ -85,7 +68,7 @@ INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(58, 'ee', 'Estonia', 
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(59, 'eg', 'Egypt', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(60, 'eh', 'Western Sahara', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(61, 'er', 'Eritrea', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(62, 'es', 'Spain', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(62, 'es', 'Spain', 0.21);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(63, 'et', 'Ethiopia', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(64, 'fi', 'Finland', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(65, 'fj', 'Fiji', 0);
@@ -198,7 +181,7 @@ INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(171, 'pw', 'Palau', 0
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(172, 'py', 'Paraguay', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(173, 'qa', 'Qatar', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(174, 're', 'Reunion', 0);
-INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(175, 'ro', 'Romania', 0);
+INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(175, 'ro', 'Romania', 0.24);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(176, 'ru', 'Russian Federation', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(177, 'rw', 'Rwanda', 0);
 INSERT INTO `country` (`id`, `code`, `name`, `vat`) VALUES(178, 'sa', 'Saudi Arabia', 0);
