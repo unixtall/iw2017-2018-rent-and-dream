@@ -63,10 +63,10 @@ public class MainApplication {
 				userService.save(manager);
 				userService.save(root);	
 				
-				Housing housing1 = new Housing("House 1", "address", 3.5d, "description", 2, 2, false);
-				Housing housing2 = new Housing("House 2", "address", 1.2d, "description", 4, 4, false);
-				Housing housing3 = new Housing("House 3", "address", 5.3d, "description", 4, 8, false);
-				Housing housing4 = new Housing("House 4", "address", 6d, "description", 1, 1, false);
+				Housing housing1 = new Housing("House 1", "Calle Larga, 23", 3.5d, "description", 2, 2, false);
+				Housing housing2 = new Housing("House 2", "Avenida del Ejército S/N", 1.2d, "description", 4, 4, false);
+				Housing housing3 = new Housing("House 3", "Calle Ronda, 1", 5.3d, "description", 4, 8, true);
+				Housing housing4 = new Housing("House 4", "Calle Luna, 25", 6d, "description", 1, 1, false);
 				housing1.setUser(userService.findByUsername("user1"));
 				housing2.setUser(userService.findByUsername("user2"));
 				housing3.setUser(userService.findByUsername("user1"));
