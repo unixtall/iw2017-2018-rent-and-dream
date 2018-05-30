@@ -2,6 +2,7 @@ package es.uca.iw.rentAndDream.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.naming.NameNotFoundException;
@@ -152,7 +153,8 @@ public class ReserveService {
 		reserveRepo.save(reserve);
 		transactionService.save(transaction);
 	}
-	/*
+	
+	
 	@Transactional
 	public void cancel(Reserve reserve)
 	{
@@ -161,26 +163,33 @@ public class ReserveService {
 		
 		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
 		transaction.setDateTime(LocalDateTime.now());
-		transaction.setType(TransactionType.);
-		transaction.setAmount(reserve.getPrice());
-		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has been accepted by "
-				+ host.getFirstName() + " " + host.getLastName() + " (" + host.getUsername() + ")" 
+		transaction.setType(TransactionType.HOSTTOGUEST);
+		transaction.setAmount(getAmountRefundCancellationPolicy(reserve));
+		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has cancelled"
 				+ " at " + transaction.getDateTime() + "\r\n" + 
 				"\r\n" + 
-				"Here is a summary of your reservation:\r\n" + 
-				"Name of the house: " + reserve.getHousing() + "\r\n" + 
-				"City: " + city.getName()  + "\r\n" + 
-				" Region: " + city.getRegion().getName()  + "\r\n" + 
-				" Country: " + city.getCountry().getName() + "\r\n" +
-				"Address: " + reserve.getHousing().getAddress() + "\r\n" + 
-				"Entry date: " + reserve.getEntryDate() + " \r\n" + 
-				"Departure date: " + reserve.getDepartureDate() + " \r\n" + 
-				"Price: " + transaction.getAmount() + " vat incluyed");
+				transaction.getAmount() + " will be refunded:\r\n");
 		
 		reserve.setStatus(ReserveTypeStatus.CONFIRMED);
 		
 		reserveRepo.save(reserve);
 		transactionService.save(transaction);
-	}*/
+	}
 	
+	public Float getAmountRefundCancellationPolicy(Reserve reserve)
+	{
+		LocalDateTime nowDateTime = LocalDateTime.now();
+		LocalDateTime reserveDateTime = LocalDateTime.of(reserve.getEntryDate(), LocalTime.of(12, 00));
+			
+		//Si se cancela una reserva entre 48 y 24 horas hay una penalización de 60%
+		if(nowDateTime.isBefore(reserveDateTime.minusHours(24)) && nowDateTime.isAfter(reserveDateTime.minusHours(48)))
+			return reserve.getPrice() * 0.4F;
+		else
+		//Si se cancela una reserva dentro de las 24 horas antes hay una penalización de 100%
+		if(nowDateTime.isAfter(reserveDateTime.minusHours(24)))
+			return 0F;
+		
+		//Si se cancela una reserva con una anterioridad de superior a 48 no hay penalizacion
+		return reserve.getPrice();
+	}
 }
