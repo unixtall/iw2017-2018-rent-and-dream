@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.addons.tuningdatefield.TuningDateField;
 import org.vaadin.dialogs.ConfirmDialog;
 
+import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -48,8 +49,9 @@ public class HousingInfoView extends VerticalLayout implements View{
 	
 	public static final String VIEW_NAME = "housingInfoView";
 	
-	private Housing housing;
+	private Binder<Housing> binder = new Binder<>(Housing.class);
 	
+	private Housing housing;	
 	private HousingService housingService;
 	private ReserveService reserveService;
 	private CityService cityService;
@@ -67,9 +69,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 	
 	private String[] uriTokens;
 	
-	private TuningDateField availabilityDateField = new TuningDateField("Availability Calendar");
-	
-	
+	private TuningDateField availabilityDateField = new TuningDateField("Availability Calendar");	
 	
 	
 	@PostConstruct
@@ -114,8 +114,10 @@ public class HousingInfoView extends VerticalLayout implements View{
 			return;
 		}
 
-		guests = new ComboBox<>(null, IntStream.range(1, housing.getBeds() + 1).mapToObj(i -> i).collect(Collectors.toList()));
+		
+		guests = new ComboBox<>("Guests", IntStream.range(1, housing.getBeds() + 1).mapToObj(i -> i).collect(Collectors.toList()));
 		guests.setSelectedItem(1);
+		guests.setRequiredIndicatorVisible(true);
 		
 		HorizontalLayout features = new HorizontalLayout();
 		Label name = new Label(housing.getName() + " Rating: " + housing.getAssessment());
@@ -149,6 +151,11 @@ public class HousingInfoView extends VerticalLayout implements View{
 		
 		rangeSelectDateField.setAvailabilyDates(datesForAvailability);
 		reserveButton.setEnabled(false);
+		
+		guests.addValueChangeListener(e -> {
+			reserveButton.setEnabled(rangeSelectDateField.getStartDate() != null && !guests.isEmpty());
+		});
+		
 		rangeSelectDateField.getInlineTuningDateField().addDateChangeListener(e-> 
 		{
 			//Notification.show("Values Dates:" + rangeSelectDateField.getValue() + " stardate:" + rangeSelectDateField.getStartDate() + " enddate:" + rangeSelectDateField.getEndDate());
@@ -168,7 +175,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 				Float vatAmount = totalPrice - housingPrice ;
 				
 				price.setValue(housingPrice.toString() + " + " + String.format("%.2f", vatAmount) + "(VAT) = " + totalPrice );
-				reserveButton.setEnabled(rangeSelectDateField.getStartDate() != null);
+				reserveButton.setEnabled(rangeSelectDateField.getStartDate() != null && !guests.isEmpty());
 			}
 		});
 		
