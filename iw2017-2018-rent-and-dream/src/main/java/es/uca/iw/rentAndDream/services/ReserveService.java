@@ -156,7 +156,7 @@ public class ReserveService {
 	
 	
 	@Transactional
-	public void cancel(Reserve reserve)
+	public void cancelByGuest(Reserve reserve)
 	{
 		User host = userService.findByHousing(reserve.getHousing());
 		City city = cityService.findByHousing(reserve.getHousing());
@@ -164,13 +164,37 @@ public class ReserveService {
 		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
 		transaction.setDateTime(LocalDateTime.now());
 		transaction.setType(TransactionType.HOSTTOGUEST);
-		transaction.setAmount(getAmountRefundCancellationPolicy(reserve));
-		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has cancelled"
+		transaction.setAmount(getAmountRefundCancellationPolicy(reserve) - getAmountRefundCancellationPolicy(reserve) * 0.05F);
+		transaction.setTransactionProfit(getAmountRefundCancellationPolicy(reserve) * 0.05F);
+		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has cancelled by You"
 				+ " at " + transaction.getDateTime() + "\r\n" + 
 				"\r\n" + 
-				transaction.getAmount() + " will be refunded:\r\n");
+				transaction.getAmount() + "€ will be refunded:\r\n");
 		
-		reserve.setStatus(ReserveTypeStatus.CONFIRMED);
+		reserve.setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
+		
+		reserveRepo.save(reserve);
+		transactionService.save(transaction);
+	}
+	
+	@Transactional
+	public void cancelByHost(Reserve reserve)
+	{
+		User host = userService.findByHousing(reserve.getHousing());
+		City city = cityService.findByHousing(reserve.getHousing());
+		
+		Transaction transaction = new Transaction(host, reserve.getUser(), reserve);
+		transaction.setDateTime(LocalDateTime.now());
+		transaction.setType(TransactionType.HOSTTOGUEST);
+		transaction.setAmount(reserve.getPrice() + (reserve.getPrice() - getAmountRefundCancellationPolicy(reserve))
+			- getAmountRefundCancellationPolicy(reserve) * 0.05F);
+		transaction.setTransactionProfit(getAmountRefundCancellationPolicy(reserve) * 0.05F);
+		transaction.setInvoice("Your Reservation with id: " + reserve.getId() + " has cancelled by Host"
+				+ " at " + transaction.getDateTime() + "\r\n" + 
+				"\r\n" + 
+				transaction.getAmount() + "€ will be refunded:\r\n");
+		
+		reserve.setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
 		
 		reserveRepo.save(reserve);
 		transactionService.save(transaction);

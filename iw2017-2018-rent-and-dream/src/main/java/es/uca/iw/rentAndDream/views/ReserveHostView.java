@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -123,24 +124,25 @@ public class ReserveHostView extends VerticalLayout implements View {
 					});					
 					
 					canceledButton.addClickListener(event-> {
-						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYHOST);
-						reserveService.save(e.getValue());
-						listReserve(filter.getValue());
-						window.close();
+						ConfirmDialog.show(getUI().getCurrent(), "are you sure? Cancellation policies may apply, you must return: " 
+								+ (e.getValue().getPrice() + e.getValue().getPrice() 
+								- reserveService.getAmountRefundCancellationPolicy(e.getValue())) + " €", new ConfirmDialog.Listener() {
+							
+				            public void onClose(ConfirmDialog dialog) {
+				            	
+								if(dialog.isConfirmed())
+								{
+									reserveService.cancelByHost(e.getValue());
+									listReserve(filter.getValue());
+									window.close();
+								}
+				            }
+				        });
+						
+
 					});
 				
-					reserveEditForm.getSave().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
-					reserveEditForm.getDelete().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
 				}
-				
-				
-				
 			}
 		});
 

@@ -1,9 +1,12 @@
 package es.uca.iw.rentAndDream.views;
 
+import java.time.LocalDate;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -14,6 +17,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -82,7 +86,7 @@ public class ReserveUserView extends VerticalLayout implements View {
 					Window window = new WindowManager("ReserveHost Edit",  canceledButton).getWindow();					
 				
 					canceledButton.addClickListener(event-> {
-						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);
+						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
 						reserveService.save(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
@@ -105,20 +109,23 @@ public class ReserveUserView extends VerticalLayout implements View {
 					Window window = new WindowManager("ReserveHost Edit", canceledButton).getWindow();
 					
 					canceledButton.addClickListener(event-> {
-						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYUSER);
-						reserveService.save(e.getValue());
-						listReserve(filter.getValue());
-						window.close();
+						ConfirmDialog.show(getUI().getCurrent(), "are you sure? Cancellation policies may apply, your refund is: " 
+								+ reserveService.getAmountRefundCancellationPolicy(e.getValue()) * 0.95 + " €", new ConfirmDialog.Listener() {
+							
+				            public void onClose(ConfirmDialog dialog) {
+				            	
+								if(dialog.isConfirmed())
+								{
+									reserveService.cancelByGuest(e.getValue());
+									listReserve(filter.getValue());
+									window.close();
+								}
+				            }
+				        });
+						
+
 					});
-				
-					reserveEditForm.getSave().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
-					reserveEditForm.getDelete().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
+
 				}
 			}
 		});
