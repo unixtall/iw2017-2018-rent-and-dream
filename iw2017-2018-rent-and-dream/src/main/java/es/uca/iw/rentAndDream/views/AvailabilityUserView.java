@@ -12,6 +12,7 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
@@ -25,7 +26,7 @@ import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.services.AvailabilityService;
 
-@UIScope
+@ViewScope
 @SpringView(name = AvailabilityUserView.VIEW_NAME)
 public class AvailabilityUserView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "availabilityUserView";

@@ -51,18 +51,19 @@ public class MainApplication {
 			if (userService.findAll().size() == 0) {
 				
 				// save users with default password: default
-				User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, UserRoleType.USER);
-				User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, UserRoleType.USER);
+				//User user1 = new User("user1", "user1", "user1", "user1@example.com", LocalDate.of(1992, 1, 19), "12345678J", 956403954, UserRoleType.USER);
+				//User user2 = new User("user2", "user2", "user2", "user2@example.com", LocalDate.of(1992, 1, 19), "87654321J", 956493387, UserRoleType.USER);
 
 				User manager = new User("manager", "manager", "manager", "manager@example.com", LocalDate.of(1992, 1, 19), "12345678Q", 956403954, UserRoleType.MANAGER);
 				User root = new User("root", "root", "root", "root@example.com", LocalDate.of(1992, 1, 19), "87654321E", 678228328, UserRoleType.ADMIN);
 
-				root.setPassword("root");
-				userService.save(user1);
-				userService.save(user2);
+				//root.setPassword("root");
+				//userService.save(user1);
+				//userService.save(user2);
 				userService.save(manager);
 				userService.save(root);	
 				
+				/*
 				Housing housing1 = new Housing("House 1", "Calle Larga, 23", 3.5d, "description", 2, 2, false);
 				Housing housing2 = new Housing("House 2", "Avenida del Ejército S/N", 1.2d, "description", 4, 4, false);
 				Housing housing3 = new Housing("House 3", "Calle Ronda, 1", 5.3d, "description", 4, 8, true);
@@ -118,7 +119,7 @@ public class MainApplication {
 				reserveService.save(reserve2);
 				reserveService.save(reserve3);
 				reserveService.save(reserve4);
-
+*/
 			}
 		};
 	}

@@ -11,6 +11,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToFloatConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.ui.Button;
@@ -115,6 +116,7 @@ public class HousingEditForm extends VerticalLayout {
 		
 		binder.forField(description)
 		.asRequired("Is required")
+		.withValidator(new StringLengthValidator("Description must be 500 characters maximum", 1, 500))
 	  	.bind(Housing::getDescription, Housing::setDescription);
 		
 		binder.forField(bedrooms)
