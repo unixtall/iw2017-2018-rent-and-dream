@@ -22,8 +22,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.EmailService;
 import es.uca.iw.rentAndDream.components.ReserveEditForm;
-import es.uca.iw.rentAndDream.entities.Availability;
 import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
 import es.uca.iw.rentAndDream.entities.User;
@@ -40,11 +40,13 @@ public class ReserveHostView extends VerticalLayout implements View {
 	private Button addNewBtn;
 
 	private final ReserveService reserveService;
+	private final EmailService emailService;
 	private ReserveEditForm reserveEditForm;
 
 	@Autowired
-	public ReserveHostView(ReserveService reserveService, ReserveEditForm reserveEditForm) {
+	public ReserveHostView(ReserveService reserveService, EmailService emailService, ReserveEditForm reserveEditForm) {
 		this.reserveService = reserveService;
+		this.emailService = emailService;
 		this.reserveEditForm = reserveEditForm;
 		this.grid = new Grid<>(Reserve.class);
 		this.filter = new TextField();  
@@ -87,7 +89,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 					
 					confirmButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CONFIRMED);
-						//reserveService.save(e.getValue());
+						
 						reserveService.confirm(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
@@ -120,6 +122,16 @@ public class ReserveHostView extends VerticalLayout implements View {
 					
 					finishedButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.FINISHED);
+						emailService.sendSimpleMessage(e.getValue().getUser().getEmail(), "Reserve finished"
+								, "The reserve is finished please go to the panel control for evaluate the host");
+						
+						User host = (User)(VaadinService.getCurrentRequest()
+								.getWrappedSession().getAttribute(User.class.getName()));
+						
+						emailService.sendSimpleMessage(host.getEmail(), "Reserve finished"
+								, "The reserve is finished please go to the panel control for evaluate the host");	
+					
+						
 						reserveService.save(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
@@ -155,6 +167,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 					submitButton.addClickListener(click->{
 						e.getValue().setHostReport(hostReport.getValue());
 						Notification.show("Comment submit successfull");
+
 						reserveService.save(e.getValue());
 						window.close();
 					});
