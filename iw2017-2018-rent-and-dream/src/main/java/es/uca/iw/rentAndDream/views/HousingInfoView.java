@@ -32,6 +32,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.EmailService;
 import es.uca.iw.rentAndDream.components.LoginForm;
 import es.uca.iw.rentAndDream.components.RangeSelectDateField;
 import es.uca.iw.rentAndDream.entities.Availability;
@@ -55,6 +56,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 	private HousingService housingService;
 	private ReserveService reserveService;
 	private CityService cityService;
+	private EmailService emailService;
 	
 	@Autowired
 	private LoginForm loginForm;
@@ -83,10 +85,11 @@ public class HousingInfoView extends VerticalLayout implements View{
 	  }
 	
 	@Autowired
-	public HousingInfoView(HousingService housingService, ReserveService reserveService, CityService cityService, RangeSelectDateField rangeSelectDateField) {
+	public HousingInfoView(HousingService housingService, ReserveService reserveService, CityService cityService, EmailService emailService, RangeSelectDateField rangeSelectDateField) {
 		this.housingService = housingService;
 		this.reserveService = reserveService;
 		this.cityService = cityService;
+		this.emailService = emailService;
 		//this.loginForm = loginForm;
 		this.rangeSelectDateField = rangeSelectDateField;
 		this.guests.setSizeUndefined();
@@ -198,6 +201,10 @@ public class HousingInfoView extends VerticalLayout implements View{
 								    .getWrappedSession().getAttribute(User.class.getName())));
 							r.setHousing(housing);
 							reserveService.save(r);
+							emailService.sendSimpleMessage(housing.getUser().getEmail(), "Reserve request pending"
+									, "You have a reserve request pending: \n House required: " + housing.getName() + " User Host: " + r.getUser() 
+									+ "\n Entry date: " + r.getEntryDate() + " Departure date: " + r.getDepartureDate() 
+									+ "\n You should accept or cancel this reserve in you control panel");
 							Notification.show("Reserve Request SucessFull");
 						}
 		            }

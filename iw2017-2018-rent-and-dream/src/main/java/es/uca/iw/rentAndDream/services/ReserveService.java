@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uca.iw.rentAndDream.components.EmailService;
 import es.uca.iw.rentAndDream.entities.City;
 import es.uca.iw.rentAndDream.entities.Housing;
 import es.uca.iw.rentAndDream.entities.Reserve;
@@ -37,6 +38,9 @@ public class ReserveService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Reserve loadReserveById(Long id) throws NameNotFoundException {
 
@@ -141,14 +145,19 @@ public class ReserveService {
 				"Here is a summary of your reservation:\r\n" + 
 				"Name of the house: " + reserve.getHousing() + "\r\n" + 
 				"City: " + city.getName()  + "\r\n" + 
-				" Region: " + city.getRegion().getName()  + "\r\n" + 
-				" Country: " + city.getCountry().getName() + "\r\n" +
+				"Region: " + city.getRegion().getName()  + "\r\n" + 
+				"Country: " + city.getCountry().getName() + "\r\n" +
 				"Address: " + reserve.getHousing().getAddress() + "\r\n" + 
 				"Entry date: " + reserve.getEntryDate() + " \r\n" + 
 				"Departure date: " + reserve.getDepartureDate() + " \r\n" + 
 				"Price: " + reserve.getPrice() + " vat incluyed");
 		
 		reserve.setStatus(ReserveTypeStatus.CONFIRMED);
+		
+		emailService.sendSimpleMessage(reserve.getUser().getEmail(), "Reserve accept by host"
+				, "You have a confirmed reserve in : \n House required: " + reserve.getHousing().getName() + " User Host: " + host.getUsername() 
+				+ "\n Entry date: " + reserve.getEntryDate() + " Departure date: " + reserve.getDepartureDate() 
+				+ "\n You invoice: \n" + transaction.getInvoice());
 		
 		reserveRepo.save(reserve);
 		transactionService.save(transaction);
@@ -170,6 +179,10 @@ public class ReserveService {
 				+ " at " + transaction.getDateTime() + "\r\n" + 
 				"\r\n" + 
 				transaction.getAmount() + "€ will be refunded:\r\n");
+		
+		emailService.sendSimpleMessage(host.getEmail(), "Reserve cancel by guest"
+				, "The reserve is cancelled by " + reserve.getHousing().getName()
+				+ "\n You invoice: \n" + transaction.getInvoice());
 		
 		reserve.setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
 		
@@ -193,6 +206,10 @@ public class ReserveService {
 				+ " at " + transaction.getDateTime() + "\r\n" + 
 				"\r\n" + 
 				transaction.getAmount() + "€ will be refunded:\r\n");
+		
+		emailService.sendSimpleMessage(reserve.getUser().getEmail(), "Reserve cancel by Host"
+				, "The reserve is cancelled by " + reserve.getUser().getUsername()
+				+ "\n You invoice: \n" + transaction.getInvoice());
 		
 		reserve.setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
 		
