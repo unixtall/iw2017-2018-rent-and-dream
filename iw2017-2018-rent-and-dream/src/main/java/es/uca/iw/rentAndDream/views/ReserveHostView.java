@@ -89,7 +89,6 @@ public class ReserveHostView extends VerticalLayout implements View {
 					
 					confirmButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CONFIRMED);
-						
 						reserveService.confirm(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
@@ -98,17 +97,10 @@ public class ReserveHostView extends VerticalLayout implements View {
 				
 					canceledButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYHOST);
+						emailService.sendSimpleMessage(e.getValue().getUser().getEmail(), "Reserve cancel by Host"
+								, "The reserve is cancelled by " + (User)VaadinService.getCurrentRequest()
+								.getWrappedSession().getAttribute(User.class.getName()));
 						reserveService.save(e.getValue());
-						listReserve(filter.getValue());
-						window.close();
-					});
-				
-	
-					reserveEditForm.getSave().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
-					reserveEditForm.getDelete().addClickListener(event->{
 						listReserve(filter.getValue());
 						window.close();
 					});
@@ -129,9 +121,8 @@ public class ReserveHostView extends VerticalLayout implements View {
 								.getWrappedSession().getAttribute(User.class.getName()));
 						
 						emailService.sendSimpleMessage(host.getEmail(), "Reserve finished"
-								, "The reserve is finished please go to the panel control for evaluate the host");	
-					
-						
+								, "The reserve is finished please go to the panel control for evaluate the guest");	
+
 						reserveService.save(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
@@ -146,6 +137,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 				            	
 								if(dialog.isConfirmed())
 								{
+		
 									reserveService.cancelByHost(e.getValue());
 									listReserve(filter.getValue());
 									window.close();
@@ -167,7 +159,7 @@ public class ReserveHostView extends VerticalLayout implements View {
 					submitButton.addClickListener(click->{
 						e.getValue().setHostReport(hostReport.getValue());
 						Notification.show("Comment submit successfull");
-
+						
 						reserveService.save(e.getValue());
 						window.close();
 					});
