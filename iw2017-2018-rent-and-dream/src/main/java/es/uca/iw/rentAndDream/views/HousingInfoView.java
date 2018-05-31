@@ -193,6 +193,7 @@ public class HousingInfoView extends VerticalLayout implements View{
 							Reserve r = new Reserve(guests.getValue()
 									, LocalDate.parse(entryDate.getValue())
 									, LocalDate.parse(departureDate.getValue()), null, ReserveTypeStatus.PENDING);
+							r.setGuestRating(0D);
 							r.setUser((User)(VaadinService.getCurrentRequest()
 								    .getWrappedSession().getAttribute(User.class.getName())));
 							r.setHousing(housing);

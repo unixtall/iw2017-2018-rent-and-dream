@@ -59,4 +59,7 @@ public interface HousingRepository extends JpaRepository<Housing, Long> {
 	
 	@Query("select co.vat from Housing h, City c, Country co Where c = h.city and c.country = co and h = ?1 ")
 	public Float getVat(Housing h);
+	
+	@Query("select sum(r.guestRating) from Housing h, Reserve r where r.housing = h and h = ?1 and r.status = 5 and r.guestRating <> 0")
+	public Double getAssessmentSum(Housing h);
 }

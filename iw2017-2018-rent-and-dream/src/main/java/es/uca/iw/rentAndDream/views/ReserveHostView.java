@@ -15,6 +15,8 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -142,6 +144,21 @@ public class ReserveHostView extends VerticalLayout implements View {
 
 					});
 				
+				}
+				
+				if(e.getValue().getStatus() == ReserveTypeStatus.FINISHED && e.getValue().getHostReport() == null)
+				{	
+					RichTextArea hostReport = new RichTextArea();
+					Button submitButton = new Button("Submit comment");
+					Window window = new WindowManager("Report problems or evaluate guest", new VerticalLayout(hostReport, submitButton)).getWindow();
+					
+					submitButton.addClickListener(click->{
+						e.getValue().setHostReport(hostReport.getValue());
+						Notification.show("Comment submit successfull");
+						reserveService.save(e.getValue());
+						window.close();
+					});
+
 				}
 			}
 		});

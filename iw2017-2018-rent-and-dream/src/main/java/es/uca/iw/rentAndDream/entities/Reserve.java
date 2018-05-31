@@ -29,6 +29,7 @@ public class Reserve {
 	@Column(length=500)
 	private String hostReport;
 	
+	private Double guestRating;
 	
 	private ReserveTypeStatus status;
 	
@@ -109,6 +110,30 @@ public class Reserve {
 		this.housing = housing;
 	}
 
+
+	public String getGuestReport() {
+		return guestReport;
+	}
+
+	public void setGuestReport(String guestReport) {
+		this.guestReport = guestReport;
+	}
+
+	public String getHostReport() {
+		return hostReport;
+	}
+
+	public void setHostReport(String hostReport) {
+		this.hostReport = hostReport;
+	}
+	
+	public Double getGuestRating() {
+		return guestRating;
+	}
+
+	public void setGuestRating(Double guestRating) {
+		this.guestRating = guestRating;
+	}
 
 	@Override
 	public String toString() {

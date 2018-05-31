@@ -216,4 +216,5 @@ public class ReserveService {
 		//Si se cancela una reserva con una anterioridad de superior a 48 no hay penalizacion
 		return reserve.getPrice();
 	}
+	
 }

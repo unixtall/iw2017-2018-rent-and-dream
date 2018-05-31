@@ -106,4 +106,9 @@ public class HousingService {
 	{
 		return repo.getVat(h);
 	}
+	
+	public Double getAssessmentSum(Housing h)
+	{
+		return repo.getAssessmentSum(h);
+	}
 }
