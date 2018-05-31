@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import es.uca.iw.rentAndDream.entities.Transaction;
+import es.uca.iw.rentAndDream.entities.User;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
@@ -26,6 +27,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	
 	@Query("Select sum(t.transactionProfit) from Transaction t")
 	public float addTransactionTotal();
+
+	@Query("Select t from Transaction t "
+			+ "join fetch t.host "
+			+ "join fetch t.reserve "
+			+ "join fetch t.guest "
+			+ "where t.host = ?1 "
+			+ "OR t.guest = ?1 ")
+	public List<Transaction> findAllAllMyTransactions(User u);
 	
 
 }

@@ -17,6 +17,7 @@ import es.uca.iw.rentAndDream.views.TransactionManagementView;
 import es.uca.iw.rentAndDream.views.UserEditProfileView;
 import es.uca.iw.rentAndDream.views.UserManagementView;
 import es.uca.iw.rentAndDream.views.UserRegisterView;
+import es.uca.iw.rentAndDream.views.UserTransactionManagementView;
 import es.uca.iw.rentAndDream.views.UserView;
 
 /**
@@ -33,10 +34,11 @@ public class SampleViewAccessControl implements ViewAccessControl {
     	if(SecurityUtils.hasRole(UserRoleType.ADMIN)){
     		return true;
     	} else if (beanName.equals(UserRegisterView.VIEW_NAME) 
-    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingInfoView.VIEW_NAME)) {
+    			|| beanName.equals(HousingSearchView.VIEW_NAME) || beanName.equals(HousingInfoView.VIEW_NAME) || beanName.equals(UserTransactionManagementView.VIEW_NAME)) {
             return true;
         } else if (beanName.equals(UserView.VIEW_NAME) || beanName.equals(UserEditProfileView.VIEW_NAME) || beanName.equals(HousingUserView.VIEW_NAME)
-        		|| beanName.equals(AvailabilityUserView.VIEW_NAME) || beanName.equals(ReserveUserView.VIEW_NAME) || beanName.equals(ReserveHostView.VIEW_NAME) ||  beanName.equals(TransactionManagementView.VIEW_NAME))
+        		|| beanName.equals(AvailabilityUserView.VIEW_NAME) || beanName.equals(ReserveUserView.VIEW_NAME) || beanName.equals(ReserveHostView.VIEW_NAME) 
+        		||  beanName.equals(TransactionManagementView.VIEW_NAME))
         {
             return SecurityUtils.hasRole(UserRoleType.USER) || SecurityUtils.hasRole(UserRoleType.MANAGER);
         } else if (beanName.equals(UserManagementView.VIEW_NAME) || beanName.equals(ReserveManagementView.VIEW_NAME)) {

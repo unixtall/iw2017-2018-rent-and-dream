@@ -42,6 +42,7 @@ import es.uca.iw.rentAndDream.views.TransactionManagementView;
 import es.uca.iw.rentAndDream.views.UserEditProfileView;
 import es.uca.iw.rentAndDream.views.UserManagementView;
 import es.uca.iw.rentAndDream.views.UserRegisterView;
+import es.uca.iw.rentAndDream.views.UserTransactionManagementView;
 import es.uca.iw.rentAndDream.views.UserView;
 
 @SpringViewDisplay
@@ -228,6 +229,7 @@ public class MainScreen extends VerticalLayout implements ViewDisplay {
 		navigationBar.addComponent(createNavigationButton("Availability Management", AvailabilityUserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("My reserves", ReserveUserView.VIEW_NAME));
 		navigationBar.addComponent(createNavigationButton("Reserves of my houses", ReserveHostView.VIEW_NAME));
+		navigationBar.addComponent(createNavigationButton("My transactions", UserTransactionManagementView.VIEW_NAME));
 		//navigationBar.addComponent(logoutButton);
 
 	}

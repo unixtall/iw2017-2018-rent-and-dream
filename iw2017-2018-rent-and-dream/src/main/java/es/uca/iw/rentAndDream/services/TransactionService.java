@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.uca.iw.rentAndDream.entities.Transaction;
+import es.uca.iw.rentAndDream.entities.User;
 import es.uca.iw.rentAndDream.repositories.TransactionRepository;
 
 @Service
@@ -43,6 +44,14 @@ public class TransactionService {
 		return transactionRepo.addTransactionTotal();
 		
 	}
+	
+	//Del usuario
+	public List<Transaction> findAllMyTransactions(User u)
+	{
+		return transactionRepo.findAllAllMyTransactions(u);
+	}
+	
+	
 }
 
 
