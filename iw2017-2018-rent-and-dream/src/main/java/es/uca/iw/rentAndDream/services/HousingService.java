@@ -109,6 +109,6 @@ public class HousingService {
 	
 	public Double getAssessmentSum(Housing h)
 	{
-		return repo.getAssessmentSum(h);
+		return repo.getAssessmentSum(h) == null ? 0 : repo.getAssessmentSum(h);
 	}
 }
