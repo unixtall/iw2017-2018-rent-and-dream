@@ -157,8 +157,6 @@ public class ReserveUserView extends VerticalLayout implements View {
 			}
 		});
 
-
-
 		// Initialize listing
 		listReserve(null);
 		

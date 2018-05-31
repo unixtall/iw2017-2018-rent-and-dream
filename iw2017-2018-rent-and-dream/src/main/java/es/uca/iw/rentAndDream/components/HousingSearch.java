@@ -119,6 +119,11 @@ public class HousingSearch extends HorizontalItemLayout{
 			results.forEach(e -> 
 				addComponent(new HousingSearchResults(e))
 			);
+			
+			if(results.size() == 0)
+			{
+				addComponent(new Label("we dont find nothing with this filter parameters =("));
+			}
 		});
 		
 		addComponent(form);
