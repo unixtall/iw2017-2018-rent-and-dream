@@ -23,6 +23,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import es.uca.iw.rentAndDream.Utils.WindowManager;
+import es.uca.iw.rentAndDream.components.EmailService;
 import es.uca.iw.rentAndDream.components.ReserveEditForm;
 import es.uca.iw.rentAndDream.entities.Reserve;
 import es.uca.iw.rentAndDream.entities.ReserveTypeStatus;
@@ -31,6 +32,7 @@ import es.uca.iw.rentAndDream.entities.UserRoleType;
 import es.uca.iw.rentAndDream.security.SecurityUtils;
 import es.uca.iw.rentAndDream.services.HousingService;
 import es.uca.iw.rentAndDream.services.ReserveService;
+import es.uca.iw.rentAndDream.services.UserService;
 
 @SpringView(name = ReserveUserView.VIEW_NAME)
 public class ReserveUserView extends VerticalLayout implements View {
@@ -42,13 +44,18 @@ public class ReserveUserView extends VerticalLayout implements View {
 
 	private final ReserveService reserveService;
 	private final HousingService housingService;
+	private final UserService userService;
 	private ReserveEditForm reserveEditForm;
+	private EmailService emailService;
 
 	@Autowired
-	public ReserveUserView(ReserveService reserveService, HousingService housingService, ReserveEditForm reserveEditForm) {
+	public ReserveUserView(ReserveService reserveService, HousingService housingService, UserService userService, ReserveEditForm reserveEditForm, EmailService emailService) {
 		this.reserveService = reserveService;
 		this.housingService = housingService;
+		this.userService = userService;
+		this.emailService = emailService;
 		this.reserveEditForm = reserveEditForm;
+		
 		this.grid = new Grid<>(Reserve.class);
 		this.filter = new TextField();  
 		this.addNewBtn = new Button("New Availability", FontAwesome.PLUS);
@@ -87,8 +94,13 @@ public class ReserveUserView extends VerticalLayout implements View {
 					
 					Window window = new WindowManager("ReserveHost Edit",  canceledButton).getWindow();					
 				
+					User host = userService.findByHousing(e.getValue().getHousing());
+					
 					canceledButton.addClickListener(event-> {
 						e.getValue().setStatus(ReserveTypeStatus.CANCELEDBYGUEST);
+						emailService.sendSimpleMessage(host.getEmail(), "Reserve cancel by Host"
+								, "The reserve is cancelled by " + (User)VaadinService.getCurrentRequest()
+								.getWrappedSession().getAttribute(User.class.getName()));
 						reserveService.save(e.getValue());
 						listReserve(filter.getValue());
 						window.close();
