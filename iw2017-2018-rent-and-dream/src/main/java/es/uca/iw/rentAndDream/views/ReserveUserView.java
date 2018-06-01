@@ -105,16 +105,6 @@ public class ReserveUserView extends VerticalLayout implements View {
 						listReserve(filter.getValue());
 						window.close();
 					});
-				
-	
-					reserveEditForm.getSave().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
-					reserveEditForm.getDelete().addClickListener(event->{
-						listReserve(filter.getValue());
-						window.close();
-					});
 				}
 
 				if(e.getValue().getStatus() == ReserveTypeStatus.CONFIRMED)
